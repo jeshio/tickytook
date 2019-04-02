@@ -12,8 +12,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "export CI=true && yarn build && yarn lint-staged && yarn test",
-      "pre-push": "export CI=true && yarn build && yarn lint-staged && yarn test"
+      "pre-commit": "export CI=true && yarn build && yarn lint-staged && yarn test"
     }
   },
   "lint-staged": {
