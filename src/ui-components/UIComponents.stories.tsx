@@ -1,6 +1,7 @@
 import { storiesOf } from '@storybook/react';
 import * as React from 'react';
-import Input from './Input';
+import UInput from './UInput';
+import UTextarea from './UTextarea';
 
 function storiesOfComponent(Component: (...args: any[]) => any, addRsuiteStories = false) {
   const storyName = `UIComponents/${Component.name}`;
@@ -17,4 +18,7 @@ function storiesOfComponent(Component: (...args: any[]) => any, addRsuiteStories
   return story;
 }
 
-storiesOfComponent(Input, true).add('без параметров', () => <Input />);
+storiesOfComponent(UInput, true).add('без параметров', () => <UInput />);
+storiesOfComponent(UTextarea, true)
+  .add('без параметров', () => <UTextarea />)
+  .add('количество строк', () => <UTextarea rows={7} />);
