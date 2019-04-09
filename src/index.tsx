@@ -1,11 +1,18 @@
 import React from 'react';
 import 'react-app-polyfill/ie11';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import './globalImports';
 import App from './pages/App';
 import * as serviceWorker from './serviceWorker';
+import store from './store';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root') as HTMLElement
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
