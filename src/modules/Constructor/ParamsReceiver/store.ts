@@ -14,7 +14,7 @@ export interface IActions {
 
 const store = new BaseStore<IStore, IActions, ISelectors>(MODULE_NAME, SUB_MODULE_NAME);
 
-store.addStoreField('text', 'test').addScaffold('changeText', (state, action) => ({
+store.addStoreField('text', '').addAction('changeText', (state, action) => ({
   ...state,
   text: action.payload[0],
 }));

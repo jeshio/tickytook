@@ -5,19 +5,40 @@ import hashtagsToText from '../utils/hashtagsToText';
 
 interface IHashtagsTextProps {
   words: string[];
+  convertToLower: boolean;
+  deleteDuplicates: boolean;
+  deleteNumberWords: boolean;
+  sortByAlphabet: boolean;
+  minimumHashtagLength: number;
 }
 
 const HashtagsText: React.FunctionComponent<IHashtagsTextProps> = props => {
-  const hashTags = getHashtagsFromWords(props.words);
-  const value = hashtagsToText(hashTags);
+  const {
+    convertToLower,
+    deleteDuplicates,
+    deleteNumberWords,
+    sortByAlphabet,
+    minimumHashtagLength,
+  } = props;
+  const hashTags = getHashtagsFromWords(
+    props.words,
+    deleteDuplicates,
+    deleteNumberWords,
+    sortByAlphabet,
+    minimumHashtagLength
+  );
+  const value = hashtagsToText(hashTags, convertToLower);
 
   return (
-    <UTextarea
-      placeholder="Здесь будут обработанные хэштеги"
-      rows={6}
-      readOnly={true}
-      value={value}
-    />
+    <React.Fragment>
+      <UTextarea
+        placeholder="Здесь будут обработанные хэштеги"
+        rows={6}
+        readOnly={true}
+        value={value}
+      />
+      <span>Количество хэштегов: {hashTags.length}</span>
+    </React.Fragment>
   );
 };
 

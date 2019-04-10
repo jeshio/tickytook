@@ -20,7 +20,7 @@ export default class BaseStore<
   constructor(moduleName: string, subModuleName: string) {
     this.moduleName = moduleName;
     this.subModuleName = subModuleName;
-    this.addScaffold = this.addScaffold.bind(this);
+    this.addAction = this.addAction.bind(this);
     this.addStoreField = this.addStoreField.bind(this);
   }
 
@@ -45,22 +45,20 @@ export default class BaseStore<
     );
   };
 
-  public addScaffold = (
-    actionName: keyof ActionsT,
-    reducer: TReducer<StoreT, Parameters<ActionsT[typeof actionName]>>
+  public addAction = <K extends keyof ActionsT>(
+    actionName: K,
+    reducer: TReducer<StoreT, Parameters<ActionsT[K]>>
   ) => {
     const modelActionType = `${this.moduleName}/${this.subModuleName}/${actionName}`;
     this.actionTypes.push(modelActionType);
     this.reducersList.push(
-      makeReducersByKeys<StoreT, Parameters<ActionsT[typeof actionName]>>({
+      makeReducersByKeys<StoreT, Parameters<ActionsT[K]>>({
         [modelActionType]: reducer,
       })
     );
     this.pActions = {
       ...this.pActions,
-      [actionName]: (
-        ...args: Parameters<ActionsT[typeof actionName]>
-      ): CIAction<Parameters<ActionsT[typeof actionName]>> => ({
+      [actionName]: (...args: Parameters<ActionsT[K]>): CIAction<Parameters<ActionsT[K]>> => ({
         payload: args,
         type: modelActionType,
       }),
@@ -69,7 +67,7 @@ export default class BaseStore<
     return this;
   };
 
-  public addStoreField = (name: keyof StoreT, initialValue: StoreT[typeof name]) => {
+  public addStoreField = <K extends keyof StoreT>(name: K, initialValue: StoreT[K]) => {
     this.initialStore = { ...this.initialStore, [name]: initialValue };
     this.pSelectors = {
       ...this.pSelectors,
