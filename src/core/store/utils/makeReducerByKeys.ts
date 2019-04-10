@@ -1,4 +1,4 @@
-import IAction from '../interfaces/IAction';
+import CIAction from '../interfaces/CIAction';
 import { TReducer } from '../types/TReducer';
 
 export default function makeReducersByKeys<StoreT = {}, PayloadT = {}>(reducerByKeys: {
@@ -6,7 +6,7 @@ export default function makeReducersByKeys<StoreT = {}, PayloadT = {}>(reducerBy
 }): TReducer<StoreT, PayloadT> {
   const keys = Object.keys(reducerByKeys);
 
-  return (store: StoreT, action: IAction<PayloadT>) => {
+  return (store: StoreT, action: CIAction<PayloadT>) => {
     const type = action.type;
     if (keys.indexOf(type) > -1) {
       return reducerByKeys[type](store, action);

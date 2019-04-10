@@ -1,3 +1,3 @@
-import IStore from '../interfaces/IStore';
+import CIStore from '../interfaces/CIStore';
 
-export type TSelectors<T> = (store: IStore) => T;
+export type TSelectors<T> = (store: CIStore) => T;

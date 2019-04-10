@@ -3,20 +3,20 @@ import { MODULE_NAME } from '../constants';
 import { SUB_MODULE_NAME } from './constants';
 
 export interface IStore {
-  text: string;
+  words: string[];
 }
 
 export interface ISelectors extends IStore {}
 
 export interface IActions {
-  changeText: (text: string) => void;
+  changeWords: (words: string[]) => void;
 }
 
 const store = new BaseStore<IStore, IActions, ISelectors>(MODULE_NAME, SUB_MODULE_NAME);
 
-store.addStoreField('text', 'test').addScaffold('changeText', (state, action) => ({
+store.addStoreField('words', []).addScaffold('changeWords', (state, action) => ({
   ...state,
-  text: action.payload[0],
+  words: action.payload[0],
 }));
 
 const { selectors, actions, reducers } = store;

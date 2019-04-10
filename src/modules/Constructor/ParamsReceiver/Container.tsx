@@ -1,16 +1,18 @@
 import { Component, createElement } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
+import StringIndexes from 'src/core/interfaces/StringIndexes';
 import { Store } from '.';
 import Presentation, { IPresentationProps } from './Presentation';
 
 class Container extends Component<Store.ISelectors & Store.IActions> {
   public render() {
-    return createElement<IPresentationProps>(Presentation, { ...this.props });
+    return createElement<IPresentationProps>(Presentation, this.props);
   }
 }
 
 export default connect<Store.ISelectors, Store.IActions, void, Store.IStore>(
   state => Store.selectors(state) as Store.ISelectors,
-  (dispatch: Dispatch) => bindActionCreators(Store.actions as any, dispatch) as Store.IActions
+  (dispatch: Dispatch) =>
+    bindActionCreators(Store.actions as StringIndexes, dispatch) as Store.IActions
 )(Container);

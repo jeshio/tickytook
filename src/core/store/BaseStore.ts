@@ -1,16 +1,20 @@
 import StringIndexes from '../interfaces/StringIndexes';
-import IAction from './interfaces/IAction';
-import IStore from './interfaces/IStore';
+import CIAction from './interfaces/CIAction';
+import CIStore from './interfaces/CIStore';
 import { TReducer } from './types/TReducer';
 import makeReducersByKeys from './utils/makeReducerByKeys';
 
-export default class BaseStore<StoreT extends IStore, ActionsT, SelectorsT> {
+export default class BaseStore<
+  StoreT extends CIStore,
+  ActionsT extends StringIndexes,
+  SelectorsT extends StringIndexes
+> {
   private moduleName: string;
   private subModuleName: string;
   private reducersList: Array<TReducer<StoreT, any>> = [];
   private actionTypes: string[] = [];
-  private pActions: ActionsT & StringIndexes = {} as ActionsT;
-  private pSelectors: SelectorsT & StringIndexes = {} as SelectorsT;
+  private pActions: ActionsT = {} as ActionsT;
+  private pSelectors: SelectorsT = {} as SelectorsT;
   private initialStore: StoreT = {} as StoreT;
 
   constructor(moduleName: string, subModuleName: string) {
@@ -34,21 +38,33 @@ export default class BaseStore<StoreT extends IStore, ActionsT, SelectorsT> {
     ) as SelectorsT;
   };
 
-  public reducers = (store = this.initialStore, action: IAction) => {
+  public reducers = (store = this.initialStore, action: CIAction) => {
     return this.reducersList.reduce(
       (currentStore: StoreT, reducer: TReducer<StoreT>) => reducer(currentStore, action),
       store
     );
   };
 
-  public addScaffold = <PayloadT>(actionName: string, reducer: TReducer<StoreT, PayloadT>) => {
+  public addScaffold = (
+    actionName: keyof ActionsT,
+    reducer: TReducer<StoreT, Parameters<ActionsT[typeof actionName]>>
+  ) => {
     const modelActionType = `${this.moduleName}/${this.subModuleName}/${actionName}`;
     this.actionTypes.push(modelActionType);
-    this.reducersList.push(makeReducersByKeys<StoreT, PayloadT>({ [modelActionType]: reducer }));
-    this.actions[actionName] = (args: PayloadT | object = {}): IAction => ({
-      payload: args,
-      type: modelActionType,
-    });
+    this.reducersList.push(
+      makeReducersByKeys<StoreT, Parameters<ActionsT[typeof actionName]>>({
+        [modelActionType]: reducer,
+      })
+    );
+    this.pActions = {
+      ...this.pActions,
+      [actionName]: (
+        ...args: Parameters<ActionsT[typeof actionName]>
+      ): CIAction<Parameters<ActionsT[typeof actionName]>> => ({
+        payload: args,
+        type: modelActionType,
+      }),
+    };
 
     return this;
   };
