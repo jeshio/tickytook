@@ -1,45 +1,56 @@
 import * as React from 'react';
-import UTextarea from 'src/ui-components/UTextarea';
-import getHashtagsFromWords from '../utils/getHashtagsFromWords';
-import hashtagsToText from '../utils/hashtagsToText';
+import UButton from 'src/ui-components/UButton';
+import UHashTag from 'src/ui-components/UHashTag';
 
 interface IHashtagsTextProps {
-  words: string[];
-  convertToLower: boolean;
-  deleteDuplicates: boolean;
-  deleteNumberWords: boolean;
-  sortByAlphabet: boolean;
-  minimumHashtagLength: number;
+  hashTags: string[];
+  onCopyHashTags: () => void;
 }
 
-const HashtagsText: React.FunctionComponent<IHashtagsTextProps> = props => {
-  const {
-    convertToLower,
-    deleteDuplicates,
-    deleteNumberWords,
-    sortByAlphabet,
-    minimumHashtagLength,
-  } = props;
-  const hashTags = getHashtagsFromWords(
-    props.words,
-    deleteDuplicates,
-    deleteNumberWords,
-    sortByAlphabet,
-    minimumHashtagLength
-  );
-  const value = hashtagsToText(hashTags, convertToLower);
+interface IHashtagsTextState {
+  showSuccessCopyMessage: boolean;
+}
 
-  return (
-    <React.Fragment>
-      <UTextarea
-        placeholder="Здесь будут обработанные хэштеги"
-        rows={6}
-        readOnly={true}
-        value={value}
-      />
-      <span>Количество хэштегов: {hashTags.length}</span>
-    </React.Fragment>
-  );
-};
+class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsTextState> {
+  public state = {
+    showSuccessCopyMessage: false,
+  };
+  private copyMsgTimeout: any = null;
+
+  public render() {
+    const { hashTags } = this.props;
+    const { showSuccessCopyMessage } = this.state;
+
+    return (
+      <React.Fragment>
+        <div>
+          {hashTags.map((h, i) => (
+            <UHashTag key={i}>{h}</UHashTag>
+          ))}
+        </div>
+        <UButton onClick={this.handleCopyClick}>
+          {showSuccessCopyMessage ? 'скопировано!' : 'копировать'}
+        </UButton>
+        <div>Количество хэштегов: {hashTags.length}</div>
+      </React.Fragment>
+    );
+  }
+
+  private handleCopyClick = () => {
+    this.props.onCopyHashTags();
+    clearTimeout(this.copyMsgTimeout);
+    this.setState(
+      {
+        showSuccessCopyMessage: true,
+      },
+      () => {
+        this.copyMsgTimeout = setTimeout(
+          () => this.setState({ showSuccessCopyMessage: false }),
+          1200
+        );
+      }
+    );
+  };
+}
 
 export default HashtagsText;

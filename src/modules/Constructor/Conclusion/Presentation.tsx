@@ -8,7 +8,9 @@ import Params from './components/Params';
 export interface IPresentationProps
   extends ParamsReceiverStore.ISelectors,
     Store.ISelectors,
-    Store.IActions {}
+    Store.IActions {
+  onCopyHashTags: () => void;
+}
 
 export default class Presentation extends Component<IPresentationProps, any> {
   public render() {

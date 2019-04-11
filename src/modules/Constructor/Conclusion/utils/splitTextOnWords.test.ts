@@ -10,6 +10,7 @@ describe('splitTextOnWords', () => {
   describe.each([
     ['Это simple предложение из слов', ['Это', 'simple', 'предложение', 'из', 'слов']],
     ['Предложение, что немного сложнее.', ['Предложение', 'что', 'немного', 'сложнее']],
+    ['Ёлки перелётные или взлётные', ['Ёлки', 'перелётные', 'или', 'взлётные']],
   ])('sentences', (sentence, expected) => {
     it('should be split on words', () => {
       expect(splitTextOnWords(sentence as string)).toEqual(expected);

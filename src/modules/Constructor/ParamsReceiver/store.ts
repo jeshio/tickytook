@@ -14,10 +14,12 @@ export interface IActions {
 
 const store = new BaseStore<IStore, IActions, ISelectors>(MODULE_NAME, SUB_MODULE_NAME);
 
-store.addStoreField('text', '').addAction('changeText', (state, action) => ({
-  ...state,
-  text: action.payload[0],
-}));
+store
+  .addStoreField('text', 'Привет, тут у нас небольшое предложение с 8 членами.')
+  .addAction('changeText', (state, action) => ({
+    ...state,
+    text: action.payload[0],
+  }));
 
 const { selectors, actions, reducers } = store;
 

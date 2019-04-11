@@ -3,6 +3,7 @@ import { Component, createElement } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import StringIndexes from 'src/core/interfaces/StringIndexes';
+import copyTextToClipboard from 'src/core/utils/copyTextToClipboard';
 import { Store } from '.';
 import { Store as ParamsReceiverStore } from '../ParamsReceiver';
 import Presentation, { IPresentationProps } from './Presentation';
@@ -20,7 +21,10 @@ class Container extends Component<PropsType> {
   }
 
   public render() {
-    return createElement<IPresentationProps>(Presentation, this.props);
+    return createElement<IPresentationProps>(Presentation, {
+      ...this.props,
+      onCopyHashTags: this.handleCopyHashTags,
+    });
   }
 
   private updateWords = (prevProps: PropsType = {} as PropsType) => {
@@ -31,6 +35,12 @@ class Container extends Component<PropsType> {
         this.props.changeWords(words);
       }
     }
+  };
+
+  private handleCopyHashTags = () => {
+    const { hashTags } = this.props;
+    const textToCopy = hashTags.join(' ');
+    copyTextToClipboard(textToCopy);
   };
 }
 
