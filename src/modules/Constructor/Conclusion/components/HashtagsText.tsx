@@ -1,10 +1,14 @@
 import * as React from 'react';
+import UBlock from 'src/ui-components/UBlock';
 import UButton from 'src/ui-components/UButton';
-import UHashTag from 'src/ui-components/UHashTag';
+import UHashtag from 'src/ui-components/UHashtag';
 
 interface IHashtagsTextProps {
-  hashTags: string[];
-  onCopyHashTags: () => void;
+  hashtags: string[];
+  activeHashtags: string[];
+  inactiveHashtags: Set<string>;
+  onCopyHashtags: () => void;
+  switchHashtagActiveStatus: (hashtag: string) => void;
 }
 
 interface IHashtagsTextState {
@@ -18,26 +22,36 @@ class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsText
   private copyMsgTimeout: any = null;
 
   public render() {
-    const { hashTags } = this.props;
+    const { hashtags, inactiveHashtags, activeHashtags } = this.props;
     const { showSuccessCopyMessage } = this.state;
 
     return (
       <React.Fragment>
-        <div>
-          {hashTags.map((h, i) => (
-            <UHashTag key={i}>{h}</UHashTag>
+        <UBlock>Кликай на хэштеги, чтобы убрать/добавить их в результат:</UBlock>
+        <UBlock>
+          {hashtags.map((h, i) => (
+            <UHashtag
+              key={i}
+              isDeleted={inactiveHashtags.has(h)}
+              onClick={this.handleHashtagClick(h)}
+            >
+              {h}
+            </UHashtag>
           ))}
-        </div>
+        </UBlock>
         <UButton onClick={this.handleCopyClick}>
           {showSuccessCopyMessage ? 'скопировано!' : 'копировать'}
         </UButton>
-        <div>Количество хэштегов: {hashTags.length}</div>
+        <UBlock>Количество активных хэштегов: {activeHashtags.length}</UBlock>
       </React.Fragment>
     );
   }
 
+  private handleHashtagClick = (hashtag: string) => () =>
+    this.props.switchHashtagActiveStatus(hashtag);
+
   private handleCopyClick = () => {
-    this.props.onCopyHashTags();
+    this.props.onCopyHashtags();
     clearTimeout(this.copyMsgTimeout);
     this.setState(
       {

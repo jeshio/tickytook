@@ -1,3 +1,3 @@
-import StringIndexes from 'src/core/interfaces/StringIndexes';
+import IStringIndexes from 'src/core/interfaces/IStringIndexes';
 
-export default interface CIStore extends StringIndexes {}
+export default interface CIStore extends IStringIndexes {}

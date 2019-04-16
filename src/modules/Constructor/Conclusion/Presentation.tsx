@@ -9,7 +9,7 @@ export interface IPresentationProps
   extends ParamsReceiverStore.ISelectors,
     Store.ISelectors,
     Store.IActions {
-  onCopyHashTags: () => void;
+  onCopyHashtags: () => void;
 }
 
 export default class Presentation extends Component<IPresentationProps, any> {

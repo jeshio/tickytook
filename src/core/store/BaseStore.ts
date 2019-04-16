@@ -1,4 +1,4 @@
-import StringIndexes from '../interfaces/StringIndexes';
+import IStringIndexes from '../interfaces/IStringIndexes';
 import CIAction from './interfaces/CIAction';
 import CIStore from './interfaces/CIStore';
 import { TReducer } from './types/TReducer';
@@ -6,8 +6,8 @@ import makeReducersByKeys from './utils/makeReducerByKeys';
 
 export default class BaseStore<
   StoreT extends CIStore,
-  ActionsT extends StringIndexes,
-  SelectorsT extends StringIndexes
+  ActionsT extends IStringIndexes,
+  SelectorsT extends IStringIndexes
 > {
   private moduleName: string;
   private subModuleName: string;
@@ -69,10 +69,19 @@ export default class BaseStore<
 
   public addStoreField = <K extends keyof StoreT>(name: K, initialValue: StoreT[K]) => {
     this.initialStore = { ...this.initialStore, [name]: initialValue };
+    this.addSelector(name as keyof SelectorsT, (store: StoreT) => store[name]);
+    return this;
+  };
+
+  public addSelector = <K extends keyof SelectorsT>(
+    name: K,
+    handler: (store: StoreT) => SelectorsT[K]
+  ) => {
     this.pSelectors = {
       ...this.pSelectors,
-      [name]: (store: StoreT) => store[name],
+      [name]: handler,
     };
+
     return this;
   };
 }

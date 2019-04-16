@@ -5,7 +5,8 @@ import getHashtagsFromWords from './utils/getHashtagsFromWords';
 
 export interface IStore {
   words: string[];
-  hashTags: string[];
+  hashtags: string[];
+  inactiveHashtags: Set<string>;
   convertToLower: boolean;
   deleteDuplicates: boolean;
   deleteNumberWords: boolean;
@@ -13,10 +14,13 @@ export interface IStore {
   minimumHashtagLength: number;
 }
 
-export interface ISelectors extends IStore {}
+export interface ISelectors extends IStore {
+  activeHashtags: string[];
+}
 
 export interface IActions {
   changeWords: (words: string[]) => void;
+  switchHashtagActiveStatus: (hashtag: string) => void;
   switchConvertToLower: () => void;
   switchDeleteDuplicates: () => void;
   switchDeleteNumberWords: () => void;
@@ -26,41 +30,43 @@ export interface IActions {
 
 const store = new BaseStore<IStore, IActions, ISelectors>(MODULE_NAME, SUB_MODULE_NAME);
 
-const updateWithHashTags = (state: IStore): IStore => ({
+const updateWithHashtags = (state: IStore): IStore => ({
   ...state,
-  hashTags: getHashtagsFromWords(state, false),
+  hashtags: getHashtagsFromWords(state, false),
 });
 
+store.addSelector('activeHashtags', s => s.hashtags.filter(h => !s.inactiveHashtags.has(h)));
+
 store.addStoreField('words', []).addAction('changeWords', (state, action) =>
-  updateWithHashTags({
+  updateWithHashtags({
     ...state,
     words: action.payload[0],
   })
 );
 
 store.addStoreField('convertToLower', true).addAction('switchConvertToLower', state =>
-  updateWithHashTags({
+  updateWithHashtags({
     ...state,
     convertToLower: !state.convertToLower,
   })
 );
 
 store.addStoreField('deleteDuplicates', true).addAction('switchDeleteDuplicates', state =>
-  updateWithHashTags({
+  updateWithHashtags({
     ...state,
     deleteDuplicates: !state.deleteDuplicates,
   })
 );
 
 store.addStoreField('deleteNumberWords', true).addAction('switchDeleteNumberWords', state =>
-  updateWithHashTags({
+  updateWithHashtags({
     ...state,
     deleteNumberWords: !state.deleteNumberWords,
   })
 );
 
 store.addStoreField('sortByAlphabet', true).addAction('switchSortByAlphabet', state =>
-  updateWithHashTags({
+  updateWithHashtags({
     ...state,
     sortByAlphabet: !state.sortByAlphabet,
   })
@@ -69,13 +75,29 @@ store.addStoreField('sortByAlphabet', true).addAction('switchSortByAlphabet', st
 store
   .addStoreField('minimumHashtagLength', 3)
   .addAction('setMinimumHashtagLength', (state, action) =>
-    updateWithHashTags({
+    updateWithHashtags({
       ...state,
       minimumHashtagLength: action.payload[0],
     })
   );
 
-store.addStoreField('hashTags', []);
+store.addStoreField('hashtags', []);
+
+store
+  .addStoreField('inactiveHashtags', new Set())
+  .addAction('switchHashtagActiveStatus', (state, action) => {
+    const hashtag = action.payload[0];
+    const inactiveHashtags = new Set(state.inactiveHashtags);
+    if (state.inactiveHashtags.has(hashtag)) {
+      inactiveHashtags.delete(hashtag);
+    } else {
+      inactiveHashtags.add(hashtag);
+    }
+    return {
+      ...state,
+      inactiveHashtags,
+    };
+  });
 
 const { selectors, actions, reducers } = store;
 

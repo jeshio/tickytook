@@ -1,7 +1,7 @@
 import { Component, createElement } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import StringIndexes from 'src/core/interfaces/StringIndexes';
+import IStringIndexes from 'src/core/interfaces/IStringIndexes';
 import { Store } from '.';
 import Presentation, { IPresentationProps } from './Presentation';
 
@@ -14,5 +14,5 @@ class Container extends Component<Store.ISelectors & Store.IActions> {
 export default connect<Store.ISelectors, Store.IActions, void, Store.IStore>(
   state => Store.selectors(state) as Store.ISelectors,
   (dispatch: Dispatch) =>
-    bindActionCreators(Store.actions as StringIndexes, dispatch) as Store.IActions
+    bindActionCreators(Store.actions as IStringIndexes, dispatch) as Store.IActions
 )(Container);
