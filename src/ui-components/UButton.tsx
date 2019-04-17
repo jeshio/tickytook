@@ -8,13 +8,14 @@ interface IUButtonProps extends ButtonProps, SpaceProps {
   noBg?: boolean;
 }
 
-const noBgProps = {
+const noBgProps = (props: IUButtonProps) => ({
   appearance: 'ghost' as PropTypes.Appearance,
   style: {
+    ...(props.style || {}),
     border: 'unset',
     color: 'inherit',
   },
-};
+});
 
 const StyledButton = styled.button`
   ${space};
@@ -22,7 +23,7 @@ const StyledButton = styled.button`
 `;
 
 const UButton: React.FunctionComponent<IUButtonProps> = ({ noBg, ...props }) => {
-  return <Button {...props} componentClass={StyledButton} {...(noBg ? noBgProps : {})} />;
+  return <Button {...props} componentClass={StyledButton} {...(noBg ? noBgProps(props) : {})} />;
 };
 
 UButton.defaultProps = {

@@ -8,7 +8,6 @@ export interface IStore {
   hashtags: string[];
   inactiveHashtags: Set<string>;
   convertToLower: boolean;
-  deleteDuplicates: boolean;
   deleteNumberWords: boolean;
   sortByAlphabet: boolean;
   minimumHashtagLength: number;
@@ -22,7 +21,6 @@ export interface IActions {
   changeWords: (words: string[]) => void;
   switchHashtagActiveStatus: (hashtag: string) => void;
   switchConvertToLower: () => void;
-  switchDeleteDuplicates: () => void;
   switchDeleteNumberWords: () => void;
   switchSortByAlphabet: () => void;
   setMinimumHashtagLength: (length: number) => void;
@@ -48,13 +46,6 @@ store.addStoreField('convertToLower', true).addAction('switchConvertToLower', st
   updateWithHashtags({
     ...state,
     convertToLower: !state.convertToLower,
-  })
-);
-
-store.addStoreField('deleteDuplicates', true).addAction('switchDeleteDuplicates', state =>
-  updateWithHashtags({
-    ...state,
-    deleteDuplicates: !state.deleteDuplicates,
   })
 );
 

@@ -4,14 +4,12 @@ import { WATERMARK_HASHTAG } from '../constants';
 export default function getHashtagsFromWords(
   {
     words = [],
-    deleteDuplicates = false,
     deleteNumberWords = false,
     sortByAlphabet = false,
     convertToLower = false,
     minimumHashtagLength = 0,
   }: {
     words: string[];
-    deleteDuplicates: boolean;
     deleteNumberWords: boolean;
     sortByAlphabet: boolean;
     convertToLower: boolean;
@@ -41,9 +39,7 @@ export default function getHashtagsFromWords(
     result = result.map(w => w.toLowerCase());
   }
 
-  if (deleteDuplicates) {
-    result = uniq(result);
-  }
+  result = uniq(result);
 
   return result.map(w => `#${w}`);
 }

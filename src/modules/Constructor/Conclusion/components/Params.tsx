@@ -1,15 +1,14 @@
 import * as React from 'react';
+import UBlock from 'src/ui-components/UBlock';
 import UCheckbox from 'src/ui-components/UCheckbox';
-import UInput from 'src/ui-components/UInput';
+import UForm from 'src/ui-components/UForm';
 
 interface IParamsProps {
   convertToLower: boolean;
-  deleteDuplicates: boolean;
   deleteNumberWords: boolean;
   sortByAlphabet: boolean;
   minimumHashtagLength: number;
   switchConvertToLower: () => void;
-  switchDeleteDuplicates: () => void;
   switchDeleteNumberWords: () => void;
   switchSortByAlphabet: () => void;
   setMinimumHashtagLength: (length: number) => void;
@@ -18,38 +17,54 @@ interface IParamsProps {
 const Params: React.FunctionComponent<IParamsProps> = props => {
   const {
     convertToLower,
-    deleteDuplicates,
     deleteNumberWords,
     minimumHashtagLength,
     sortByAlphabet,
     switchConvertToLower,
-    switchDeleteDuplicates,
     switchDeleteNumberWords,
     switchSortByAlphabet,
     setMinimumHashtagLength,
   } = props;
   const onChangeMinimumHashtagLength = (v: string) => setMinimumHashtagLength(Number(v) || 0);
   return (
-    <div>
-      <UCheckbox checked={convertToLower} onChange={switchConvertToLower}>
-        перевести в нижний регистр
-      </UCheckbox>
-      <UCheckbox checked={sortByAlphabet} onChange={switchSortByAlphabet}>
-        сортировать по алфавиту
-      </UCheckbox>
-      <UCheckbox checked={deleteDuplicates} onChange={switchDeleteDuplicates}>
-        убрать дубликаты
-      </UCheckbox>
-      <UCheckbox checked={deleteNumberWords} onChange={switchDeleteNumberWords}>
-        убрать хэштеги целиком из цифр
-      </UCheckbox>
-      <UInput
-        type="number"
-        placeholder="убрать хэштеги длиной менее"
-        value={minimumHashtagLength.toString()}
-        onChange={onChangeMinimumHashtagLength}
-      />
-    </div>
+    <UBlock>
+      <UForm
+        formValue={{
+          minimumHashtagLength: minimumHashtagLength.toString(),
+        }}
+      >
+        <UForm.Checkbox
+          name="convertToLower"
+          checked={convertToLower}
+          onChange={switchConvertToLower}
+        >
+          перевести в нижний регистр
+        </UForm.Checkbox>
+        <UForm.Checkbox
+          name="sortByAlphabet"
+          checked={sortByAlphabet}
+          onChange={switchSortByAlphabet}
+        >
+          сортировать по алфавиту
+        </UForm.Checkbox>
+        <UForm.Checkbox
+          name="deleteNumberWords"
+          checked={deleteNumberWords}
+          onChange={switchDeleteNumberWords}
+        >
+          убрать хэштеги целиком из цифр
+        </UForm.Checkbox>
+        <UForm.Group>
+          <UForm.Label>Минимальная длина хэштега</UForm.Label>
+          <UForm.Input
+            name="minimumHashtagLength"
+            type="number"
+            placeholder="убрать хэштеги длиной менее"
+            onChange={onChangeMinimumHashtagLength}
+          />
+        </UForm.Group>
+      </UForm>
+    </UBlock>
   );
 };
 

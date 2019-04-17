@@ -24,8 +24,8 @@ const Root = styled.span<SpaceProps>`
 const UHashtag: React.FunctionComponent<IUHashtagProps> = props => {
   const { children, onClick, ...restProps } = props;
   return (
-    <Root {...restProps} px={3} py="2px" mb="1px" mr="1px">
-      <UButton size="xs" m={0} p={0} noBg={true} onClick={onClick}>
+    <Root {...restProps}>
+      <UButton size="xs" px={3} py="2px" mb="1px" mr="1px" noBg={true} onClick={onClick}>
         {children}
       </UButton>
     </Root>

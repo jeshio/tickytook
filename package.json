@@ -44,7 +44,8 @@
     "rsuite": "^3.8.2",
     "styled-components": "^4.2.0",
     "styled-system": "^4.1.0",
-    "typescript": "3.4.1"
+    "typescript": "3.4.1",
+    "utility-types": "^3.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",

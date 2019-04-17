@@ -1,7 +1,7 @@
 import * as React from 'react';
 import UInput, { IUInputProps } from './UInput';
 
-interface IUTextareaProps extends IUInputProps {}
+export interface IUTextareaProps extends IUInputProps {}
 
 const componentClass = (props: React.HTMLProps<HTMLTextAreaElement>) => <textarea {...props} />;
 
