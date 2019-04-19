@@ -1,4 +1,5 @@
 import BaseStore from 'src/core/store/BaseStore';
+import ICAction from 'src/core/store/interfaces/ICAction';
 import { MODULE_NAME } from '../constants';
 import { SUB_MODULE_NAME } from './constants';
 
@@ -9,7 +10,7 @@ export interface IStore {
 export interface ISelectors extends IStore {}
 
 export interface IActions {
-  changeText: (text: string) => void;
+  changeText: (text: string) => ICAction;
 }
 
 const store = new BaseStore<IStore, IActions, ISelectors>(MODULE_NAME, SUB_MODULE_NAME);

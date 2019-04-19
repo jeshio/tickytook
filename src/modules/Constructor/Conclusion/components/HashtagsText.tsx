@@ -27,7 +27,7 @@ class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsText
 
     return (
       <React.Fragment>
-        <UBlock>Кликай на хэштеги, чтобы убрать/добавить их в результат:</UBlock>
+        <UBlock>Кликай на хэштеги, чтобы убрать/добавить:</UBlock>
         <UBlock>
           {hashtags.map((h, i) => (
             <UHashtag

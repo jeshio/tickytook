@@ -1,4 +1,4 @@
-import CIAction from '../interfaces/CIAction';
+import CIAction from '../interfaces/ICAction';
 import { TReducer } from '../types/TReducer';
 
 export default function makeReducersByKeys<StoreT = {}, PayloadT = {}>(reducerByKeys: {

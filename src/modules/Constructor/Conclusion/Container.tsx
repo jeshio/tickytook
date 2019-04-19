@@ -12,30 +12,12 @@ import splitTextOnWords from './utils/splitTextOnWords';
 type PropsType = ParamsReceiverStore.ISelectors & Store.ISelectors & Store.IActions;
 
 class Container extends Component<PropsType> {
-  public componentDidMount() {
-    this.updateWords();
-  }
-
-  public componentDidUpdate(prevProps: PropsType) {
-    this.updateWords(prevProps);
-  }
-
   public render() {
     return createElement<IPresentationProps>(Presentation, {
       ...this.props,
       onCopyHashtags: this.handleCopyHashtags,
     });
   }
-
-  private updateWords = (prevProps: PropsType = {} as PropsType) => {
-    if (prevProps.text !== this.props.text) {
-      const words = splitTextOnWords(this.props.text);
-
-      if (!isEqual(words, prevProps.words)) {
-        this.props.changeWords(words);
-      }
-    }
-  };
 
   private handleCopyHashtags = () => {
     const { activeHashtags } = this.props;

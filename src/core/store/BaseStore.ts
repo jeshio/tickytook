@@ -1,21 +1,23 @@
 import IStringIndexes from '../interfaces/IStringIndexes';
-import CIAction from './interfaces/CIAction';
-import CIStore from './interfaces/CIStore';
+import { AddTypeToKeys } from '../util-types/AddTypeToKeys';
+import ICAction from './interfaces/ICAction';
+import ICStore from './interfaces/ICStore';
 import { TReducer } from './types/TReducer';
 import makeReducersByKeys from './utils/makeReducerByKeys';
 
 export default class BaseStore<
-  StoreT extends CIStore,
-  ActionsT extends IStringIndexes,
-  SelectorsT extends IStringIndexes
+  StoreT extends ICStore,
+  A extends IStringIndexes,
+  SelectorsT extends IStringIndexes,
+  ActionsT = AddTypeToKeys<A, { type: string }>
 > {
-  private moduleName: string;
-  private subModuleName: string;
-  private reducersList: Array<TReducer<StoreT, any>> = [];
-  private actionTypes: string[] = [];
-  private pActions: ActionsT = {} as ActionsT;
-  private pSelectors: SelectorsT = {} as SelectorsT;
-  private initialStore: StoreT = {} as StoreT;
+  protected moduleName: string;
+  protected subModuleName: string;
+  protected reducersList: Array<TReducer<StoreT, any>> = [];
+  protected actionTypes: string[] = [];
+  protected pActions: ActionsT = {} as ActionsT;
+  protected pSelectors: SelectorsT = {} as SelectorsT;
+  protected initialStore: StoreT = {} as StoreT;
 
   constructor(moduleName: string, subModuleName: string) {
     this.moduleName = moduleName;
@@ -38,30 +40,32 @@ export default class BaseStore<
     ) as SelectorsT;
   };
 
-  public reducers = (store = this.initialStore, action: CIAction) => {
+  public reducers = (store = this.initialStore, action: ICAction) => {
     return this.reducersList.reduce(
       (currentStore: StoreT, reducer: TReducer<StoreT>) => reducer(currentStore, action),
       store
     );
   };
 
-  public addAction = <K extends keyof ActionsT>(
+  public addAction = <K extends keyof A>(
     actionName: K,
-    reducer: TReducer<StoreT, Parameters<ActionsT[K]>>
+    reducer: TReducer<StoreT, Parameters<A[K]>>
   ) => {
-    const modelActionType = `${this.moduleName}/${this.subModuleName}/${actionName}`;
+    const modelActionType = this.makeActionType(actionName);
+    const action = (...args: Parameters<A[K]>): ICAction<Parameters<A[K]>> => ({
+      payload: args,
+      type: modelActionType,
+    });
+    action.type = modelActionType;
     this.actionTypes.push(modelActionType);
     this.reducersList.push(
-      makeReducersByKeys<StoreT, Parameters<ActionsT[K]>>({
+      makeReducersByKeys<StoreT, Parameters<A[K]>>({
         [modelActionType]: reducer,
       })
     );
     this.pActions = {
       ...this.pActions,
-      [actionName]: (...args: Parameters<ActionsT[K]>): CIAction<Parameters<ActionsT[K]>> => ({
-        payload: args,
-        type: modelActionType,
-      }),
+      [actionName]: action,
     };
 
     return this;
@@ -84,4 +88,8 @@ export default class BaseStore<
 
     return this;
   };
+
+  protected makeActionType(actionName: keyof A) {
+    return `${this.moduleName}/${this.subModuleName}/${actionName}`;
+  }
 }

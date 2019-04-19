@@ -1,7 +1,7 @@
-import CIAction from '../interfaces/CIAction';
-import CIStore from '../interfaces/CIStore';
+import CIAction from '../interfaces/ICAction';
+import ICStore from '../interfaces/ICStore';
 
-export type TReducer<StoreT = CIStore, PayloadT = {}> = (
+export type TReducer<StoreT = ICStore, PayloadT = {}> = (
   store: StoreT,
   action: CIAction<PayloadT>
 ) => StoreT;
