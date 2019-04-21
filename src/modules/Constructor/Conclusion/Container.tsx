@@ -1,13 +1,11 @@
-import isEqual from 'lodash/isEqual';
 import { Component, createElement } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import IStringIndexes from 'src/core/interfaces/IStringIndexes';
+import ICStringIndexes from 'src/core/interfaces/ICStringIndexes';
 import copyTextToClipboard from 'src/core/utils/copyTextToClipboard';
 import { Store } from '.';
 import { Store as ParamsReceiverStore } from '../ParamsReceiver';
 import Presentation, { IPresentationProps } from './Presentation';
-import splitTextOnWords from './utils/splitTextOnWords';
 
 type PropsType = ParamsReceiverStore.ISelectors & Store.ISelectors & Store.IActions;
 
@@ -34,5 +32,5 @@ export default connect<
 >(
   state => Object.assign(ParamsReceiverStore.selectors(state), Store.selectors(state)),
   (dispatch: Dispatch) =>
-    bindActionCreators(Store.actions as IStringIndexes, dispatch) as Store.IActions
+    bindActionCreators(Store.actions as ICStringIndexes, dispatch) as Store.IActions
 )(Container);

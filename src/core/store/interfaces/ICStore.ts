@@ -1,3 +1,3 @@
-import IStringIndexes from 'src/core/interfaces/IStringIndexes';
+import ICStringIndexes from 'src/core/interfaces/ICStringIndexes';
 
-export default interface ICStore extends IStringIndexes {}
+export default interface ICStore extends ICStringIndexes {}

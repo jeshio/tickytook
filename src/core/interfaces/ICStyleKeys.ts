@@ -1,5 +1,5 @@
 import { Styles } from 'polished/lib/types/style';
 
-export default interface IStyleKeys {
+export default interface ICStyleKeys {
   [key: string]: Styles;
 }

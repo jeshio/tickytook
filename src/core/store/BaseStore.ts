@@ -1,4 +1,4 @@
-import IStringIndexes from '../interfaces/IStringIndexes';
+import ICStringIndexes from '../interfaces/ICStringIndexes';
 import { AddTypeToKeys } from '../util-types/AddTypeToKeys';
 import ICAction from './interfaces/ICAction';
 import ICStore from './interfaces/ICStore';
@@ -7,27 +7,56 @@ import makeReducersByKeys from './utils/makeReducerByKeys';
 
 export default class BaseStore<
   StoreT extends ICStore,
-  A extends IStringIndexes,
-  SelectorsT extends IStringIndexes,
-  ActionsT = AddTypeToKeys<A, { type: string }>
+  ActionsT extends ICStringIndexes,
+  SelectorsT extends ICStringIndexes,
+  ApiT = {},
+  ActionsWithType = AddTypeToKeys<ActionsT, { type: string }>
 > {
   protected moduleName: string;
   protected subModuleName: string;
   protected reducersList: Array<TReducer<StoreT, any>> = [];
-  protected actionTypes: string[] = [];
-  protected pActions: ActionsT = {} as ActionsT;
+  protected pActions: ActionsWithType = {} as ActionsWithType;
   protected pSelectors: SelectorsT = {} as SelectorsT;
   protected initialStore: StoreT = {} as StoreT;
+  protected pApi: ApiT = {} as ApiT;
 
-  constructor(moduleName: string, subModuleName: string) {
+  constructor(
+    moduleName: string,
+    subModuleName: string,
+    initial: {
+      actions?: { [P in keyof ActionsT]?: TReducer<StoreT, Parameters<ActionsT[P]>> };
+      selectors?: { [P in keyof SelectorsT]?: (store: StoreT) => SelectorsT[P] };
+      fields?: Partial<StoreT>;
+    } = {}
+  ) {
     this.moduleName = moduleName;
     this.subModuleName = subModuleName;
     this.addAction = this.addAction.bind(this);
     this.addStoreField = this.addStoreField.bind(this);
+    if (initial.actions) {
+      const { actions } = initial;
+      Object.keys(actions).map(actionName =>
+        this.addAction(actionName, actions[actionName] as ActionsT[typeof actionName])
+      );
+    }
+    if (initial.selectors) {
+      const { selectors } = initial;
+      Object.keys(selectors).map(selectorName =>
+        this.addSelector(selectorName, selectors[selectorName] as SelectorsT[typeof selectorName])
+      );
+    }
+    if (initial.fields) {
+      const { fields } = initial;
+      Object.keys(fields).map(fieldName => this.addStoreField(fieldName, fields[fieldName]));
+    }
   }
 
   public get actions() {
     return this.pActions;
+  }
+
+  public get api() {
+    return this.pApi;
   }
 
   public selectors = (store: StoreT): SelectorsT => {
@@ -47,19 +76,18 @@ export default class BaseStore<
     );
   };
 
-  public addAction = <K extends keyof A>(
+  public addAction = <K extends keyof ActionsT>(
     actionName: K,
-    reducer: TReducer<StoreT, Parameters<A[K]>>
+    reducer: TReducer<StoreT, Parameters<ActionsT[K]>>
   ) => {
     const modelActionType = this.makeActionType(actionName);
-    const action = (...args: Parameters<A[K]>): ICAction<Parameters<A[K]>> => ({
+    const action = (...args: Parameters<ActionsT[K]>): ICAction<Parameters<ActionsT[K]>> => ({
       payload: args,
       type: modelActionType,
     });
     action.type = modelActionType;
-    this.actionTypes.push(modelActionType);
     this.reducersList.push(
-      makeReducersByKeys<StoreT, Parameters<A[K]>>({
+      makeReducersByKeys<StoreT, Parameters<ActionsT[K]>>({
         [modelActionType]: reducer,
       })
     );
@@ -89,7 +117,11 @@ export default class BaseStore<
     return this;
   };
 
-  protected makeActionType(actionName: keyof A) {
+  public setApi = (api: ApiT) => {
+    this.pApi = api;
+  };
+
+  protected makeActionType(actionName: keyof ActionsT) {
     return `${this.moduleName}/${this.subModuleName}/${actionName}`;
   }
 }

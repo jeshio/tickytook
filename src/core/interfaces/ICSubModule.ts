@@ -1,7 +1,7 @@
 import { Saga } from '@redux-saga/core';
 import { TReducer } from '../store/types/TReducer';
 
-export default interface ISubModule {
+export default interface ICSubModule {
   Store?: {
     reducers: TReducer<any, any>;
     rootSaga?: Saga;

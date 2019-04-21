@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@emotion/core": "^10.0.10",
+    "@types/axios": "^0.14.0",
     "@types/jest": "^24.0.11",
     "@types/lodash": "^4.14.123",
     "@types/node": "11.12.2",
@@ -34,6 +35,7 @@
     "@types/redux-saga": "^0.10.5",
     "@types/styled-components": "^4.1.14",
     "@types/styled-system": "^4.1.0",
+    "axios": "^0.18.0",
     "lodash": "^4.17.11",
     "polished": "^3.2.0",
     "react": "^16.8.6",

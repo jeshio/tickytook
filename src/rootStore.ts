@@ -1,9 +1,9 @@
 import buildRootReducer from './core/helpers/buildRootReducer';
 import buildRootSaga from './core/helpers/buildRootSaga';
-import IModule from './core/interfaces/IModule';
+import ICModule from './core/interfaces/ICModule';
 import * as Constructor from './modules/Constructor';
 
-const modules: IModule[] = [Constructor];
+const modules: ICModule[] = [Constructor];
 
 export const rootReducer = buildRootReducer(modules);
 

@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import { all, fork } from 'redux-saga/effects';
 import { DeepRequired } from 'utility-types';
-import ISubModule from '../interfaces/ISubModule';
+import ICSubModule from '../interfaces/ICSubModule';
 
-export default function buildModuleStore(subModules: ISubModule[]) {
+export default function buildModuleStore(subModules: ICSubModule[]) {
   const subModuleReducers = subModules.reduce(
     (base, m) => (m && m.Store ? { ...base, [m.SUB_MODULE_NAME]: m.Store.reducers } : base),
     {}
@@ -11,7 +11,7 @@ export default function buildModuleStore(subModules: ISubModule[]) {
   const reducers = combineReducers(subModuleReducers);
 
   const subModuleSagas = subModules.filter(m => m.Store && m.Store.rootSaga) as Array<
-    DeepRequired<ISubModule>
+    DeepRequired<ICSubModule>
   >;
 
   const rootSaga = function*() {

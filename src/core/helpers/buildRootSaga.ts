@@ -1,8 +1,8 @@
 import { all, fork } from 'redux-saga/effects';
-import IModule from '../interfaces/IModule';
+import ICModule from '../interfaces/ICModule';
 
-export default function buildRootSaga(modules: IModule[]) {
-  const moduleSagas = modules.filter(m => m.rootSaga) as Array<Required<IModule>>;
+export default function buildRootSaga(modules: ICModule[]) {
+  const moduleSagas = modules.filter(m => m.rootSaga) as Array<Required<ICModule>>;
 
   return function*() {
     yield all(moduleSagas.map(s => fork(s.rootSaga)));
