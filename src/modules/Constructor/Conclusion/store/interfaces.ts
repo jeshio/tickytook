@@ -6,16 +6,20 @@ import ICSagas from 'src/core/store/interfaces/ICSagas';
 
 export interface IStore {
   words: string[];
-  hashtags: string[];
   inactiveHashtags: Set<string>;
   convertToLower: boolean;
   deleteNumberWords: boolean;
   sortByAlphabet: boolean;
   minimumHashtagLength: number;
-  extraWords: string[];
+  extraWords: {
+    data: string[];
+    loading: boolean;
+  };
+  extraHashtags: string[];
 }
 
 export interface ISelectors extends IStore {
+  hashtags: string[];
   activeHashtags: string[];
 }
 
@@ -26,11 +30,13 @@ export interface IActions {
   switchDeleteNumberWords: () => ICAction;
   switchSortByAlphabet: () => ICAction;
   setMinimumHashtagLength: (length: number) => ICAction;
-  updateExtraWords: (extraWords: string[]) => ICAction;
+  fetchExtraWords: () => ICAction;
+  fetchExtraWordsFailure: () => ICAction;
+  fetchExtraWordsSuccess: (extraWords: string[]) => ICAction;
 }
 
 export interface ISagaWorkers extends ICSagas {
-  loadHashtagsStats: Saga;
+  fetchExtraWords: Saga;
   updateWords: Saga;
 }
 

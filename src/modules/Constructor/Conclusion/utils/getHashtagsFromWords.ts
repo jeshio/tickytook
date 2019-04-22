@@ -31,7 +31,7 @@ export default function getHashtagsFromWords(
     });
   }
 
-  if (withWaterMark && result.length > 5) {
+  if (withWaterMark && result.length > 9) {
     result.splice(Math.random() * words.length - 1, 0, WATERMARK_HASHTAG);
   }
 

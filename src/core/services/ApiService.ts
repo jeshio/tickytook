@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { CANCEL } from 'redux-saga';
 import ICEndPoints from '../interfaces/ICEndPoints';
 
 export default class ApiService<TEndPoints extends ICEndPoints> {
@@ -7,13 +8,18 @@ export default class ApiService<TEndPoints extends ICEndPoints> {
   public get endPoints() {
     return Object.keys(this.pEndPoints).reduce((base, name) => {
       const endPoint = this.pEndPoints[name];
-      const request = async (params: typeof endPoint.params = {}) => {
+      const request = (params: typeof endPoint.params = {}) => {
+        const cancelSource = axios.CancelToken.source();
         const { url, method } = endPoint;
-        return axios({
+        const result: any = axios({
+          cancelToken: cancelSource.token,
           method,
           params,
           url,
         });
+        result[CANCEL] = cancelSource.cancel;
+
+        return result;
       };
 
       return { ...base, [name]: request };

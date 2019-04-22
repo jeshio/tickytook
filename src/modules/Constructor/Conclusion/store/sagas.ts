@@ -1,5 +1,16 @@
 import isEqual from 'lodash/isEqual';
-import { call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
+import {
+  call,
+  cancel,
+  cancelled,
+  delay,
+  fork,
+  put,
+  race,
+  select,
+  take,
+  takeLatest,
+} from 'redux-saga/effects';
 import SagaService from 'src/core/services/SagaService';
 import BaseStore from 'src/core/store/BaseStore';
 import { Store as ParamsReceiverStore } from '../../ParamsReceiver';
@@ -12,19 +23,6 @@ export default function sagas(
 ) {
   const sagaService = new SagaService<ISagaWorkers>();
 
-  sagaService.addSagaWorker('loadHashtagsStats', function*() {
-    yield delay(500);
-    const currentStoreSelectors = store.selectors(yield select());
-    const request: ReturnType<IEndPoints['extraWords']['successResponse']> = (yield call(
-      store.api.extraWords,
-      {
-        words: currentStoreSelectors.words.map(w => `%23${w}`).join('+'),
-      }
-    )).data;
-    if (Array.isArray(request.result) && request.result.length > 0) {
-      yield put(store.actions.updateExtraWords(request.result));
-    }
-  });
   sagaService.addSagaWorker('updateWords', function*(text: string) {
     const currentStore = yield select();
     const oldWords = store.selectors(currentStore).words;
@@ -35,9 +33,54 @@ export default function sagas(
     }
   });
 
-  // change words watcher
+  sagaService.addSagaWorker('fetchExtraWords', function*() {
+    try {
+      const currentStoreSelectors = store.selectors(yield select());
+      const requestData: ReturnType<IEndPoints['extraWords']['successResponse']> = (yield call(
+        store.api.extraWords,
+        {
+          words: currentStoreSelectors.words.map(w => `%23${w}`).join('+'),
+        }
+      )).data;
+
+      if (Array.isArray(requestData.result) && requestData.result.length > 0) {
+        yield put(store.actions.fetchExtraWordsSuccess(requestData.result));
+      }
+    } catch (e) {
+      yield put(store.actions.fetchExtraWordsFailure());
+    } finally {
+      if (yield cancelled()) {
+        yield put(store.actions.fetchExtraWordsFailure());
+      }
+    }
+  });
+
+  // extra words fetcher
   sagaService.addSagaWatcher(function*() {
-    yield takeLatest(store.actions.changeWords.type, sagaService.sagaWorkers.loadHashtagsStats);
+    yield fork(function*() {
+      let lastTask;
+
+      while (true) {
+        const action = yield race({
+          changeWords: take(store.actions.changeWords.type),
+          fetchExtraWords: take(store.actions.fetchExtraWords.type),
+        });
+
+        if (lastTask) {
+          yield cancel(lastTask);
+        }
+
+        if (!action.fetchExtraWords) {
+          yield put(store.actions.fetchExtraWords());
+        }
+
+        if (action.changeWords) {
+          yield delay(1000);
+        }
+
+        lastTask = yield fork(sagaService.sagaWorkers.fetchExtraWords);
+      }
+    });
   });
 
   // words updater

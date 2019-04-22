@@ -23,31 +23,30 @@ export default class BaseStore<
   constructor(
     moduleName: string,
     subModuleName: string,
-    initial: {
-      actions?: { [P in keyof ActionsT]?: TReducer<StoreT, Parameters<ActionsT[P]>> };
-      selectors?: { [P in keyof SelectorsT]?: (store: StoreT) => SelectorsT[P] };
-      fields?: Partial<StoreT>;
-    } = {}
+    initialActions: { [P in keyof ActionsT]?: TReducer<StoreT, Parameters<ActionsT[P]>> } = {},
+    initialSelectors: { [P in keyof SelectorsT]?: (store: StoreT) => SelectorsT[P] } = {},
+    initialFields: Partial<StoreT> = {}
   ) {
     this.moduleName = moduleName;
     this.subModuleName = subModuleName;
     this.addAction = this.addAction.bind(this);
     this.addStoreField = this.addStoreField.bind(this);
-    if (initial.actions) {
-      const { actions } = initial;
-      Object.keys(actions).map(actionName =>
-        this.addAction(actionName, actions[actionName] as ActionsT[typeof actionName])
+    if (initialActions) {
+      Object.keys(initialActions).map(actionName =>
+        this.addAction(actionName, initialActions[actionName] as ActionsT[typeof actionName])
       );
     }
-    if (initial.selectors) {
-      const { selectors } = initial;
-      Object.keys(selectors).map(selectorName =>
-        this.addSelector(selectorName, selectors[selectorName] as SelectorsT[typeof selectorName])
+    if (initialSelectors) {
+      Object.keys(initialSelectors).map(selectorName =>
+        this.addSelector(selectorName, initialSelectors[
+          selectorName
+        ] as SelectorsT[typeof selectorName])
       );
     }
-    if (initial.fields) {
-      const { fields } = initial;
-      Object.keys(fields).map(fieldName => this.addStoreField(fieldName, fields[fieldName]));
+    if (initialFields) {
+      Object.keys(initialFields).map(fieldName =>
+        this.addStoreField(fieldName, initialFields[fieldName])
+      );
     }
   }
 

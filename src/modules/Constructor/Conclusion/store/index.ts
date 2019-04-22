@@ -6,63 +6,65 @@ import Api from './api';
 import { IActions, IEndPoints, ISelectors, IStore } from './interfaces';
 import sagas from './sagas';
 
-const updateWithHashtags = (state: IStore): IStore => ({
+const switchAction = (fieldName: keyof IStore) => (state: IStore) => ({
   ...state,
-  hashtags: getHashtagsFromWords(state, false),
+  [fieldName]: !state[fieldName],
 });
-
-const switchAction = (fieldName: keyof IStore) => (state: IStore) =>
-  updateWithHashtags({
-    ...state,
-    [fieldName]: !state[fieldName],
-  });
 
 const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
   MODULE_NAME,
   SUB_MODULE_NAME,
   {
-    actions: {
-      changeWords: (state, action) =>
-        updateWithHashtags({
-          ...state,
-          words: action.payload[0],
-        }),
-      setMinimumHashtagLength: (state, action) =>
-        updateWithHashtags({
-          ...state,
-          minimumHashtagLength: action.payload[0],
-        }),
-      switchConvertToLower: switchAction('convertToLower'),
-      switchDeleteNumberWords: switchAction('deleteNumberWords'),
-      switchHashtagActiveStatus: (state, action) => {
-        const hashtag = action.payload[0];
-        const inactiveHashtags = new Set(state.inactiveHashtags);
-        if (state.inactiveHashtags.has(hashtag)) {
-          inactiveHashtags.delete(hashtag);
-        } else {
-          inactiveHashtags.add(hashtag);
-        }
-        return {
-          ...state,
-          inactiveHashtags,
-        };
-      },
-      switchSortByAlphabet: switchAction('sortByAlphabet'),
-      updateExtraWords: (state, action) => ({ ...state, extraWords: action.payload[0] }),
+    changeWords: (state, action) => ({
+      ...state,
+      words: action.payload[0],
+    }),
+    fetchExtraWords: state => ({ ...state, extraWords: { ...state.extraWords, loading: true } }),
+    fetchExtraWordsFailure: state => ({
+      ...state,
+      extraWords: { ...state.extraWords, loading: false },
+    }),
+    fetchExtraWordsSuccess: (state, action) => ({
+      ...state,
+      extraWords: { ...state.extraWords, data: action.payload[0] },
+    }),
+    setMinimumHashtagLength: (state, action) => ({
+      ...state,
+      minimumHashtagLength: action.payload[0],
+    }),
+    switchConvertToLower: switchAction('convertToLower'),
+    switchDeleteNumberWords: switchAction('deleteNumberWords'),
+    switchHashtagActiveStatus: (state, action) => {
+      const hashtag = action.payload[0];
+      const inactiveHashtags = new Set(state.inactiveHashtags);
+      if (state.inactiveHashtags.has(hashtag)) {
+        inactiveHashtags.delete(hashtag);
+      } else {
+        inactiveHashtags.add(hashtag);
+      }
+      return {
+        ...state,
+        inactiveHashtags,
+      };
     },
-    fields: {
-      convertToLower: true,
-      deleteNumberWords: true,
-      extraWords: [],
-      hashtags: [],
-      inactiveHashtags: new Set(),
-      minimumHashtagLength: 3,
-      sortByAlphabet: true,
-      words: [],
+    switchSortByAlphabet: switchAction('sortByAlphabet'),
+  },
+  {
+    activeHashtags: s => getHashtagsFromWords(s, false).filter(h => !s.inactiveHashtags.has(h)),
+    hashtags: s => getHashtagsFromWords(s, false),
+  },
+  {
+    convertToLower: true,
+    deleteNumberWords: true,
+    extraHashtags: [],
+    extraWords: {
+      data: [],
+      loading: false,
     },
-    selectors: {
-      activeHashtags: s => s.hashtags.filter(h => !s.inactiveHashtags.has(h)),
-    },
+    inactiveHashtags: new Set(),
+    minimumHashtagLength: 3,
+    sortByAlphabet: true,
+    words: [],
   }
 );
 
