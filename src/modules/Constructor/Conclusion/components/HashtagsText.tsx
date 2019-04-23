@@ -27,7 +27,8 @@ class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsText
 
     return (
       <React.Fragment>
-        <UBlock>Кликай на хэштеги, чтобы убрать/добавить:</UBlock>
+        <h2>Котёл хэштегов</h2>
+        <UBlock>Кликай, чтобы убрать (или добавить) из котла:</UBlock>
         <UBlock>
           {hashtags.map((h, i) => (
             <UHashtag
@@ -40,9 +41,9 @@ class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsText
           ))}
         </UBlock>
         <UButton onClick={this.handleCopyClick}>
-          {showSuccessCopyMessage ? 'скопировано!' : 'копировать'}
+          {showSuccessCopyMessage ? 'скопировано!' : 'копировать из котла'}
         </UButton>
-        <UBlock>Количество активных хэштегов: {activeHashtags.length}</UBlock>
+        <UBlock>Количество хэштегов в котле: {activeHashtags.length}</UBlock>
       </React.Fragment>
     );
   }

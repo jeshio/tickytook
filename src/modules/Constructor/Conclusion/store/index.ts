@@ -1,3 +1,4 @@
+import uniq from 'lodash/uniq';
 import BaseStore from 'src/core/store/BaseStore';
 import { MODULE_NAME } from '../../constants';
 import { SUB_MODULE_NAME } from '../constants';
@@ -15,6 +16,10 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
   MODULE_NAME,
   SUB_MODULE_NAME,
   {
+    addExtraHashtag: (state, action) => ({
+      ...state,
+      extraHashtags: [...state.extraHashtags, action.payload[0]],
+    }),
     changeWords: (state, action) => ({
       ...state,
       words: action.payload[0],
@@ -28,7 +33,7 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
       ...state,
       extraWords: {
         ...state.extraWords,
-        data: action.payload[0].length > 0 ? action.payload[0] : state.extraWords.data,
+        data: uniq([...action.payload[0], ...state.extraWords.data]),
       },
     }),
     setMinimumHashtagLength: (state, action) => ({

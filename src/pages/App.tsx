@@ -6,7 +6,7 @@ import UTitle from 'src/ui-components/UTitle';
 
 export default () => (
   <UGrid>
-    <UTitle>Tickytook - оптимизатор хэштегов</UTitle>
+    <UTitle>Tickytook - наколдуй хэштеги</UTitle>
     <ParamsReceiver />
     <Conclusion />
   </UGrid>

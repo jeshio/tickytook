@@ -20,8 +20,10 @@ export default class Presentation extends Component<IPresentationProps, any> {
         <UGrid.Row>
           <UGrid.Col md={12}>
             <ExtraWords
+              extraHashtags={this.props.extraHashtags}
               extraWords={this.props.extraWords.data}
               loading={this.props.extraWords.loading}
+              onExtraWordClick={this.props.addExtraHashtag}
             />
           </UGrid.Col>
           <UGrid.Col md={12}>

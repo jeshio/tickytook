@@ -30,6 +30,7 @@ export interface IActions {
   switchDeleteNumberWords: () => ICAction;
   switchSortByAlphabet: () => ICAction;
   setMinimumHashtagLength: (length: number) => ICAction;
+  addExtraHashtag: (extraHashtag: string) => ICAction;
   fetchExtraWords: () => ICAction;
   fetchExtraWordsFailure: () => ICAction;
   fetchExtraWordsSuccess: (extraWords: string[]) => ICAction;

@@ -4,12 +4,14 @@ import { WATERMARK_HASHTAG } from '../constants';
 export default function getHashtagsFromWords(
   {
     words = [],
+    extraHashtags = [],
     deleteNumberWords = false,
     sortByAlphabet = false,
     convertToLower = false,
     minimumHashtagLength = 0,
   }: {
     words: string[];
+    extraHashtags: string[];
     deleteNumberWords: boolean;
     sortByAlphabet: boolean;
     convertToLower: boolean;
@@ -17,7 +19,7 @@ export default function getHashtagsFromWords(
   },
   withWaterMark = true
 ) {
-  let result = [...words].filter(s => s.length >= minimumHashtagLength);
+  let result = [...words, ...extraHashtags].filter(s => s.length >= minimumHashtagLength);
 
   if (deleteNumberWords) {
     result = result.filter(s => s.match(/[^\d]+/));
