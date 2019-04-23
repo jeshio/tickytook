@@ -15,9 +15,6 @@ export default class Presentation extends Component<IPresentationProps, any> {
           <UGrid.Col md={24}>
             <TextReceiver value={text} onChange={changeText} />
           </UGrid.Col>
-          {/* <UGrid.Col md={12}>
-            <ConstructorParams />
-          </UGrid.Col> */}
         </UGrid.Row>
       </div>
     );

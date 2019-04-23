@@ -12,10 +12,11 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
     return (
       <div>
         <UTextarea
-          placeholder="Вставьте сюда хэштеги..."
-          rows={5}
+          placeholder="Вставьте сюда текст или хэштеги..."
+          rows={3}
           value={value}
           onChange={onChange}
+          autoHeight={true}
         />
       </div>
     );

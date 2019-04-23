@@ -1,12 +1,21 @@
 import * as React from 'react';
+import Textarea from 'react-textarea-autosize';
 import UInput, { IUInputProps } from './UInput';
 
-export interface IUTextareaProps extends IUInputProps {}
+export interface IUTextareaProps extends IUInputProps {
+  autoHeight?: boolean;
+}
 
-const componentClass = (props: React.HTMLProps<HTMLTextAreaElement>) => <textarea {...props} />;
+const componentClass = (props: React.HTMLProps<HTMLTextAreaElement>) => (
+  <Textarea {...props as any} />
+);
 
-const UTextarea: React.FunctionComponent<IUTextareaProps> = props => {
+const UTextarea: React.FunctionComponent<IUTextareaProps> = ({ autoHeight, ...props }) => {
   return <UInput {...props} componentClass={componentClass} />;
+};
+
+UTextarea.defaultProps = {
+  autoHeight: false,
 };
 
 export default UTextarea;

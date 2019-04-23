@@ -43,9 +43,7 @@ export default function sagas(
         }
       )).data;
 
-      if (Array.isArray(requestData.result) && requestData.result.length > 0) {
-        yield put(store.actions.fetchExtraWordsSuccess(requestData.result));
-      }
+      yield put(store.actions.fetchExtraWordsSuccess(requestData.result || []));
     } catch (e) {
       yield put(store.actions.fetchExtraWordsFailure());
     } finally {

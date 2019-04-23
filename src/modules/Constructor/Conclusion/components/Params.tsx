@@ -54,15 +54,17 @@ const Params: React.FunctionComponent<IParamsProps> = props => {
         >
           убрать хэштеги целиком из цифр
         </UForm.Checkbox>
-        <UForm.Group>
-          <UForm.Label>Минимальная длина хэштега</UForm.Label>
-          <UForm.Input
-            name="minimumHashtagLength"
-            type="number"
-            placeholder="убрать хэштеги длиной менее"
-            onChange={onChangeMinimumHashtagLength}
-          />
-        </UForm.Group>
+        <UBlock marginLeft={2} marginTop={0}>
+          <UForm.Group>
+            <UForm.Label>Минимальная длина хэштега</UForm.Label>
+            <UForm.Input
+              name="minimumHashtagLength"
+              type="number"
+              placeholder="убрать хэштеги длиной менее"
+              onChange={onChangeMinimumHashtagLength}
+            />
+          </UForm.Group>
+        </UBlock>
       </UForm>
     </UBlock>
   );

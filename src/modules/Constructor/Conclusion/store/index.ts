@@ -26,7 +26,10 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
     }),
     fetchExtraWordsSuccess: (state, action) => ({
       ...state,
-      extraWords: { ...state.extraWords, data: action.payload[0] },
+      extraWords: {
+        ...state.extraWords,
+        data: action.payload[0].length > 0 ? action.payload[0] : state.extraWords.data,
+      },
     }),
     setMinimumHashtagLength: (state, action) => ({
       ...state,
@@ -50,10 +53,6 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
     switchSortByAlphabet: switchAction('sortByAlphabet'),
   },
   {
-    activeHashtags: s => getHashtagsFromWords(s, false).filter(h => !s.inactiveHashtags.has(h)),
-    hashtags: s => getHashtagsFromWords(s, false),
-  },
-  {
     convertToLower: true,
     deleteNumberWords: true,
     extraHashtags: [],
@@ -65,6 +64,10 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
     minimumHashtagLength: 3,
     sortByAlphabet: true,
     words: [],
+  },
+  {
+    activeHashtags: s => getHashtagsFromWords(s, false).filter(h => !s.inactiveHashtags.has(h)),
+    hashtags: s => getHashtagsFromWords(s, false),
   }
 );
 

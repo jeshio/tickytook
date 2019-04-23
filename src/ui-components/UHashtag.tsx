@@ -6,8 +6,8 @@ import UButton from './UButton';
 
 interface IUHashtagProps {
   isDeleted?: boolean;
-  onClick: (hashtag: string) => void;
-  children: string;
+  onClick?: (hashtag: string) => void;
+  children: string | string[];
 }
 
 const Root = styled.span<SpaceProps>`

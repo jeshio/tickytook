@@ -1,3 +1,4 @@
+import { Subtract } from 'utility-types';
 import ICStringIndexes from '../interfaces/ICStringIndexes';
 import { AddTypeToKeys } from '../util-types/AddTypeToKeys';
 import ICAction from './interfaces/ICAction';
@@ -8,7 +9,7 @@ import makeReducersByKeys from './utils/makeReducerByKeys';
 export default class BaseStore<
   StoreT extends ICStore,
   ActionsT extends ICStringIndexes,
-  SelectorsT extends ICStringIndexes,
+  SelectorsT extends StoreT,
   ApiT = {},
   ActionsWithType = AddTypeToKeys<ActionsT, { type: string }>
 > {
@@ -23,9 +24,19 @@ export default class BaseStore<
   constructor(
     moduleName: string,
     subModuleName: string,
-    initialActions: { [P in keyof ActionsT]?: TReducer<StoreT, Parameters<ActionsT[P]>> } = {},
-    initialSelectors: { [P in keyof SelectorsT]?: (store: StoreT) => SelectorsT[P] } = {},
-    initialFields: Partial<StoreT> = {}
+    initialActions: {
+      [P in keyof ActionsT]: TReducer<StoreT, Parameters<ActionsT[P]>>
+    } = {} as ActionsT,
+    initialFields: StoreT = {} as StoreT,
+    initialSelectors: {
+      [P in keyof Subtract<SelectorsT, StoreT>]: (
+        subModuleStore: StoreT,
+        globalStore: ICStore
+      ) => SelectorsT[P]
+    } &
+      {
+        [P in keyof StoreT]?: (subModuleStore: StoreT, globalStore: ICStore) => SelectorsT[P]
+      } = {} as SelectorsT
   ) {
     this.moduleName = moduleName;
     this.subModuleName = subModuleName;
@@ -37,8 +48,8 @@ export default class BaseStore<
       );
     }
     if (initialSelectors) {
-      Object.keys(initialSelectors).map(selectorName =>
-        this.addSelector(selectorName, initialSelectors[
+      Object.keys(initialSelectors).map((selectorName: keyof SelectorsT) =>
+        this.addSelector(selectorName, (initialSelectors as SelectorsT)[
           selectorName
         ] as SelectorsT[typeof selectorName])
       );
@@ -58,11 +69,14 @@ export default class BaseStore<
     return this.pApi;
   }
 
-  public selectors = (store: StoreT): SelectorsT => {
+  public selectors = (store: StoreT | ICStore): SelectorsT => {
     return Object.keys(this.pSelectors).reduce(
       (base, selectorName: string) => ({
         ...base,
-        [selectorName]: this.pSelectors[selectorName](store[this.moduleName][this.subModuleName]),
+        [selectorName]: this.pSelectors[selectorName](
+          store[this.moduleName][this.subModuleName],
+          store
+        ),
       }),
       {}
     ) as SelectorsT;
