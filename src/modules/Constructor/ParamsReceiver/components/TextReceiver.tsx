@@ -7,6 +7,17 @@ export interface TextReceiverProps {
 }
 
 export default class TextReceiver extends React.PureComponent<TextReceiverProps, any> {
+  private fieldRef = React.createRef();
+
+  public componentDidMount() {
+    try {
+      if (this.fieldRef.current) {
+        (this.fieldRef.current as any)._ref.focus();
+      }
+      // tslint:disable-next-line: no-empty
+    } catch (e) {}
+  }
+
   public render() {
     const { value, onChange } = this.props;
     return (
@@ -17,6 +28,7 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
           value={value}
           onChange={onChange}
           autoHeight={true}
+          inputRef={this.fieldRef}
         />
       </div>
     );

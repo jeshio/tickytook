@@ -6,9 +6,9 @@ export interface IUTextareaProps extends IUInputProps {
   autoHeight?: boolean;
 }
 
-const componentClass = (props: React.HTMLProps<HTMLTextAreaElement>) => (
-  <Textarea {...props as any} style={{ ...(props.style || {}), minHeight: 'unset' }} />
-);
+const componentClass = React.forwardRef((props: React.HTMLProps<HTMLTextAreaElement>, ref) => (
+  <Textarea {...props as any} style={{ ...(props.style || {}), minHeight: 'unset' }} ref={ref} />
+));
 
 const UTextarea: React.FunctionComponent<IUTextareaProps> = ({ autoHeight, ...props }) => {
   return <UInput {...props} componentClass={componentClass} />;
