@@ -73,7 +73,7 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
     }),
     hashtags: (s, globalStore) =>
       getHashtagsFromWords(
-        s.words,
+        ParamsReceiverStore.selectors(globalStore).spellWordsToHashtags ? s.words : [],
         { ...s, ...ParamsReceiverStore.selectors(globalStore) },
         false
       ).map(w => `#${w}`),

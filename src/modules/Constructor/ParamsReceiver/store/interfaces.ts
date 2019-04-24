@@ -5,6 +5,7 @@ export interface IStore {
   convertToLower: boolean;
   deleteNumberWords: boolean;
   sortByAlphabet: boolean;
+  spellWordsToHashtags: boolean;
   minimumHashtagLength: number;
 }
 
@@ -15,6 +16,7 @@ export interface IActions {
   switchConvertToLower: () => ICAction;
   switchDeleteNumberWords: () => ICAction;
   switchSortByAlphabet: () => ICAction;
+  switchSpellWordsToHashtags: () => ICAction;
   setMinimumHashtagLength: (length: number) => ICAction;
   reset: () => ICAction;
 }

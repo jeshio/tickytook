@@ -23,6 +23,7 @@ const store = new BaseStore<IStore, IActions, ISelectors>(
     switchConvertToLower: switchAction('convertToLower'),
     switchDeleteNumberWords: switchAction('deleteNumberWords'),
     switchSortByAlphabet: switchAction('sortByAlphabet'),
+    switchSpellWordsToHashtags: switchAction('spellWordsToHashtags'),
     reset: state => state,
   },
   {
@@ -31,6 +32,7 @@ const store = new BaseStore<IStore, IActions, ISelectors>(
     minimumHashtagLength: 3,
     sortByAlphabet: true,
     text: 'Привет, тут у нас небольшое предложение с 8 членами.',
+    spellWordsToHashtags: true,
   }
 );
 
