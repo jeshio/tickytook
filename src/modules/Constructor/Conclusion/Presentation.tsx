@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import UGrid from 'src/ui-components/UGrid';
 import { Store } from '.';
 import { Store as ParamsReceiverStore } from '../ParamsReceiver';
+import Params from '../ParamsReceiver/components/Params';
 import ExtraWords from './components/ExtraWords';
 import HashtagsText from './components/HashtagsText';
-import Params from './components/Params';
 
 export interface IPresentationProps
   extends ParamsReceiverStore.ISelectors,
@@ -28,7 +28,6 @@ export default class Presentation extends Component<IPresentationProps, any> {
           </UGrid.Col>
           <UGrid.Col md={12}>
             <HashtagsText {...this.props} />
-            <Params {...this.props} />
           </UGrid.Col>
         </UGrid.Row>
       </div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import UGrid from 'src/ui-components/UGrid';
-import ConstructorParams from './components/ConstructorParams';
+import Params from './components/Params';
 import TextReceiver from './components/TextReceiver';
 import { IActions, ISelectors } from './store';
 
@@ -14,6 +14,11 @@ export default class Presentation extends Component<IPresentationProps, any> {
         <UGrid.Row>
           <UGrid.Col md={24}>
             <TextReceiver value={text} onChange={changeText} />
+          </UGrid.Col>
+        </UGrid.Row>
+        <UGrid.Row>
+          <UGrid.Col md={24}>
+            <Params {...this.props} />
           </UGrid.Col>
         </UGrid.Row>
       </div>

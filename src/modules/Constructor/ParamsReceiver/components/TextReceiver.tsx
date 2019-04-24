@@ -12,8 +12,8 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
     return (
       <div>
         <UTextarea
-          placeholder="Вставьте сюда текст или хэштеги..."
-          rows={3}
+          placeholder="Вставьте сюда заклятие (текст или хэштеги)..."
+          rows={1}
           value={value}
           onChange={onChange}
           autoHeight={true}

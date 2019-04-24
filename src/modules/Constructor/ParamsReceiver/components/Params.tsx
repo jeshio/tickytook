@@ -2,6 +2,7 @@ import * as React from 'react';
 import UBlock from 'src/ui-components/UBlock';
 import UButton from 'src/ui-components/UButton';
 import UForm from 'src/ui-components/UForm';
+import UGrid from 'src/ui-components/UGrid';
 
 interface IParamsProps {
   convertToLower: boolean;
@@ -49,38 +50,48 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
               minimumHashtagLength: minimumHashtagLength.toString(),
             }}
           >
-            <UForm.Checkbox
-              name="convertToLower"
-              checked={convertToLower}
-              onChange={switchConvertToLower}
-            >
-              перевести в нижний регистр
-            </UForm.Checkbox>
-            <UForm.Checkbox
-              name="sortByAlphabet"
-              checked={sortByAlphabet}
-              onChange={switchSortByAlphabet}
-            >
-              сортировать по алфавиту
-            </UForm.Checkbox>
-            <UForm.Checkbox
-              name="deleteNumberWords"
-              checked={deleteNumberWords}
-              onChange={switchDeleteNumberWords}
-            >
-              убрать хэштеги целиком из цифр
-            </UForm.Checkbox>
-            <UBlock marginLeft={2} marginTop={0}>
-              <UForm.Group>
-                <UForm.Label>Минимальная длина хэштега</UForm.Label>
-                <UForm.Input
-                  name="minimumHashtagLength"
-                  type="number"
-                  placeholder="убрать хэштеги длиной менее"
-                  onChange={onChangeMinimumHashtagLength}
-                />
-              </UForm.Group>
-            </UBlock>
+            <UGrid.Row>
+              <UGrid.Col md={7}>
+                <UBlock marginLeft={2} marginTop={0}>
+                  <UForm.Group>
+                    <UForm.Input
+                      name="minimumHashtagLength"
+                      type="number"
+                      placeholder="убрать хэштеги длиной менее"
+                      onChange={onChangeMinimumHashtagLength}
+                      label="Минимальная длина хэштега"
+                    />
+                  </UForm.Group>
+                </UBlock>
+              </UGrid.Col>
+              <UGrid.Col md={5}>
+                <UForm.Checkbox
+                  name="convertToLower"
+                  checked={convertToLower}
+                  onChange={switchConvertToLower}
+                >
+                  перевести в нижний регистр
+                </UForm.Checkbox>
+              </UGrid.Col>
+              <UGrid.Col md={5}>
+                <UForm.Checkbox
+                  name="sortByAlphabet"
+                  checked={sortByAlphabet}
+                  onChange={switchSortByAlphabet}
+                >
+                  сортировать по алфавиту
+                </UForm.Checkbox>
+              </UGrid.Col>
+              <UGrid.Col md={6}>
+                <UForm.Checkbox
+                  name="deleteNumberWords"
+                  checked={deleteNumberWords}
+                  onChange={switchDeleteNumberWords}
+                >
+                  убрать хэштеги целиком из цифр
+                </UForm.Checkbox>
+              </UGrid.Col>
+            </UGrid.Row>
           </UForm>
         </UBlock>
       </React.Fragment>

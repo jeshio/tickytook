@@ -2,15 +2,14 @@ import uniq from 'lodash/uniq';
 import { WATERMARK_HASHTAG } from '../constants';
 
 export default function getHashtagsFromWords(
+  words: string[] = [],
   {
-    words = [],
     extraHashtags = [],
     deleteNumberWords = false,
     sortByAlphabet = false,
     convertToLower = false,
     minimumHashtagLength = 0,
   }: {
-    words: string[];
     extraHashtags: string[];
     deleteNumberWords: boolean;
     sortByAlphabet: boolean;
@@ -43,5 +42,5 @@ export default function getHashtagsFromWords(
 
   result = uniq(result);
 
-  return result.map(w => `#${w}`);
+  return result;
 }

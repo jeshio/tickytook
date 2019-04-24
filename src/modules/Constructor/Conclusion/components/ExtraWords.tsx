@@ -12,27 +12,19 @@ interface IExtraWordsProps {
 class ExtraWords extends React.PureComponent<IExtraWordsProps, any> {
   public render() {
     const { extraWords, loading, extraHashtags } = this.props;
-    const extraHashtagsSet = new Set(extraHashtags);
+    const actualExtraHashtags = extraWords.filter(w => extraHashtags.indexOf(w) < 0);
     return (
       <UBlock>
         <h2>Наколдованные хэштеги</h2>
-        <UBlock visible={extraWords.length > 0}>
-          Кликай на слова, чтобы добавить их в котёл хэштегов:
+        <UBlock visible={actualExtraHashtags.length > 0}>
+          Кликай на слова, чтобы закинуть их в котёл хэштегов:
         </UBlock>
-        {extraWords
-          .filter(w => !extraHashtagsSet.has(w))
-          .map((w, i) => (
-            <UBlock
-              display="inline-block"
-              key={i}
-              marginTop={0}
-              marginBottom="1px"
-              marginRight="1px"
-            >
-              <UHashtag onClick={this.onWordClick(w)}>{w}</UHashtag>
-            </UBlock>
-          ))}
-        {extraWords.length === 0 && (
+        {actualExtraHashtags.map((w, i) => (
+          <UBlock display="inline-block" key={i} marginTop={0} marginBottom="1px" marginRight="1px">
+            <UHashtag onClick={this.onWordClick(w)}>{w}</UHashtag>
+          </UBlock>
+        ))}
+        {actualExtraHashtags.length === 0 && (
           <UBlock py="3rem" px={['1.5rem', '5rem']} textAlign="center">
             Напиши хэштеги или текст вверху, чтобы можно было наколдовать новые хэштеги
           </UBlock>

@@ -7,10 +7,6 @@ import ICSagas from 'src/core/store/interfaces/ICSagas';
 export interface IStore {
   words: string[];
   inactiveHashtags: Set<string>;
-  convertToLower: boolean;
-  deleteNumberWords: boolean;
-  sortByAlphabet: boolean;
-  minimumHashtagLength: number;
   extraWords: {
     data: string[];
     loading: boolean;
@@ -26,10 +22,6 @@ export interface ISelectors extends IStore {
 export interface IActions {
   changeWords: (words: string[]) => ICAction;
   switchHashtagActiveStatus: (hashtag: string) => ICAction;
-  switchConvertToLower: () => ICAction;
-  switchDeleteNumberWords: () => ICAction;
-  switchSortByAlphabet: () => ICAction;
-  setMinimumHashtagLength: (length: number) => ICAction;
   addExtraHashtag: (extraHashtag: string) => ICAction;
   fetchExtraWords: () => ICAction;
   fetchExtraWordsFailure: () => ICAction;

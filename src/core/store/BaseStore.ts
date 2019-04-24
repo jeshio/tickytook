@@ -31,11 +31,16 @@ export default class BaseStore<
     initialSelectors: {
       [P in keyof Subtract<SelectorsT, StoreT>]: (
         subModuleStore: StoreT,
-        globalStore: ICStore
+        globalStore: ICStore,
+        selectors: SelectorsT
       ) => SelectorsT[P]
     } &
       {
-        [P in keyof StoreT]?: (subModuleStore: StoreT, globalStore: ICStore) => SelectorsT[P]
+        [P in keyof StoreT]?: (
+          subModuleStore: StoreT,
+          globalStore: ICStore,
+          selectors: SelectorsT
+        ) => SelectorsT[P]
       } = {} as SelectorsT
   ) {
     this.moduleName = moduleName;
@@ -47,16 +52,16 @@ export default class BaseStore<
         this.addAction(actionName, initialActions[actionName] as ActionsT[typeof actionName])
       );
     }
+    if (initialFields) {
+      Object.keys(initialFields).map(fieldName =>
+        this.addStoreField(fieldName, initialFields[fieldName])
+      );
+    }
     if (initialSelectors) {
       Object.keys(initialSelectors).map((selectorName: keyof SelectorsT) =>
         this.addSelector(selectorName, (initialSelectors as SelectorsT)[
           selectorName
         ] as SelectorsT[typeof selectorName])
-      );
-    }
-    if (initialFields) {
-      Object.keys(initialFields).map(fieldName =>
-        this.addStoreField(fieldName, initialFields[fieldName])
       );
     }
   }
@@ -75,7 +80,8 @@ export default class BaseStore<
         ...base,
         [selectorName]: this.pSelectors[selectorName](
           store[this.moduleName][this.subModuleName],
-          store
+          store,
+          base as SelectorsT
         ),
       }),
       {}

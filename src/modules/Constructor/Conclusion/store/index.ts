@@ -1,6 +1,7 @@
 import uniq from 'lodash/uniq';
 import BaseStore from 'src/core/store/BaseStore';
 import { MODULE_NAME } from '../../constants';
+import { Store as ParamsReceiverStore } from '../../ParamsReceiver';
 import { SUB_MODULE_NAME } from '../constants';
 import getHashtagsFromWords from '../utils/getHashtagsFromWords';
 import Api from './api';
@@ -36,12 +37,6 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
         data: uniq([...action.payload[0], ...state.extraWords.data]),
       },
     }),
-    setMinimumHashtagLength: (state, action) => ({
-      ...state,
-      minimumHashtagLength: action.payload[0],
-    }),
-    switchConvertToLower: switchAction('convertToLower'),
-    switchDeleteNumberWords: switchAction('deleteNumberWords'),
     switchHashtagActiveStatus: (state, action) => {
       const hashtag = action.payload[0];
       const inactiveHashtags = new Set(state.inactiveHashtags);
@@ -55,24 +50,33 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
         inactiveHashtags,
       };
     },
-    switchSortByAlphabet: switchAction('sortByAlphabet'),
   },
   {
-    convertToLower: true,
-    deleteNumberWords: true,
     extraHashtags: [],
     extraWords: {
       data: [],
       loading: false,
     },
     inactiveHashtags: new Set(),
-    minimumHashtagLength: 3,
-    sortByAlphabet: true,
     words: [],
   },
   {
-    activeHashtags: s => getHashtagsFromWords(s, false).filter(h => !s.inactiveHashtags.has(h)),
-    hashtags: s => getHashtagsFromWords(s, false),
+    extraWords: (s, globalStore) => ({
+      ...s.extraWords,
+      data: getHashtagsFromWords(
+        s.extraWords.data,
+        { ...s, ...ParamsReceiverStore.selectors(globalStore) },
+        false
+      ),
+    }),
+    hashtags: (s, globalStore) =>
+      getHashtagsFromWords(
+        s.words,
+        { ...s, ...ParamsReceiverStore.selectors(globalStore) },
+        false
+      ).map(w => `#${w}`),
+    activeHashtags: (s, globalStore, stateSelectors) =>
+      stateSelectors.hashtags.filter(h => !s.inactiveHashtags.has(h)),
   }
 );
 

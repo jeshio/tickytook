@@ -16,8 +16,19 @@ const store = new BaseStore<IStore, IActions, ISelectors>(
       ...state,
       text: action.payload[0],
     }),
+    setMinimumHashtagLength: (state, action) => ({
+      ...state,
+      minimumHashtagLength: action.payload[0],
+    }),
+    switchConvertToLower: switchAction('convertToLower'),
+    switchDeleteNumberWords: switchAction('deleteNumberWords'),
+    switchSortByAlphabet: switchAction('sortByAlphabet'),
   },
   {
+    convertToLower: true,
+    deleteNumberWords: true,
+    minimumHashtagLength: 3,
+    sortByAlphabet: true,
     text: 'Привет, тут у нас небольшое предложение с 8 членами.',
   }
 );
