@@ -68,15 +68,17 @@ export default function sagas(
           yield cancel(lastTask);
         }
 
-        if (!action.fetchExtraWords) {
-          yield put(store.actions.fetchExtraWords());
-        }
+        lastTask = yield fork(function*() {
+          if (action.changeWords) {
+            yield delay(1000);
+          }
 
-        if (action.changeWords) {
-          yield delay(1000);
-        }
+          if (!action.fetchExtraWords) {
+            yield put(store.actions.fetchExtraWords());
+          }
 
-        lastTask = yield fork(sagaService.sagaWorkers.fetchExtraWords);
+          yield call(sagaService.sagaWorkers.fetchExtraWords);
+        });
       }
     });
   });

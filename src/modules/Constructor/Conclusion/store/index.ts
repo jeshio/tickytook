@@ -34,6 +34,7 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
       ...state,
       extraWords: {
         ...state.extraWords,
+        loading: false,
         data: uniq([...action.payload[0], ...state.extraWords.data]),
       },
     }),

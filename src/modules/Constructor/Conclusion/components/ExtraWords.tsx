@@ -1,6 +1,7 @@
 import * as React from 'react';
 import UBlock from 'src/ui-components/UBlock';
 import UHashtag from 'src/ui-components/UHashtag';
+import USubTitle from 'src/ui-components/USubTitle';
 
 interface IExtraWordsProps {
   extraWords: string[];
@@ -15,7 +16,7 @@ class ExtraWords extends React.PureComponent<IExtraWordsProps, any> {
     const actualExtraHashtags = extraWords.filter(w => extraHashtags.indexOf(w) < 0);
     return (
       <UBlock>
-        <h2>Наколдованные хэштеги</h2>
+        <USubTitle loading={loading}>Наколдованные хэштеги</USubTitle>
         <UBlock visible={actualExtraHashtags.length > 0}>
           Кликай на слова, чтобы закинуть их в котёл хэштегов:
         </UBlock>
