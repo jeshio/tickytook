@@ -56,7 +56,7 @@ export default function sagas(
   // extra words fetcher
   sagaService.addSagaWatcher(function*() {
     yield fork(function*() {
-      let lastTask;
+      let lastTask: any;
 
       while (true) {
         const action = yield race({
@@ -77,7 +77,11 @@ export default function sagas(
             yield put(store.actions.fetchExtraWords());
           }
 
-          yield call(sagaService.sagaWorkers.fetchExtraWords);
+          const fetchTask = yield fork(sagaService.sagaWorkers.fetchExtraWords);
+
+          if (yield take(store.actions.reset.type)) {
+            yield cancel([lastTask, fetchTask]);
+          }
         });
       }
     });
@@ -90,12 +94,20 @@ export default function sagas(
 
     while (true) {
       const oldText = ParamsReceiverStore.selectors(yield select()).text;
-      yield take('*');
+      yield take(ParamsReceiverStore.actions.changeText.type);
+
       const newText = ParamsReceiverStore.selectors(yield select()).text;
 
       if (oldText !== newText) {
         yield call(sagaService.sagaWorkers.updateWords, newText);
       }
+    }
+  });
+
+  sagaService.addSagaWatcher(function*() {
+    while (true) {
+      yield take(ParamsReceiverStore.actions.reset.type);
+      yield put(store.actions.reset());
     }
   });
 

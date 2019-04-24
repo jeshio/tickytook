@@ -18,7 +18,7 @@ export default class BaseStore<
   protected reducersList: Array<TReducer<StoreT, any>> = [];
   protected pActions: ActionsWithType = {} as ActionsWithType;
   protected pSelectors: SelectorsT = {} as SelectorsT;
-  protected initialStore: StoreT = {} as StoreT;
+  protected pInitialStore: StoreT = {} as StoreT;
   protected pApi: ApiT = {} as ApiT;
 
   constructor(
@@ -45,11 +45,11 @@ export default class BaseStore<
   ) {
     this.moduleName = moduleName;
     this.subModuleName = subModuleName;
-    this.addAction = this.addAction.bind(this);
+    this.setAction = this.setAction.bind(this);
     this.addStoreField = this.addStoreField.bind(this);
     if (initialActions) {
       Object.keys(initialActions).map(actionName =>
-        this.addAction(actionName, initialActions[actionName] as ActionsT[typeof actionName])
+        this.setAction(actionName, initialActions[actionName] as ActionsT[typeof actionName])
       );
     }
     if (initialFields) {
@@ -74,6 +74,10 @@ export default class BaseStore<
     return this.pApi;
   }
 
+  public get initialStore() {
+    return this.pInitialStore;
+  }
+
   public selectors = (store: StoreT | ICStore): SelectorsT => {
     return Object.keys(this.pSelectors).reduce(
       (base, selectorName: string) => ({
@@ -88,14 +92,14 @@ export default class BaseStore<
     ) as SelectorsT;
   };
 
-  public reducers = (store = this.initialStore, action: ICAction) => {
+  public reducers = (store = this.pInitialStore, action: ICAction) => {
     return this.reducersList.reduce(
       (currentStore: StoreT, reducer: TReducer<StoreT>) => reducer(currentStore, action),
       store
     );
   };
 
-  public addAction = <K extends keyof ActionsT>(
+  public setAction = <K extends keyof ActionsT>(
     actionName: K,
     reducer: TReducer<StoreT, Parameters<ActionsT[K]>>
   ) => {
@@ -119,7 +123,7 @@ export default class BaseStore<
   };
 
   public addStoreField = <K extends keyof StoreT>(name: K, initialValue: StoreT[K]) => {
-    this.initialStore = { ...this.initialStore, [name]: initialValue };
+    this.pInitialStore = { ...this.pInitialStore, [name]: initialValue };
     this.addSelector(name as keyof SelectorsT, (store: StoreT) => store[name]);
     return this;
   };

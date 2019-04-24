@@ -1,16 +1,47 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { space, SpaceProps, textAlign, TextAlignProps } from 'styled-system';
+import {
+  alignItems,
+  AlignItemsProps,
+  display,
+  DisplayProps,
+  flex,
+  flexDirection,
+  FlexDirectionProps,
+  FlexProps,
+  flexWrap,
+  justifyContent,
+  JustifyContentProps,
+  justifyItems,
+  JustifyItemsProps,
+  space,
+  SpaceProps,
+  textAlign,
+  TextAlignProps,
+} from 'styled-system';
 
-interface IUBlockProps extends SpaceProps, TextAlignProps {
-  display?: 'block' | 'inline' | 'inline-block';
+interface IUBlockProps
+  extends SpaceProps,
+    FlexProps,
+    FlexDirectionProps,
+    JustifyItemsProps,
+    JustifyContentProps,
+    DisplayProps,
+    AlignItemsProps,
+    TextAlignProps {
   visible?: boolean;
 }
 
 const Root = styled.div`
-  display: ${(props: IUBlockProps) => (props.visible ? props.display : 'none')};
+  ${(props: IUBlockProps) => (props.visible ? display(props) : 'display: none')};
   ${space}
   ${textAlign}
+  ${alignItems}
+  ${flexDirection}
+  ${justifyContent}
+  ${justifyItems}
+  ${flexWrap}
+  ${flex}
 `;
 
 const UBlock: React.FunctionComponent<IUBlockProps> = props => {

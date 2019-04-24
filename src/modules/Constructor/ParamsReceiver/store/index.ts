@@ -23,6 +23,7 @@ const store = new BaseStore<IStore, IActions, ISelectors>(
     switchConvertToLower: switchAction('convertToLower'),
     switchDeleteNumberWords: switchAction('deleteNumberWords'),
     switchSortByAlphabet: switchAction('sortByAlphabet'),
+    reset: state => state,
   },
   {
     convertToLower: true,
@@ -32,6 +33,8 @@ const store = new BaseStore<IStore, IActions, ISelectors>(
     text: 'Привет, тут у нас небольшое предложение с 8 членами.',
   }
 );
+
+store.setAction('reset', state => ({ ...state, ...store.initialStore }));
 
 const { selectors, actions, reducers } = store;
 

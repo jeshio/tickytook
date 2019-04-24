@@ -26,6 +26,7 @@ export interface IActions {
   fetchExtraWords: () => ICAction;
   fetchExtraWordsFailure: () => ICAction;
   fetchExtraWordsSuccess: (extraWords: string[]) => ICAction;
+  reset: () => ICAction;
 }
 
 export interface ISagaWorkers extends ICSagas {

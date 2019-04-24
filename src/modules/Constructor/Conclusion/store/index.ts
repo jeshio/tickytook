@@ -51,6 +51,7 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
         inactiveHashtags,
       };
     },
+    reset: state => state,
   },
   {
     extraHashtags: [],
@@ -80,6 +81,8 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
       stateSelectors.hashtags.filter(h => !s.inactiveHashtags.has(h)),
   }
 );
+
+store.setAction('reset', state => ({ ...state, ...store.initialStore }));
 
 store.setApi(Api.endPoints);
 

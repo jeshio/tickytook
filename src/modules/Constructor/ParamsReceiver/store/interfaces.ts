@@ -16,4 +16,5 @@ export interface IActions {
   switchDeleteNumberWords: () => ICAction;
   switchSortByAlphabet: () => ICAction;
   setMinimumHashtagLength: (length: number) => ICAction;
+  reset: () => ICAction;
 }
