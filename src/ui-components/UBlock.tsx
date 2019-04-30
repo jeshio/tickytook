@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import * as cssType from 'styled-components/cssprop';
 import {
   alignItems,
   AlignItemsProps,
@@ -20,7 +21,7 @@ import {
   TextAlignProps,
 } from 'styled-system';
 
-interface IUBlockProps
+export interface IUBlockProps
   extends SpaceProps,
     FlexProps,
     FlexDirectionProps,
@@ -30,6 +31,7 @@ interface IUBlockProps
     AlignItemsProps,
     TextAlignProps {
   visible?: boolean;
+  ref?: React.RefObject<HTMLDivElement>;
 }
 
 const Root = styled.div`
@@ -42,11 +44,19 @@ const Root = styled.div`
   ${justifyItems}
   ${flexWrap}
   ${flex}
+  ${props => props.css}
 `;
 
-const UBlock: React.FunctionComponent<IUBlockProps> = props => {
-  return <Root {...props}>{props.children}</Root>;
-};
+const UBlock: React.FunctionComponent<IUBlockProps> = React.forwardRef<
+  HTMLDivElement,
+  IUBlockProps
+>((props, ref) => {
+  return (
+    <Root {...props} ref={ref as any}>
+      {props.children}
+    </Root>
+  );
+});
 
 UBlock.defaultProps = {
   display: 'block',

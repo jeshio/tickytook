@@ -35,7 +35,7 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
       extraWords: {
         ...state.extraWords,
         loading: false,
-        data: uniq([...action.payload[0], ...state.extraWords.data]),
+        data: uniq(action.payload[0].length > 0 ? action.payload[0] : state.extraWords.data),
       },
     }),
     switchHashtagActiveStatus: (state, action) => {

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import UBlock from 'src/ui-components/UBlock';
+import UBlockLimitedHeight from 'src/ui-components/UBlockLimitedHeight';
 import UHashtag from 'src/ui-components/UHashtag';
 import USubTitle from 'src/ui-components/USubTitle';
 
@@ -20,11 +21,19 @@ class ExtraWords extends React.PureComponent<IExtraWordsProps, any> {
         <UBlock visible={actualExtraHashtags.length > 0}>
           Кликай на слова, чтобы закинуть их в котёл хэштегов:
         </UBlock>
-        {actualExtraHashtags.map((w, i) => (
-          <UBlock display="inline-block" key={i} marginTop={0} marginBottom="1px" marginRight="1px">
-            <UHashtag onClick={this.onWordClick(w)}>{w}</UHashtag>
-          </UBlock>
-        ))}
+        <UBlockLimitedHeight maxHeight={['250px', '250px', '250px', '500px']}>
+          {actualExtraHashtags.map((w, i) => (
+            <UBlock
+              display="inline-block"
+              key={i}
+              marginTop={0}
+              marginBottom="1px"
+              marginRight="1px"
+            >
+              <UHashtag onClick={this.onWordClick(w)}>{w}</UHashtag>
+            </UBlock>
+          ))}
+        </UBlockLimitedHeight>
         {actualExtraHashtags.length === 0 && (
           <UBlock py="3rem" px={['1.5rem', '5rem']} textAlign="center">
             Напиши хэштеги или текст вверху, чтобы можно было наколдовать новые хэштеги
