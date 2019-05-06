@@ -3,7 +3,9 @@ import setValueByArrayIndex from 'src/core/utils/setValueByArrayIndex';
 import UBlock from 'src/ui-components/UBlock';
 import UButton from 'src/ui-components/UButton';
 import UHashtag from 'src/ui-components/UHashtag';
+import UInline from 'src/ui-components/UInline';
 import USubTitle from 'src/ui-components/USubTitle';
+import Block from './Block';
 
 interface IHashtagsTextProps {
   hashtags: string[];
@@ -28,18 +30,21 @@ class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsText
     const { showSuccessCopyMessage } = this.state;
 
     return (
-      <UBlock>
-        <USubTitle>
-          Котёл хэштегов
-          <UBlock visible={hashtags.length > 0} display="inline">
+      <Block
+        title="Котёл хэштегов"
+        header={
+          <UInline visible={[false, false, hashtags.length > 0]}>
             <UButton onClick={this.handleCopyClick(0)} appearance="link" px={0} paddingLeft={1}>
               {showSuccessCopyMessage[0] ? 'скопировано!' : 'копировать из котла'}
             </UButton>
-          </UBlock>
-        </USubTitle>
-
+          </UInline>
+        }
+        stepNumber={3}
+      >
         <UBlock my={0} visible={hashtags.length > 0}>
-          <UBlock>Кликай, чтобы убрать (или добавить) из котла:</UBlock>
+          <UBlock px={2} paddingBottom={2}>
+            Кликай, чтобы убрать (или добавить) из котла:
+          </UBlock>
           <UBlock marginBottom={0}>
             {hashtags.map((h, i) => (
               <UHashtag
@@ -52,11 +57,17 @@ class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsText
             ))}
           </UBlock>
 
-          <UBlock marginTop={0}>Количество хэштегов в котле: {activeHashtags.length}</UBlock>
+          <UBlock py={2} px={2}>
+            Количество хэштегов в котле: {activeHashtags.length}
+          </UBlock>
 
-          <UBlock textAlign="center" visible={hashtags.length > 0}>
-            <UButton onClick={this.handleCopyClick(1)} appearance="primary">
-              {showSuccessCopyMessage[1] ? 'скопировано!' : 'копировать из котла'}
+          <UBlock textAlign="center" visible={hashtags.length > 0} paddingTop={2}>
+            <UButton
+              onClick={this.handleCopyClick(1)}
+              appearance="primary"
+              extraText="только хэштеги"
+            >
+              {showSuccessCopyMessage[1] ? 'Скопировано!' : 'Копировать из котла'}
             </UButton>
           </UBlock>
         </UBlock>
@@ -69,7 +80,7 @@ class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsText
         >
           Котёл пока ещё пуст.
         </UBlock>
-      </UBlock>
+      </Block>
     );
   }
 

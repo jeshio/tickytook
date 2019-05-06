@@ -54,7 +54,7 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
         >
           добавить слова заклинания в котёл хэштегов
         </UForm.Checkbox>
-        <UBlock my={0}>
+        <UBlock my={0} textAlign="center">
           <UButton onClick={this.switchParamsDisplay} appearance="link" py={0}>
             {displayParams ? 'Скрыть параметры' : 'Показать параметры'}...
           </UButton>
@@ -62,14 +62,23 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
         <UBlock visible={displayParams}>
           <UGrid.Row>
             <UGrid.Col md={7}>
-              <UBlock marginLeft={2} marginTop={0}>
+              <UBlock marginLeft={2} marginTop={0} visible={[false, false, true]}>
+                <UForm.Input
+                  name="minimumHashtagLength"
+                  type="number"
+                  placeholder="убрать хэштеги длиной менее"
+                  onChange={onChangeMinimumHashtagLength}
+                  label="Минимальная длина хэштега"
+                />
+              </UBlock>
+              <UBlock marginLeft={2} marginTop={0} visible={[true, true, false]}>
                 <UForm.Group>
+                  <UForm.Label>Минимальная длина хэштега</UForm.Label>
                   <UForm.Input
                     name="minimumHashtagLength"
                     type="number"
                     placeholder="убрать хэштеги длиной менее"
                     onChange={onChangeMinimumHashtagLength}
-                    label="Минимальная длина хэштега"
                   />
                 </UForm.Group>
               </UBlock>

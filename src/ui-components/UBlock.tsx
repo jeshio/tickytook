@@ -1,16 +1,18 @@
 import * as React from 'react';
+import displayWithVisibleChecking from 'src/core/extends/styled-system/displayWithVisibleChecking';
+import { VisibleProps } from 'src/core/extends/styled-system/interfaces';
 import styled from 'styled-components';
 import * as cssType from 'styled-components/cssprop';
 import {
   alignItems,
   AlignItemsProps,
-  display,
   DisplayProps,
   flex,
   flexDirection,
   FlexDirectionProps,
   FlexProps,
   flexWrap,
+  FlexWrapProps,
   justifyContent,
   JustifyContentProps,
   justifyItems,
@@ -25,17 +27,18 @@ export interface IUBlockProps
   extends SpaceProps,
     FlexProps,
     FlexDirectionProps,
+    FlexWrapProps,
     JustifyItemsProps,
     JustifyContentProps,
     DisplayProps,
     AlignItemsProps,
-    TextAlignProps {
-  visible?: boolean;
+    TextAlignProps,
+    VisibleProps {
   ref?: React.RefObject<HTMLDivElement>;
 }
 
 const Root = styled.div`
-  ${(props: IUBlockProps) => (props.visible ? display(props) : 'display: none')};
+  ${displayWithVisibleChecking};
   ${space}
   ${textAlign}
   ${alignItems}
@@ -60,7 +63,6 @@ const UBlock: React.FunctionComponent<IUBlockProps> = React.forwardRef<
 
 UBlock.defaultProps = {
   display: 'block',
-  my: [1, 1, 2],
   visible: true,
 };
 

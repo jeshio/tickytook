@@ -1,10 +1,14 @@
 import * as React from 'react';
-import withInChildrenLoader from 'src/core/hocs/withInChildrenLoader';
+import styled from 'styled-components';
 
-interface IUSubTitleProps extends React.HTMLProps<HTMLHeadingElement> {}
+export interface IUSubTitleProps extends React.HTMLProps<HTMLHeadingElement> {}
+
+const Root = styled.h2`
+  font-size: 1.25rem;
+`;
 
 const USubTitle: React.FunctionComponent<IUSubTitleProps> = props => {
-  return <h2 {...props}>{props.children}</h2>;
+  return <Root {...props as any}>{props.children}</Root>;
 };
 
-export default withInChildrenLoader<IUSubTitleProps>(USubTitle);
+export default USubTitle;

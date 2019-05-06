@@ -6,6 +6,7 @@
     "interface-name": false,
     "no-empty-interface": false,
     "object-literal-sort-keys": false,
-    "no-empty": false
+    "no-empty": false,
+    "variable-name": [true, "allow-pascal-case", "allow-leading-underscore"]
   }
 }

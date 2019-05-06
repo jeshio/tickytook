@@ -10,7 +10,7 @@ interface IUHashtagProps {
   children: string | string[];
 }
 
-const Root = styled.span<SpaceProps>`
+const Root = styled(UButton)`
   display: inline-block;
   color: ${(props: any) =>
     props.isDeleted ? (props.theme as TTheme).colors.grey : (props.theme as TTheme).colors.white};
@@ -18,16 +18,16 @@ const Root = styled.span<SpaceProps>`
     props.isDeleted
       ? (props.theme as TTheme).colors.lightGrey
       : (props.theme as TTheme).colors.blue};
-  ${space}
+  border-radius: 0;
+  font-weight: 300;
+  ${space};
 `;
 
 const UHashtag: React.FunctionComponent<IUHashtagProps> = props => {
   const { children, onClick, ...restProps } = props;
   return (
-    <Root {...restProps}>
-      <UButton size="xs" px={3} py="2px" mb="1px" mr="1px" noBg={true} onClick={onClick}>
-        {children}
-      </UButton>
+    <Root {...restProps} size="xs" px={3} py={1} mb="1px" mr="1px" onClick={onClick}>
+      {children}
     </Root>
   );
 };

@@ -16,11 +16,19 @@ breakpoints.xl = breakpoints[4];
 export default {
   breakpoints,
   colors: {
+    red: '#FC6F6F',
     blue: 'cornflowerblue',
     darkGrey: '#777',
-    grey: '#aaa',
+    grey: '#B5B5B5',
+    green: '#2AA637',
+    orange: '#F19700',
+    lightGreen: '#5ecd6e',
     lightGrey: '#ddd',
     white: '#fff',
   },
-  space: ['0', '.25rem', '.5rem', '.75rem', '1rem'],
+  designColors: {
+    background: '#F1ECCE',
+    link: '#F19700',
+  },
+  space: ['0', '.25rem', '.5rem', '.75rem', '1rem', '1.5rem', '2rem', '2.5rem', '3rem'],
 };

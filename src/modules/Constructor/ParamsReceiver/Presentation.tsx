@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import NewSpellIcon from 'src/images/icons/magic-wand.svg';
+import { ReactComponent as NewSpellIcon } from 'src/images/icons/reset.svg';
+import Logo from 'src/images/logo.svg';
 import UBlock from 'src/ui-components/UBlock';
 import UButton from 'src/ui-components/UButton';
 import UGrid from 'src/ui-components/UGrid';
-import UTitle from 'src/ui-components/UTitle';
+import UIcon from 'src/ui-components/UIcon';
+import UIconButton from 'src/ui-components/UIconButton';
+import { UImage } from 'src/ui-components/UImage';
 import Params from './components/Params';
 import TextReceiver from './components/TextReceiver';
 import { IActions, ISelectors } from './store';
@@ -14,24 +17,24 @@ export default class Presentation extends Component<IPresentationProps, any> {
   public render() {
     const { text, changeText } = this.props;
     return (
-      <div>
-        <UBlock my={4}>
+      <UBlock marginBottom={[3]}>
+        <UBlock my={[2]}>
           <UBlock
             display="flex"
             flexDirection="row"
             justifyContent="space-between"
             alignItems="center"
           >
-            <UTitle style={{ margin: 0 }}>Tickytook - наколдуй хэштеги</UTitle>
-            <UBlock my={0} textAlign="right" display={['none', 'none', 'block']}>
+            <UBlock mx={[1]} my={0}>
+              <UImage src={Logo} width={['18rem']} />
+            </UBlock>
+            <UBlock my={0} textAlign="right" visible={[false, false, true]}>
               <UButton appearance="ghost" onClick={this.props.reset}>
                 Новое заклятие
               </UButton>
             </UBlock>
-            <UBlock my={0} textAlign="right" display={['block', 'block', 'none']}>
-              <UButton appearance="ghost" onClick={this.props.reset}>
-                <img src={NewSpellIcon} width="24" />
-              </UButton>
+            <UBlock my={0} textAlign="right" visible={[true, true, false]}>
+              <UIconButton appearance="ghost" onClick={this.props.reset} svg={NewSpellIcon} />
             </UBlock>
           </UBlock>
         </UBlock>
@@ -45,7 +48,7 @@ export default class Presentation extends Component<IPresentationProps, any> {
             <Params {...this.props} />
           </UGrid.Col>
         </UGrid.Row>
-      </div>
+      </UBlock>
     );
   }
 }
