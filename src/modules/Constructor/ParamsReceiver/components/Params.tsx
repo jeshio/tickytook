@@ -3,6 +3,8 @@ import UBlock from 'src/ui-components/UBlock';
 import UButton from 'src/ui-components/UButton';
 import UForm from 'src/ui-components/UForm';
 import UGrid from 'src/ui-components/UGrid';
+import styled from 'styled-components';
+import { display } from 'styled-system';
 
 interface IParamsProps {
   convertToLower: boolean;
@@ -20,6 +22,11 @@ interface IParamsProps {
 interface IParamsState {
   displayParams: boolean;
 }
+
+const FlexUGridRow = styled(UGrid.Row)`
+  ${display};
+  align-items: center;
+`;
 
 class Params extends React.PureComponent<IParamsProps, IParamsState> {
   public state = {
@@ -47,21 +54,27 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
           minimumHashtagLength: minimumHashtagLength.toString(),
         }}
       >
-        <UForm.Checkbox
-          name="spellWordsToHashtags"
-          checked={spellWordsToHashtags}
-          onChange={switchSpellWordsToHashtags}
-        >
-          добавить слова заклинания в котёл хэштегов
-        </UForm.Checkbox>
-        <UBlock my={0} textAlign="center">
-          <UButton onClick={this.switchParamsDisplay} appearance="link" py={0}>
-            {displayParams ? 'Скрыть параметры' : 'Показать параметры'}...
-          </UButton>
-        </UBlock>
+        <UGrid.Row>
+          <UGrid.Col sm={16}>
+            <UForm.Checkbox
+              name="spellWordsToHashtags"
+              checked={spellWordsToHashtags}
+              onChange={switchSpellWordsToHashtags}
+            >
+              добавить слова заклинания в котёл хэштегов
+            </UForm.Checkbox>
+          </UGrid.Col>
+          <UGrid.Col sm={8}>
+            <UBlock my={0} textAlign={['center', 'right']}>
+              <UButton onClick={this.switchParamsDisplay} appearance="link" py={0}>
+                {displayParams ? 'Скрыть параметры' : 'Показать параметры'}...
+              </UButton>
+            </UBlock>
+          </UGrid.Col>
+        </UGrid.Row>
         <UBlock visible={displayParams}>
-          <UGrid.Row>
-            <UGrid.Col md={7}>
+          <FlexUGridRow display={['block', 'block', 'flex']}>
+            <UGrid.Col sm={7}>
               <UBlock marginLeft={2} marginTop={0} visible={[false, false, true]}>
                 <UForm.Input
                   name="minimumHashtagLength"
@@ -83,7 +96,7 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
                 </UForm.Group>
               </UBlock>
             </UGrid.Col>
-            <UGrid.Col md={5}>
+            <UGrid.Col sm={5}>
               <UForm.Checkbox
                 name="convertToLower"
                 checked={convertToLower}
@@ -92,7 +105,7 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
                 перевести в нижний регистр
               </UForm.Checkbox>
             </UGrid.Col>
-            <UGrid.Col md={5}>
+            <UGrid.Col sm={5}>
               <UForm.Checkbox
                 name="sortByAlphabet"
                 checked={sortByAlphabet}
@@ -101,7 +114,7 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
                 сортировать по алфавиту
               </UForm.Checkbox>
             </UGrid.Col>
-            <UGrid.Col md={6}>
+            <UGrid.Col sm={6}>
               <UForm.Checkbox
                 name="deleteNumberWords"
                 checked={deleteNumberWords}
@@ -110,7 +123,7 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
                 убрать хэштеги целиком из цифр
               </UForm.Checkbox>
             </UGrid.Col>
-          </UGrid.Row>
+          </FlexUGridRow>
         </UBlock>
       </UForm>
     );

@@ -10,7 +10,7 @@ interface IUHashtagProps {
   children: string | string[];
 }
 
-const Root = styled(UButton)`
+const Root = styled(({ isDeleted, ...props }) => <UButton {...props} />)`
   display: inline-block;
   color: ${(props: any) =>
     props.isDeleted ? (props.theme as TTheme).colors.grey : (props.theme as TTheme).colors.white};

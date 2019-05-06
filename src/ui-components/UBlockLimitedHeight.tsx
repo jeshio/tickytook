@@ -37,7 +37,7 @@ const Root = styled.div<IUBlockLimitedHeightState>`
   &::after {
     content: '';
     position: absolute;
-    bottom: -2px;
+    bottom: -5px;
     left: 0;
     right: 0;
     height: ${props => `${props.bottomBorderHeight}px`};

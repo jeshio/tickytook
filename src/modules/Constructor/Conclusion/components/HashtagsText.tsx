@@ -30,17 +30,7 @@ class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsText
     const { showSuccessCopyMessage } = this.state;
 
     return (
-      <Block
-        title="Котёл хэштегов"
-        header={
-          <UInline visible={[false, false, hashtags.length > 0]}>
-            <UButton onClick={this.handleCopyClick(0)} appearance="link" px={0} paddingLeft={1}>
-              {showSuccessCopyMessage[0] ? 'скопировано!' : 'копировать из котла'}
-            </UButton>
-          </UInline>
-        }
-        stepNumber={3}
-      >
+      <Block title="Котёл хэштегов" stepNumber={3}>
         <UBlock my={0} visible={hashtags.length > 0}>
           <UBlock px={2} paddingBottom={2}>
             Кликай, чтобы убрать (или добавить) из котла:

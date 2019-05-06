@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ReactComponent as NewSpellIcon } from 'src/images/icons/reset.svg';
+import { ReactComponent as NewSpellIconComponent } from 'src/images/icons/reset.svg';
 import Logo from 'src/images/logo.svg';
 import UBlock from 'src/ui-components/UBlock';
 import UButton from 'src/ui-components/UButton';
@@ -26,15 +26,23 @@ export default class Presentation extends Component<IPresentationProps, any> {
             alignItems="center"
           >
             <UBlock mx={[1]} my={0}>
-              <UImage src={Logo} width={['18rem']} />
+              <UImage src={Logo} width={['18rem', '21rem']} />
             </UBlock>
-            <UBlock my={0} textAlign="right" visible={[false, false, true]}>
-              <UButton appearance="ghost" onClick={this.props.reset}>
+            <UBlock my={0} textAlign="right" visible={[false, true]}>
+              <UButton
+                appearance="ghost"
+                onClick={this.props.reset}
+                icon={<UIcon svg={NewSpellIconComponent} />}
+              >
                 Новое заклятие
               </UButton>
             </UBlock>
-            <UBlock my={0} textAlign="right" visible={[true, true, false]}>
-              <UIconButton appearance="ghost" onClick={this.props.reset} svg={NewSpellIcon} />
+            <UBlock my={0} textAlign="right" visible={[true, false]}>
+              <UIconButton
+                appearance="ghost"
+                onClick={this.props.reset}
+                svg={NewSpellIconComponent}
+              />
             </UBlock>
           </UBlock>
         </UBlock>
