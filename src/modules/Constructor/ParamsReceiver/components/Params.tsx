@@ -1,6 +1,7 @@
 import * as React from 'react';
 import UBlock from 'src/ui-components/UBlock';
 import UButton from 'src/ui-components/UButton';
+import UFlexboxGrid from 'src/ui-components/UFlexboxGrid';
 import UForm from 'src/ui-components/UForm';
 import UGrid from 'src/ui-components/UGrid';
 import styled from 'styled-components';
@@ -54,8 +55,8 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
           minimumHashtagLength: minimumHashtagLength.toString(),
         }}
       >
-        <UGrid.Row>
-          <UGrid.Col sm={16}>
+        <UFlexboxGrid flexDirection={['column', 'row']} align="middle" justify="space-between">
+          <UFlexboxGrid.Item>
             <UForm.Checkbox
               name="spellWordsToHashtags"
               checked={spellWordsToHashtags}
@@ -63,15 +64,15 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
             >
               добавить слова заклинания в котёл хэштегов
             </UForm.Checkbox>
-          </UGrid.Col>
-          <UGrid.Col sm={8}>
+          </UFlexboxGrid.Item>
+          <UFlexboxGrid.Item>
             <UBlock my={0} textAlign={['center', 'right']}>
               <UButton onClick={this.switchParamsDisplay} appearance="link" py={0}>
                 {displayParams ? 'Скрыть параметры' : 'Показать параметры'}...
               </UButton>
             </UBlock>
-          </UGrid.Col>
-        </UGrid.Row>
+          </UFlexboxGrid.Item>
+        </UFlexboxGrid>
         <UBlock visible={displayParams}>
           <FlexUGridRow display={['block', 'block', 'flex']}>
             <UGrid.Col sm={7}>

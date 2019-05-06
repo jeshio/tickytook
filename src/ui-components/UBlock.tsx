@@ -6,6 +6,8 @@ import * as cssType from 'styled-components/cssprop';
 import {
   alignItems,
   AlignItemsProps,
+  borderRadius,
+  BorderRadiusProps,
   DisplayProps,
   flex,
   flexDirection,
@@ -33,6 +35,7 @@ export interface IUBlockProps
     DisplayProps,
     AlignItemsProps,
     TextAlignProps,
+    BorderRadiusProps,
     VisibleProps {
   ref?: React.RefObject<HTMLDivElement>;
 }
@@ -47,6 +50,7 @@ const Root = styled.div`
   ${justifyItems}
   ${flexWrap}
   ${flex}
+  ${borderRadius};
   ${props => props.css}
 `;
 

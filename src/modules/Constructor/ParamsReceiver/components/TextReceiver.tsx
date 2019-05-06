@@ -3,6 +3,7 @@ import TTheme from 'src/core/types/TTheme';
 import UStep from 'src/ui-components/UStep';
 import UTextarea from 'src/ui-components/UTextarea';
 import styled from 'styled-components';
+import { space } from 'styled-system';
 
 export interface TextReceiverProps {
   value: string;
@@ -17,6 +18,7 @@ const Root = styled.div`
 const Textarea = styled(UTextarea)`
   border-radius: 0 5px 5px 0;
   min-height: 48px !important;
+  ${space};
 `;
 
 const Step = styled(UStep)`
@@ -49,6 +51,7 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
           onChange={onChange}
           autoHeight={true}
           inputRef={this.fieldRef}
+          paddingTop={['6px', 4]}
         />
       </Root>
     );
