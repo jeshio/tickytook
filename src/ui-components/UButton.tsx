@@ -1,12 +1,15 @@
+import { darken, lighten } from 'polished';
 import * as React from 'react';
 import { Button, PropTypes } from 'rsuite';
 import { ButtonProps } from 'rsuite/types/Button';
+import displayWithVisibleChecking from 'src/core/extends/styled-system/displayWithVisibleChecking';
+import { VisibleProps } from 'src/core/extends/styled-system/interfaces';
 import TTheme from 'src/core/types/TTheme';
 import styled from 'styled-components';
 import { color, space, SpaceProps } from 'styled-system';
 import UIcon from './UIcon';
 
-export interface IUButtonProps extends ButtonProps, SpaceProps {
+export interface IUButtonProps extends ButtonProps, SpaceProps, VisibleProps {
   noBg?: boolean;
   extraText?: string;
   icon?: UIcon;
@@ -22,6 +25,7 @@ const noBgProps = (props: IUButtonProps) => ({
 });
 
 const StyledButton = styled(Button)`
+  ${displayWithVisibleChecking};
   ${space};
   ${color};
   font-size: 1rem;
@@ -31,6 +35,10 @@ const StyledButton = styled(Button)`
 
   &.rs-btn-primary {
     background-color: ${props => (props.theme as TTheme).colors.green};
+
+    &:hover {
+      background-color: ${props => darken(0.05, (props.theme as TTheme).colors.green)};
+    }
   }
 
   &.rs-btn-ghost {
@@ -44,6 +52,14 @@ const StyledButton = styled(Button)`
   &.rs-btn-link {
     color: ${props => (props.theme as TTheme).designColors.link};
     font-weight: 400;
+  }
+
+  &.rs-btn-blue {
+    background-color: ${props => (props.theme as TTheme).colors.blue};
+
+    &:hover {
+      background-color: ${props => lighten(0.05, (props.theme as TTheme).colors.blue)};
+    }
   }
 
   svg {
@@ -70,7 +86,7 @@ const UButton: React.FunctionComponent<IUButtonProps> = ({ noBg, extraText, icon
           style={
             icon
               ? {
-                  paddingLeft: '3px',
+                  paddingLeft: '5px',
                   paddingBottom: '2px',
                 }
               : {}
@@ -85,6 +101,7 @@ const UButton: React.FunctionComponent<IUButtonProps> = ({ noBg, extraText, icon
 };
 
 UButton.defaultProps = {
+  display: 'inline',
   noBg: false,
 };
 

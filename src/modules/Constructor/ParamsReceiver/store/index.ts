@@ -25,6 +25,7 @@ const store = new BaseStore<IStore, IActions, ISelectors>(
     switchSortByAlphabet: switchAction('sortByAlphabet'),
     switchSpellWordsToHashtags: switchAction('spellWordsToHashtags'),
     reset: state => state,
+    wiz: state => state,
   },
   {
     convertToLower: true,

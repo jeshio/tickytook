@@ -36,6 +36,7 @@ const Icon = styled(
 const UIcon: React.FunctionComponent<IUIconProps> = props => {
   const params = {
     width: getSize(props.size as TIconSize),
+    height: getSize(props.size as TIconSize),
   };
   return props.svg ? (
     <Icon Component={props.svg} svgStyle={props.svgStyle} {...params} />

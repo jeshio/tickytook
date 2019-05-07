@@ -40,7 +40,7 @@ export interface IUBlockProps
   ref?: React.RefObject<HTMLDivElement>;
 }
 
-const Root = styled.div`
+const Root = styled.div<any>`
   ${displayWithVisibleChecking};
   ${space}
   ${textAlign}

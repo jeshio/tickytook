@@ -60,7 +60,7 @@ export default function sagas(
 
       while (true) {
         const action = yield race({
-          changeWords: take(store.actions.changeWords.type),
+          wiz: take(ParamsReceiverStore.actions.wiz.type),
           fetchExtraWords: take(store.actions.fetchExtraWords.type),
         });
 
@@ -69,10 +69,6 @@ export default function sagas(
         }
 
         lastTask = yield fork(function*() {
-          if (action.changeWords) {
-            yield delay(1000);
-          }
-
           if (!action.fetchExtraWords) {
             yield put(store.actions.fetchExtraWords());
           }
@@ -80,7 +76,7 @@ export default function sagas(
           const fetchTask = yield fork(sagaService.sagaWorkers.fetchExtraWords);
 
           if (yield take(store.actions.reset.type)) {
-            yield cancel([lastTask, fetchTask]);
+            yield cancel([fetchTask, lastTask]);
           }
         });
       }

@@ -13,6 +13,7 @@ export interface ISelectors extends IStore {}
 
 export interface IActions {
   changeText: (text: string) => ICAction;
+  wiz: () => ICAction;
   switchConvertToLower: () => ICAction;
   switchDeleteNumberWords: () => ICAction;
   switchSortByAlphabet: () => ICAction;

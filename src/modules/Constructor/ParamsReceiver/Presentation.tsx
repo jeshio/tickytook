@@ -48,7 +48,7 @@ export default class Presentation extends Component<IPresentationProps, any> {
         </UBlock>
         <UGrid.Row>
           <UGrid.Col md={24}>
-            <TextReceiver value={text} onChange={changeText} />
+            <TextReceiver value={text} onChange={changeText} onFormSubmit={this.props.wiz} />
           </UGrid.Col>
         </UGrid.Row>
         <UGrid.Row>

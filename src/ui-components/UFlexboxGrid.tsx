@@ -3,22 +3,37 @@ import { FlexboxGrid } from 'rsuite';
 import { FlexboxGridProps } from 'rsuite/types/FlexboxGrid';
 import { FlexboxGridItemProps } from 'rsuite/types/FlexboxGridItem';
 import styled from 'styled-components';
-import { flexDirection, FlexDirectionProps, flexWrap, FlexWrapProps } from 'styled-system';
+import {
+  flex,
+  flexDirection,
+  FlexDirectionProps,
+  FlexProps,
+  flexWrap,
+  FlexWrapProps,
+} from 'styled-system';
 
 interface IUFlexboxGridProps extends FlexboxGridProps, FlexWrapProps, FlexDirectionProps {}
 
-const Root = styled(FlexboxGrid)`
+interface IUFlexboxGridItemProps extends FlexboxGridItemProps, FlexProps {}
+
+const StyledUFlexboxGrid = styled(({ flexWrap: a, flexDirection: b, ...props }) => (
+  <FlexboxGrid {...props} />
+))`
   ${flexWrap};
   ${flexDirection};
 `;
 
+const StyledItem = styled(FlexboxGrid.Item)`
+  ${flex};
+`;
+
 const UFlexboxGrid: React.FunctionComponent<IUFlexboxGridProps> & {
-  Item: React.FunctionComponent<FlexboxGridItemProps>;
+  Item: React.FunctionComponent<IUFlexboxGridItemProps>;
 } = props => {
-  return <Root {...props} />;
+  return <StyledUFlexboxGrid {...props} />;
 };
 
-UFlexboxGrid.Item = (props: FlexboxGridItemProps) => <FlexboxGrid.Item {...props} />;
+UFlexboxGrid.Item = (props: IUFlexboxGridItemProps) => <StyledItem {...props} />;
 
 UFlexboxGrid.defaultProps = {
   justify: 'space-around',

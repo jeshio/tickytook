@@ -24,7 +24,7 @@ class ExtraWords extends React.PureComponent<IExtraWordsProps, any> {
           {actualExtraHashtags.map((w, i) => (
             <UBlock
               display="inline-block"
-              key={i}
+              key={w}
               marginTop={0}
               marginBottom="1px"
               marginRight="1px"
