@@ -4,6 +4,6 @@ services:
     container_name: tickytook-frontend
     build:
       context: .
-      dockerfile: prod.Dockerfile
+      dockerfile: Dockerfile
     ports:
       - '80:80'
