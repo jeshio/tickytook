@@ -8,7 +8,8 @@ stages:
 
 build production:
   stage: Build production image
-  only: master
+  only:
+  - master
   script:
   - docker info
   - docker-compose up -d --build
