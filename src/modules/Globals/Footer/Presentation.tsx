@@ -11,7 +11,7 @@ const Root = styled(UBlock)`
 const Presentation: React.FunctionComponent<IPresentationProps> = props => {
   return (
     <Root textAlign="center" py={4} borderRadius={[0, '5px']}>
-      © 2019 Все права защищены,{' '}
+      © 2019&nbsp;&nbsp;Все права защищены,{' '}
       <a href="https://www.instagram.com/ga_ivanov/" target="_blank">
         @jeshio
       </a>
