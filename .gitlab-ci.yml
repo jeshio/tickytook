@@ -1,10 +1,16 @@
 image: docker:stable
 
 stages:
-  - Build image
+  - Deploy
 
 docker build:
   stage: Build image
   script:
   - docker info
-  - docker build -t myimage .
+  - docker run -d -p 80:80 --name tickytook-frontend jeshio/tickytook-frontend
+
+# deploy:
+#   stage: Deploy
+#   script:
+#     - echo "Connect to server"
+#     - ssh 
