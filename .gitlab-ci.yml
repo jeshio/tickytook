@@ -6,6 +6,10 @@ services:
 stages:
   - Build production image
 
+before_script:
+  - chmod +x ./setup_env.sh
+  - ./setup_env.sh
+
 build production:
   stage: Build production image
   only:

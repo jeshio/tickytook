@@ -1,3 +1,4 @@
+import { API_URL } from 'src/config';
 import ApiService from 'src/core/services/ApiService';
 import { IEndPoints } from './interfaces';
 
@@ -7,7 +8,7 @@ Api.addEndPoint('extraWords', {
   failureResponse: response => ({ error: 'test' }),
   method: 'get',
   successResponse: response => response,
-  url: 'http://localhost:4004/extra-words',
+  url: `${API_URL}/extra-words`,
 });
 
 export default Api;
