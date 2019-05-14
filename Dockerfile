@@ -11,6 +11,7 @@ WORKDIR /usr/app
 COPY --from=deps /usr/app/node_modules /usr/app/node_modules
 COPY . /usr/app
 
+RUN chmod +x /usr/app/setup.env.sh
 RUN /usr/app/setup.env.sh
 RUN yarn build
 
