@@ -11,6 +11,7 @@ build production:
   only:
   - master
   script:
+  - echo "$API_URL"
   - docker info
   - docker-compose up -d --build
   # - docker run -d -p 80:80 --name tickytook-frontend jeshio/tickytook-frontend
