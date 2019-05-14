@@ -10,7 +10,8 @@ FROM node_base as build
 WORKDIR /usr/app
 COPY --from=deps /usr/app/node_modules /usr/app/node_modules
 COPY . /usr/app
-CMD ./setup.env.sh
+
+RUN /usr/app/setup.env.sh
 RUN yarn build
 
 FROM nginx:1.12-alpine

@@ -10,13 +10,11 @@
 
 ## GitLab CI
 
-```
 Based on [the article](https://angristan.xyz/build-push-docker-images-gitlab-ci/)
-```
 
 Setting the gitlab-runner in your host machine and start.
 
-1. Create dir:
+1. Make structure:
 
 ```
 .
