@@ -7,3 +7,5 @@ services:
       dockerfile: Dockerfile
     ports:
       - '81:80'
+    environment:
+      - API_URL
