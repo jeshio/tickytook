@@ -32,7 +32,7 @@ const store = new BaseStore<IStore, IActions, ISelectors>(
     deleteNumberWords: true,
     minimumHashtagLength: 3,
     sortByAlphabet: true,
-    text: 'Привет, тут у нас небольшое предложение с 8 членами.',
+    text: '', // 'Привет, тут у нас небольшое предложение с 8 членами.',
     spellWordsToHashtags: true,
   }
 );

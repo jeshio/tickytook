@@ -26,11 +26,13 @@ export default class Presentation extends Component<IPresentationProps, any> {
           </UBlock>
           <UBlock paddingLeft={[0, 1]} flex={1}>
             <HashtagsText {...this.props} />
-            <Post
-              activeHashtags={this.props.activeHashtags}
-              text={this.props.paramsReceiver.text}
-              onCopyPost={this.props.onCopyPost}
-            />
+            <UBlock visible={this.props.paramsReceiver.text.length > 0}>
+              <Post
+                activeHashtags={this.props.activeHashtags}
+                text={this.props.paramsReceiver.text}
+                onCopyPost={this.props.onCopyPost}
+              />
+            </UBlock>
           </UBlock>
         </UBlock>
       </div>
