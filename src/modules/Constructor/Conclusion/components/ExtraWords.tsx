@@ -2,6 +2,7 @@ import * as React from 'react';
 import UBlock from 'src/ui-components/UBlock';
 import UBlockLimitedHeight from 'src/ui-components/UBlockLimitedHeight';
 import UHashtag from 'src/ui-components/UHashtag';
+import styled from 'styled-components';
 import Block from './Block';
 
 interface IExtraWordsProps {
@@ -10,6 +11,14 @@ interface IExtraWordsProps {
   loading: boolean;
   onExtraWordClick: (extraWord: string) => any;
 }
+
+const HashtagBlock = styled(UBlock)`
+  transition: all 1s, margin-right 2s;
+`;
+
+const StyledUBlockLimitedHeight = styled(UBlockLimitedHeight)`
+  overflow-x: hidden;
+`;
 
 class ExtraWords extends React.PureComponent<IExtraWordsProps, any> {
   public render() {
@@ -20,19 +29,31 @@ class ExtraWords extends React.PureComponent<IExtraWordsProps, any> {
         <UBlock visible={actualExtraHashtags.length > 0} px={2} paddingBottom={2}>
           Кликай на слова, чтобы закинуть их в котёл хэштегов:
         </UBlock>
-        <UBlockLimitedHeight maxHeight={['250px', '250px', '250px', '500px']}>
-          {actualExtraHashtags.map((w, i) => (
-            <UBlock
-              display="inline-block"
-              key={w}
-              marginTop={0}
-              marginBottom="1px"
-              marginRight="1px"
-            >
-              <UHashtag onClick={this.onWordClick(w)}>{w}</UHashtag>
-            </UBlock>
-          ))}
-        </UBlockLimitedHeight>
+        <StyledUBlockLimitedHeight maxHeight={['250px', '250px', '250px', '500px']}>
+          {extraWords.map((w, i) => {
+            const isVisible = extraHashtags.indexOf(w) < 0;
+            return (
+              <UBlock display="inline-block" key={w}>
+                <HashtagBlock
+                  display="inline-block"
+                  key={w}
+                  marginTop={0}
+                  marginBottom="1px"
+                  marginRight="1px"
+                  css={`
+                    opacity: ${isVisible ? 1 : 0};
+                    margin-left: ${isVisible ? '0' : '-50px'};
+                    margin-right: ${isVisible ? '1px' : '-250px'};
+                    width: ${isVisible ? '100%' : '0'};
+                    pointer-events: ${isVisible ? 'all' : 'none'};
+                  `}
+                >
+                  <UHashtag onClick={this.onWordClick(w)}>{w}</UHashtag>
+                </HashtagBlock>
+              </UBlock>
+            );
+          })}
+        </StyledUBlockLimitedHeight>
         {actualExtraHashtags.length === 0 && (
           <UBlock py="3rem" px={['1.5rem', '5rem']} textAlign="center">
             Напиши хэштеги или текст вверху, чтобы можно было наколдовать новые хэштеги
