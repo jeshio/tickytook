@@ -1,5 +1,5 @@
+import debounce from 'lodash/debounce';
 import * as React from 'react';
-import TTheme from 'src/core/types/TTheme';
 import { ReactComponent as SpellIconComponent } from 'src/images/icons/magic-wand.svg';
 import UButton from 'src/ui-components/UButton';
 import UFlexboxGrid from 'src/ui-components/UFlexboxGrid';
@@ -15,6 +15,10 @@ export interface TextReceiverProps {
   value: string;
   onChange: (text: string) => void;
   onFormSubmit: () => void;
+}
+
+interface TextReceiverState {
+  cachedValue: string;
 }
 
 const Root = styled.div`
@@ -43,6 +47,16 @@ const Button = styled(({ Component, ...props }) => <Component {...props} />)`
 
 export default class TextReceiver extends React.PureComponent<TextReceiverProps, any> {
   private fieldRef = React.createRef();
+  private onChange: Pick<TextReceiverProps, 'onChange'>['onChange'];
+
+  constructor(props: TextReceiverProps) {
+    super(props);
+
+    this.onChange = debounce(props.onChange, 500);
+    this.state = {
+      cachedValue: props.value,
+    };
+  }
 
   public componentDidMount() {
     try {
@@ -52,11 +66,19 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
     } catch (e) {}
   }
 
+  public componentDidUpdate(prevProps: TextReceiverProps) {
+    if (prevProps.value !== this.props.value) {
+      this.setState({ cachedValue: this.props.value });
+    }
+  }
+
   public render() {
-    const { value, onChange, onFormSubmit } = this.props;
+    const { onFormSubmit } = this.props;
+    const { cachedValue } = this.state;
+    const { handleTextChange } = this;
     return (
       <Root>
-        <UForm formValue={{ text: value }} onSubmit={onFormSubmit}>
+        <UForm formValue={{ text: cachedValue }} onSubmit={onFormSubmit}>
           <UFlexboxGrid flexWrap="nowrap" justify="space-between">
             <Step>1</Step>
             <UFlexboxGrid.Item flex={3}>
@@ -64,7 +86,7 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
                 placeholder="Напишите сюда заклятие (текст или хэштеги)..."
                 rows={1}
                 name="text"
-                onChange={onChange}
+                onChange={handleTextChange}
                 autoHeight={true}
                 inputRef={this.fieldRef}
                 paddingTop={['6px', 4]}
@@ -99,6 +121,13 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
       </Root>
     );
   }
+
+  private handleTextChange = (value: string) => {
+    this.setState({
+      cachedValue: value,
+    });
+    this.onChange(value);
+  };
 }
 
 export interface $TextReceiver {

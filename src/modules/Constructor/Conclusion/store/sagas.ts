@@ -1,16 +1,5 @@
 import isEqual from 'lodash/isEqual';
-import {
-  call,
-  cancel,
-  cancelled,
-  delay,
-  fork,
-  put,
-  race,
-  select,
-  take,
-  takeLatest,
-} from 'redux-saga/effects';
+import { call, cancel, cancelled, delay, fork, put, race, select, take } from 'redux-saga/effects';
 import SagaService from 'src/core/services/SagaService';
 import BaseStore from 'src/core/store/BaseStore';
 import { Store as ParamsReceiverStore } from '../../ParamsReceiver';
@@ -87,6 +76,10 @@ export default function sagas(
   sagaService.addSagaWatcher(function*() {
     const firstVersionText = ParamsReceiverStore.selectors(yield select()).text;
     yield call(sagaService.sagaWorkers.updateWords, firstVersionText);
+
+    if (String(firstVersionText).length > 0) {
+      yield put(store.actions.fetchExtraWords());
+    }
 
     while (true) {
       const oldText = ParamsReceiverStore.selectors(yield select()).text;

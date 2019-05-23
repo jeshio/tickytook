@@ -3,8 +3,6 @@ import setValueByArrayIndex from 'src/core/utils/setValueByArrayIndex';
 import UBlock from 'src/ui-components/UBlock';
 import UButton from 'src/ui-components/UButton';
 import UHashtag from 'src/ui-components/UHashtag';
-import UInline from 'src/ui-components/UInline';
-import USubTitle from 'src/ui-components/USubTitle';
 import Block from './Block';
 
 interface IHashtagsTextProps {
