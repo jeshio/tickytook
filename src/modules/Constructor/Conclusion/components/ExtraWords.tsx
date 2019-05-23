@@ -2,6 +2,7 @@ import * as React from 'react';
 import UBlock from 'src/ui-components/UBlock';
 import UBlockLimitedHeight from 'src/ui-components/UBlockLimitedHeight';
 import UHashtag from 'src/ui-components/UHashtag';
+import UInlineBlock from 'src/ui-components/UInlineBlock';
 import styled from 'styled-components';
 import Block from './Block';
 
@@ -12,7 +13,7 @@ interface IExtraWordsProps {
   onExtraWordClick: (extraWord: string) => any;
 }
 
-const HashtagBlock = styled(UBlock)`
+const HashtagBlock = styled(UInlineBlock)`
   transition: all 1s, margin-right 2s;
 `;
 
@@ -33,9 +34,8 @@ class ExtraWords extends React.PureComponent<IExtraWordsProps, any> {
           {extraWords.map((w, i) => {
             const isVisible = extraHashtags.indexOf(w) < 0;
             return (
-              <UBlock display="inline-block" key={w}>
+              <UInlineBlock key={w}>
                 <HashtagBlock
-                  display="inline-block"
                   key={w}
                   marginTop={0}
                   marginBottom="1px"
@@ -50,7 +50,7 @@ class ExtraWords extends React.PureComponent<IExtraWordsProps, any> {
                 >
                   <UHashtag onClick={this.onWordClick(w)}>{w}</UHashtag>
                 </HashtagBlock>
-              </UBlock>
+              </UInlineBlock>
             );
           })}
         </StyledUBlockLimitedHeight>

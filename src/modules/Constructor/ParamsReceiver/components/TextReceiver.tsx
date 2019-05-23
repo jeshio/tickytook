@@ -89,7 +89,7 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
                 onChange={handleTextChange}
                 autoHeight={true}
                 inputRef={this.fieldRef}
-                paddingTop={['6px', 4]}
+                paddingTop={['6px', '6px', 4]}
                 onPaste={onFormSubmit}
               />
             </UFlexboxGrid.Item>

@@ -15,7 +15,13 @@ export default class Presentation extends Component<IPresentationProps, any> {
   public render() {
     return (
       <div>
-        <UBlock display="flex" flexWrap="wrap" alignItems="flex-start">
+        <UBlock
+          display="flex"
+          flexWrap={'nowrap'}
+          flexDirection={['column', 'column', 'row']}
+          // alignItems={['inherit', 'inherit', 'flex-start']}
+          overflow="hidden"
+        >
           <UBlock paddingRight={[0, 1]} flex={1}>
             <ExtraWords
               extraHashtags={this.props.extraHashtags}

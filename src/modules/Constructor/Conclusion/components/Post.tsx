@@ -17,6 +17,7 @@ export interface IPostState {
 
 const Text = styled.p`
   margin-bottom: 0.5rem;
+  white-space: pre-wrap;
 `;
 
 const Hashtags = styled.div`
@@ -26,6 +27,7 @@ const Hashtags = styled.div`
 const HashtagLink = styled.a`
   color: ${props => (props.theme as TTheme).colors.blue};
   margin-right: 0.25rem;
+  display: inline-block;
 `;
 
 export default class Post extends React.Component<IPostProps, any> {

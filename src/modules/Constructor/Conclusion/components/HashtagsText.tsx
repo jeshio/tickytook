@@ -1,8 +1,10 @@
 import * as React from 'react';
 import setValueByArrayIndex from 'src/core/utils/setValueByArrayIndex';
 import UBlock from 'src/ui-components/UBlock';
+import UBlockLimitedHeight from 'src/ui-components/UBlockLimitedHeight';
 import UButton from 'src/ui-components/UButton';
 import UHashtag from 'src/ui-components/UHashtag';
+import styled from 'styled-components';
 import Block from './Block';
 
 interface IHashtagsTextProps {
@@ -33,7 +35,7 @@ class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsText
           <UBlock px={2} paddingBottom={2}>
             Кликай, чтобы убрать (или добавить) из котла:
           </UBlock>
-          <UBlock marginBottom={0}>
+          <UBlockLimitedHeight maxHeight={['250px', '250px', '250px', '350px']}>
             {hashtags.map((h, i) => (
               <UHashtag
                 key={i}
@@ -43,7 +45,7 @@ class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsText
                 {h}
               </UHashtag>
             ))}
-          </UBlock>
+          </UBlockLimitedHeight>
 
           <UBlock py={2} px={2}>
             Количество хэштегов в котле: {activeHashtags.length}

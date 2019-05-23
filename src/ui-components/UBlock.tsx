@@ -10,6 +10,8 @@ import {
   BorderRadiusProps,
   DisplayProps,
   flex,
+  flexBasis,
+  FlexBasisProps,
   flexDirection,
   FlexDirectionProps,
   FlexProps,
@@ -19,6 +21,8 @@ import {
   JustifyContentProps,
   justifyItems,
   JustifyItemsProps,
+  overflow,
+  OverflowProps,
   space,
   SpaceProps,
   textAlign,
@@ -35,7 +39,9 @@ export interface IUBlockProps
     DisplayProps,
     AlignItemsProps,
     TextAlignProps,
+    FlexBasisProps,
     BorderRadiusProps,
+    OverflowProps,
     VisibleProps {
   ref?: React.RefObject<HTMLDivElement>;
 }
@@ -49,8 +55,10 @@ const Root = styled.div<any>`
   ${justifyContent}
   ${justifyItems}
   ${flexWrap}
+  ${flexBasis}
   ${flex}
   ${borderRadius};
+  ${overflow};
   ${props => props.css}
 `;
 

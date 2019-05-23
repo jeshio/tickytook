@@ -37,10 +37,10 @@ export default class Presentation extends Component<IPresentationProps, any> {
                 <UImage src={Logo} width={['18rem', '21rem']} />
               </UInline>
               <UInline visible={[true, false]}>
-                <UImage src={LogoSm} width={['15rem', '16rem']} />
+                <UImage src={LogoSm} width={['12rem', '14rem', '16rem']} />
               </UInline>
             </UBlock>
-            <UBlock my={0} textAlign="right" visible={[false, true]}>
+            <UBlock my={0} textAlign="right" visible={[false, false, true]}>
               <UButton
                 appearance="ghost"
                 onClick={this.props.reset}
@@ -49,7 +49,7 @@ export default class Presentation extends Component<IPresentationProps, any> {
                 Новое заклятие
               </UButton>
             </UBlock>
-            <UBlock my={0} textAlign="right" visible={[true, false]}>
+            <UBlock my={0} textAlign="right" visible={[true, true, false]}>
               <UIconButton
                 appearance="ghost"
                 onClick={this.props.reset}
