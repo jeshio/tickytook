@@ -28,7 +28,7 @@ class ExtraWords extends React.PureComponent<IExtraWordsProps, any> {
     return (
       <Block loading={loading} title="Наколдованные хэштеги" stepNumber={2}>
         <UBlock visible={actualExtraHashtags.length > 0} px={2} paddingBottom={2}>
-          Кликай на слова, чтобы закинуть их в котёл хэштегов:
+          Кликните на слова, чтобы закинуть их в котёл хэштегов:
         </UBlock>
         <StyledUBlockLimitedHeight maxHeight={['250px', '250px', '250px', '500px']}>
           {extraWords.map((w, i) => {
@@ -56,7 +56,7 @@ class ExtraWords extends React.PureComponent<IExtraWordsProps, any> {
         </StyledUBlockLimitedHeight>
         {actualExtraHashtags.length === 0 && (
           <UBlock py="3rem" px={['1.5rem', '5rem']} textAlign="center">
-            Напиши хэштеги или текст вверху, чтобы можно было наколдовать новые хэштеги
+            Напишите текст поста вверху, чтобы можно было наколдовать хэштеги.
           </UBlock>
         )}
       </Block>

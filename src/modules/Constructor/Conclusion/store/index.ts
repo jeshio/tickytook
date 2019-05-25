@@ -8,11 +8,6 @@ import Api from './api';
 import { IActions, IEndPoints, ISelectors, IStore } from './interfaces';
 import sagas from './sagas';
 
-const switchAction = (fieldName: keyof IStore) => (state: IStore) => ({
-  ...state,
-  [fieldName]: !state[fieldName],
-});
-
 const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
   MODULE_NAME,
   SUB_MODULE_NAME,
@@ -72,11 +67,9 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
       ),
     }),
     hashtags: (s, globalStore) =>
-      getHashtagsFromWords(
-        ParamsReceiverStore.selectors(globalStore).spellWordsToHashtags ? s.words : [],
-        { ...s, ...ParamsReceiverStore.selectors(globalStore) },
-        false
-      ).map(w => `#${w}`),
+      getHashtagsFromWords([], { ...s, ...ParamsReceiverStore.selectors(globalStore) }, false).map(
+        w => `#${w}`
+      ),
     activeHashtags: (s, globalStore, stateSelectors) =>
       stateSelectors.hashtags.filter(h => !s.inactiveHashtags.has(h)),
   }

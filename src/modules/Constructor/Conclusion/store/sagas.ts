@@ -28,7 +28,7 @@ export default function sagas(
       const requestData: ReturnType<IEndPoints['extraWords']['successResponse']> = (yield call(
         store.api.extraWords,
         {
-          words: currentStoreSelectors.words.map(w => `%23${w}`).join('+'),
+          words: currentStoreSelectors.words,
         }
       )).data;
 
@@ -83,7 +83,10 @@ export default function sagas(
 
     while (true) {
       const oldText = ParamsReceiverStore.selectors(yield select()).text;
-      yield take(ParamsReceiverStore.actions.changeText.type);
+      yield race([
+        take(ParamsReceiverStore.actions.changeText.type),
+        take(ParamsReceiverStore.actions.reset.type),
+      ]);
 
       const newText = ParamsReceiverStore.selectors(yield select()).text;
 

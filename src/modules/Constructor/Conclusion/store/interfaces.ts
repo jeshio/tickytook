@@ -36,12 +36,13 @@ export interface ISagaWorkers extends ICSagas {
 
 export interface IEndPoints extends ICEndPoints {
   extraWords: ICEndPoint<
-    {
-      words: string;
-    },
+    {},
     {
       result?: string[];
     },
-    {}
+    {},
+    {
+      words: string[];
+    }
   >;
 }

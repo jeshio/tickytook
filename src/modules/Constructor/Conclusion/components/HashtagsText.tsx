@@ -33,7 +33,7 @@ class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsText
       <Block title="Котёл хэштегов" stepNumber={3}>
         <UBlock my={0} visible={hashtags.length > 0}>
           <UBlock px={2} paddingBottom={2}>
-            Кликай, чтобы убрать (или добавить) из котла:
+            Кликните, чтобы убрать (или добавить) из котла:
           </UBlock>
           <UBlockLimitedHeight maxHeight={['250px', '250px', '250px', '350px']}>
             {hashtags.map((h, i) => (
@@ -68,7 +68,7 @@ class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsText
           textAlign="center"
           visible={hashtags.length === 0}
         >
-          Котёл пока ещё пуст.
+          Котёл пока ещё пуст. Добавьте наколдованные хэштеги.
         </UBlock>
       </Block>
     );

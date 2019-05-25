@@ -53,6 +53,7 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
     super(props);
 
     this.onChange = debounce(props.onChange, 500);
+    this.onFormSubmit = debounce(this.onFormSubmit, 0);
     this.state = {
       cachedValue: props.value,
     };
@@ -73,9 +74,8 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
   }
 
   public render() {
-    const { onFormSubmit } = this.props;
     const { cachedValue } = this.state;
-    const { handleTextChange } = this;
+    const { handleTextChange, onFormSubmit } = this;
     return (
       <Root>
         <UForm formValue={{ text: cachedValue }} onSubmit={onFormSubmit}>
@@ -83,7 +83,7 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
             <Step>1</Step>
             <UFlexboxGrid.Item flex={3}>
               <Textarea
-                placeholder="Напишите сюда заклятие (текст или хэштеги)..."
+                placeholder="Напишите сюда текст поста..."
                 rows={1}
                 name="text"
                 onChange={handleTextChange}
@@ -127,6 +127,11 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
       cachedValue: value,
     });
     this.onChange(value);
+  };
+
+  private onFormSubmit = () => {
+    this.props.onChange(this.state.cachedValue);
+    this.props.onFormSubmit();
   };
 }
 

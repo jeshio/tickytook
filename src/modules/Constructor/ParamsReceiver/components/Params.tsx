@@ -11,12 +11,10 @@ interface IParamsProps {
   convertToLower: boolean;
   deleteNumberWords: boolean;
   sortByAlphabet: boolean;
-  spellWordsToHashtags: boolean;
   minimumHashtagLength: number;
   switchConvertToLower: () => void;
   switchDeleteNumberWords: () => void;
   switchSortByAlphabet: () => void;
-  switchSpellWordsToHashtags: () => void;
   setMinimumHashtagLength: (length: number) => void;
 }
 
@@ -40,8 +38,6 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
       deleteNumberWords,
       minimumHashtagLength,
       sortByAlphabet,
-      spellWordsToHashtags,
-      switchSpellWordsToHashtags,
       switchConvertToLower,
       switchDeleteNumberWords,
       switchSortByAlphabet,
@@ -56,15 +52,6 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
         }}
       >
         <UFlexboxGrid flexDirection={['column', 'row']} align="middle" justify="space-between">
-          <UFlexboxGrid.Item>
-            <UForm.Checkbox
-              name="spellWordsToHashtags"
-              checked={spellWordsToHashtags}
-              onChange={switchSpellWordsToHashtags}
-            >
-              добавить слова заклинания в котёл хэштегов
-            </UForm.Checkbox>
-          </UFlexboxGrid.Item>
           <UFlexboxGrid.Item>
             <UBlock my={0} textAlign={['center', 'right']}>
               <UButton onClick={this.switchParamsDisplay} appearance="link" py={0}>
