@@ -3,7 +3,8 @@
   <head>
     <!-- Google Tag Manager -->
     <script>
-      if ('%NODE_ENV%' === 'production') {
+      const env = '%NODE_ENV%';
+      if (env === 'production') {
         (function(w, d, s, l, i) {
           w[l] = w[l] || [];
           w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });

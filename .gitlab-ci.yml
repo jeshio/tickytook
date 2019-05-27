@@ -14,5 +14,5 @@ build production:
   - chmod +x ./setup.env.sh
   - ./setup.env.sh
   - docker info
-  - docker-compose up --build
+  - docker-compose up -d --build
   # - docker run -d -p 80:80 --name tickytook-frontend jeshio/tickytook-frontend
