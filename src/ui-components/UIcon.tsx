@@ -7,7 +7,7 @@ type TIconSize = 'small' | 'medium' | 'large';
 export interface IUIconProps {
   src?: string;
   svg?: React.ComponentType<any>;
-  svgStyle?: React.HTMLProps<HTMLOrSVGElement>;
+  svgProps?: React.HTMLProps<HTMLOrSVGElement>;
   size?: TIconSize;
 }
 
@@ -25,23 +25,26 @@ const getSize = (size: TIconSize) => {
 const Icon = styled(
   ({
     Component,
-    svgStyle,
+    svgProps,
     ...props
   }: {
     Component: React.ComponentType<any>;
-    svgStyle?: React.HTMLProps<HTMLOrSVGElement>;
-  }) => <Component {...svgStyle || {}} {...props} />
-)``;
+    svgProps?: React.HTMLProps<HTMLOrSVGElement>;
+  }) => <Component {...svgProps || {}} {...props} />
+)`
+  width: ${(props: any) => props.width};
+  height: ${(props: any) => props.height};
+`;
 
 const UIcon: React.FunctionComponent<IUIconProps> = props => {
-  const params = {
+  const size = {
     width: getSize(props.size as TIconSize),
     height: getSize(props.size as TIconSize),
   };
   return props.svg ? (
-    <Icon Component={props.svg} svgStyle={props.svgStyle} {...params} />
+    <Icon Component={props.svg} svgProps={props.svgProps} {...size} />
   ) : (
-    <UImage src={props.src} {...params} />
+    <UImage src={props.src} {...size} />
   );
 };
 

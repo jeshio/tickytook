@@ -12,7 +12,7 @@ const Root = styled(UButton)`
 const UIconButton: React.FunctionComponent<IUIconButtonProps> = ({ src, svg, ...props }) => {
   return (
     <Root {...props}>
-      <UIcon src={src} svg={svg} />
+      <UIcon src={src} svg={svg} size="medium" />
     </Root>
   );
 };
