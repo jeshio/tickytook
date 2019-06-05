@@ -10,11 +10,10 @@ import { ServerStyleSheet } from 'styled-components';
 
 import App from '../src/App';
 
-const PORT = 8080;
+const PORT = 80;
 const app = express();
 
 const BUILD_DIR = path.resolve('./build');
-// const PUBLIC_DIR = path.resolve('./public');
 
 const router = express.Router();
 
@@ -47,12 +46,10 @@ const serverRenderer = (req, res, next) => {
 router.use('^/$', serverRenderer);
 
 router.use(express.static(BUILD_DIR, { maxAge: '7d' }));
-// router.use(express.static(PUBLIC_DIR, { maxAge: '7d' }));
 
 // tell the app to use the above rules
 app.use(router);
 
-// app.use(express.static('./build'))
 app.listen(PORT, () => {
   console.log(`SSR running on port ${PORT}`);
 });

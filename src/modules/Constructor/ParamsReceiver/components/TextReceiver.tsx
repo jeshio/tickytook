@@ -1,15 +1,14 @@
 import debounce from 'lodash/debounce';
 import * as React from 'react';
-import { ReactComponent as SpellIconComponent } from 'src/images/icons/magic-wand.svg';
+import { ReactComponent as SpellIconComponent } from 'src/images/components/icons/magic-wand.svg';
 import UButton from 'src/ui-components/UButton';
 import UFlexboxGrid from 'src/ui-components/UFlexboxGrid';
 import UForm from 'src/ui-components/UForm';
 import UIcon from 'src/ui-components/UIcon';
 import UIconButton from 'src/ui-components/UIconButton';
 import UStep from 'src/ui-components/UStep';
-import UTextarea from 'src/ui-components/UTextarea';
 import styled from 'styled-components';
-import { borderRadius, space } from 'styled-system';
+import { space } from 'styled-system';
 
 export interface TextReceiverProps {
   value: string;

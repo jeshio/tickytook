@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { ReactComponent as NewSpellIconComponent } from 'src/images/icons/reset.svg';
-import LogoIconComponent from 'src/images/logo-icon.svg';
+import { ReactComponent as NewSpellIconComponent } from 'src/images/components/icons/reset.svg';
+import LogoIcon from 'src/images/logo-icon.svg';
 import LogoSm from 'src/images/logo-sm.svg';
 import Logo from 'src/images/logo.svg';
 import UBlock from 'src/ui-components/UBlock';
@@ -10,7 +10,6 @@ import UIcon from 'src/ui-components/UIcon';
 import UIconButton from 'src/ui-components/UIconButton';
 import { UImage } from 'src/ui-components/UImage';
 import UInline from 'src/ui-components/UInline';
-import UInlineBlock from 'src/ui-components/UInlineBlock';
 import Params from './components/Params';
 import TextReceiver from './components/TextReceiver';
 import { IActions, ISelectors } from './store';
@@ -31,7 +30,7 @@ export default class Presentation extends Component<IPresentationProps, any> {
           >
             <UBlock mx={[1]} my={0}>
               <UInline mr={2}>
-                <UImage src={LogoIconComponent} width={['3rem']} />
+                <UImage src={LogoIcon} width={['3rem']} />
               </UInline>
               <UInline visible={[false, true]}>
                 <UImage src={Logo} width={['18rem', '21rem']} />
