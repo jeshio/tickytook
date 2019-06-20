@@ -30,13 +30,21 @@ export default class Presentation extends Component<IPresentationProps, any> {
           >
             <UBlock mx={[1]} my={0}>
               <UInline mr={2}>
-                <UImage src={LogoIcon} width={['3rem']} />
+                <UImage src={LogoIcon} width={['3rem']} alt="Волшебник Тикитук" />
               </UInline>
               <UInline visible={[false, true]}>
-                <UImage src={Logo} width={['18rem', '21rem']} />
+                <UImage
+                  src={Logo}
+                  width={['18rem', '21rem']}
+                  alt="Tickytook.ru - генератор хэштегов"
+                />
               </UInline>
               <UInline visible={[true, false]}>
-                <UImage src={LogoSm} width={['12rem', '14rem', '16rem']} />
+                <UImage
+                  src={LogoSm}
+                  width={['12rem', '14rem', '16rem']}
+                  alt="Tickytook.ru - генератор хэштегов"
+                />
               </UInline>
             </UBlock>
             <UBlock my={0} textAlign="right" visible={[false, false, true]}>
@@ -59,7 +67,12 @@ export default class Presentation extends Component<IPresentationProps, any> {
         </UBlock>
         <UGrid.Row>
           <UGrid.Col md={24}>
-            <TextReceiver value={text} onChange={changeText} onFormSubmit={this.props.wiz} />
+            <TextReceiver
+              value={text}
+              onChange={changeText}
+              onFormSubmit={this.props.wiz}
+              isExtendedMode={this.props.isExtendedMode}
+            />
           </UGrid.Col>
         </UGrid.Row>
         <UGrid.Row>

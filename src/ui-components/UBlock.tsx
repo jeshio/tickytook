@@ -30,7 +30,8 @@ import {
 } from 'styled-system';
 
 export interface IUBlockProps
-  extends SpaceProps,
+  extends React.ImgHTMLAttributes<HTMLDivElement>,
+    SpaceProps,
     FlexProps,
     FlexDirectionProps,
     FlexWrapProps,

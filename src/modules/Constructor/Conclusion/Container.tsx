@@ -16,6 +16,7 @@ class Container extends Component<PropsType> {
       ...this.props,
       onCopyHashtags: this.handleCopyHashtags,
       onCopyPost: this.handleCopyPost,
+      isExtendedMode: this.props.paramsReceiver.isExtendedMode,
     });
   }
 

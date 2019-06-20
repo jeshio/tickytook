@@ -25,14 +25,21 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
       ...state,
       extraWords: { ...state.extraWords, loading: false },
     }),
-    fetchExtraWordsSuccess: (state, action) => ({
-      ...state,
-      extraWords: {
-        ...state.extraWords,
-        loading: false,
-        data: uniq(action.payload[0].length > 0 ? action.payload[0] : state.extraWords.data),
-      },
-    }),
+    fetchExtraWordsSuccess: (state, action) => {
+      const extraWords = uniq(
+        action.payload[0].length > 0 ? action.payload[0] : state.extraWords.data
+      );
+      return {
+        ...state,
+        extraWords: {
+          ...state.extraWords,
+          loading: false,
+          data: extraWords,
+        },
+        // если ни одного хэштега не установлена, то добавляем автоматом
+        ...(state.extraHashtags.length === 0 ? { extraHashtags: extraWords.slice(0, 30) } : {}),
+      };
+    },
     switchHashtagActiveStatus: (state, action) => {
       const hashtag = action.payload[0];
       const inactiveHashtags = new Set(state.inactiveHashtags);

@@ -12,10 +12,12 @@ interface IParamsProps {
   deleteNumberWords: boolean;
   sortByAlphabet: boolean;
   minimumHashtagLength: number;
+  isExtendedMode: boolean;
   switchConvertToLower: () => void;
   switchDeleteNumberWords: () => void;
   switchSortByAlphabet: () => void;
   setMinimumHashtagLength: (length: number) => void;
+  switchMode: () => void;
 }
 
 interface IParamsState {
@@ -42,6 +44,8 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
       switchDeleteNumberWords,
       switchSortByAlphabet,
       setMinimumHashtagLength,
+      switchMode,
+      isExtendedMode,
     } = this.props;
     const { displayParams } = this.state;
     const onChangeMinimumHashtagLength = (v: string) => setMinimumHashtagLength(Number(v) || 0);
@@ -56,6 +60,13 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
             <UBlock my={0} textAlign={['center', 'right']}>
               <UButton onClick={this.switchParamsDisplay} appearance="link" py={0}>
                 {displayParams ? 'Скрыть параметры' : 'Показать параметры'}...
+              </UButton>
+            </UBlock>
+          </UFlexboxGrid.Item>
+          <UFlexboxGrid.Item>
+            <UBlock my={0} textAlign={['center', 'right']} visible={[false, true]}>
+              <UButton onClick={switchMode} appearance="link" py={0}>
+                {isExtendedMode ? 'Простой режим' : 'Расширенный режим'}
               </UButton>
             </UBlock>
           </UFlexboxGrid.Item>

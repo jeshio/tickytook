@@ -89,7 +89,7 @@ const UButton: React.FunctionComponent<IUButtonProps> = ({ noBg, extraText, icon
                   paddingLeft: '5px',
                   paddingBottom: '2px',
                 }
-              : {}
+              : { display: 'block', width: '100%' }
           }
         >
           {props.children}

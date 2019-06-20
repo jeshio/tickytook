@@ -55,7 +55,7 @@ export default class Post extends React.Component<IPostProps, any> {
         </Hashtags>
         <UBlock textAlign="center" paddingTop={4}>
           <UButton onClick={this.handleCopyClick} appearance="primary" extraText="текст + хэштеги">
-            {showSuccessCopyMessage ? 'Скопировано!' : 'Копировать всё'}
+            {showSuccessCopyMessage ? 'Готово!' : 'Копировать всё'}
           </UButton>
         </UBlock>
       </Block>

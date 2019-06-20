@@ -9,10 +9,11 @@ import styled from 'styled-components';
 import { borderRadius, BorderRadiusProps, padding } from 'styled-system';
 
 interface IBlockProps extends React.PropsWithChildren<{}> {
-  title: string;
+  title?: string;
   header?: React.ReactNode;
   stepNumber?: number;
   loading?: boolean;
+  className?: string;
 }
 
 const Root = styled(UBlock)`
@@ -52,14 +53,16 @@ const Step = styled(UStep)`
 const Block: React.FunctionComponent<IBlockProps> = props => {
   const withStepNumber = props.stepNumber !== undefined;
   return (
-    <Root mb={3} borderRadius={[0, '5px']}>
-      <Head>
-        <Step visible={withStepNumber}>{props.stepNumber}</Step>
-        <HeadContent px={1} loading={props.loading}>
-          {props.title}
-          {props.header}
-        </HeadContent>
-      </Head>
+    <Root className={props.className} mb={3} borderRadius={[0, '5px']}>
+      {props.title && (
+        <Head>
+          <Step visible={withStepNumber}>{props.stepNumber}</Step>
+          <HeadContent px={1} loading={props.loading}>
+            {props.title}
+            {props.header}
+          </HeadContent>
+        </Head>
+      )}
       <UBlock p={2} paddingBottom={4}>
         {props.children}
       </UBlock>

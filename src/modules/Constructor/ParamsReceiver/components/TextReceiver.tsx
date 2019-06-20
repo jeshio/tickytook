@@ -14,19 +14,19 @@ export interface TextReceiverProps {
   value: string;
   onChange: (text: string) => void;
   onFormSubmit: () => void;
+  isExtendedMode: boolean;
 }
 
-interface TextReceiverState {
-  cachedValue: string;
-}
-
-const Root = styled.div`
+const Root = styled.div<React.ImgHTMLAttributes<HTMLDivElement> & { isExtendedMode?: boolean }>`
   position: relative;
-  padding-left: 48px;
+  padding-left: ${({ isExtendedMode }: any) => (isExtendedMode ? '48px' : 0)};
 `;
 
 const Textarea = styled(({ paddingTop, ...props }) => <UForm.Textarea {...props} />)`
-  border-radius: 0;
+  ${({ isExtendedMode }: any) =>
+    isExtendedMode
+      ? 'border-radius: 0;'
+      : `border-top-right-radius: 0px; border-bottom-right-radius: 0px;`}
   min-height: 48px !important;
   ${space};
 `;
@@ -76,10 +76,10 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
     const { cachedValue } = this.state;
     const { handleTextChange, onFormSubmit } = this;
     return (
-      <Root>
+      <Root isExtendedMode={this.props.isExtendedMode}>
         <UForm formValue={{ text: cachedValue }} onSubmit={onFormSubmit}>
           <UFlexboxGrid flexWrap="nowrap" justify="space-between">
-            <Step>1</Step>
+            {this.props.isExtendedMode && <Step>1</Step>}
             <UFlexboxGrid.Item flex={3}>
               <Textarea
                 placeholder="Напишите сюда текст поста..."
@@ -90,6 +90,7 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
                 inputRef={this.fieldRef}
                 paddingTop={['6px', '6px', 4]}
                 onPaste={onFormSubmit}
+                isExtendedMode={this.props.isExtendedMode}
               />
             </UFlexboxGrid.Item>
             <UFlexboxGrid.Item>

@@ -25,13 +25,15 @@ const store = new BaseStore<IStore, IActions, ISelectors>(
     switchSortByAlphabet: switchAction('sortByAlphabet'),
     reset: state => state,
     wiz: state => state,
+    switchMode: state => ({ ...state, isExtendedMode: !state.isExtendedMode }),
   },
   {
     convertToLower: true,
     deleteNumberWords: true,
     minimumHashtagLength: 3,
-    sortByAlphabet: true,
+    sortByAlphabet: false,
     text: '', // 'Привет, тут у нас небольшое предложение с 8 членами.',
+    isExtendedMode: false,
   }
 );
 

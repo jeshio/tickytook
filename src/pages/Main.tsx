@@ -30,7 +30,7 @@ const Root = styled(UGrid)`
 `;
 
 export default () => (
-  <Root px={[0, 0, 2]}>
+  <Root px={[0, 2, 2]}>
     <UBlock px={[2, 2, 0]}>
       <ParamsReceiver />
     </UBlock>
