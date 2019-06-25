@@ -2,6 +2,7 @@ import * as React from 'react';
 import TTheme from 'src/core/types/TTheme';
 import UBlock from 'src/ui-components/UBlock';
 import UButton from 'src/ui-components/UButton';
+import UInline from 'src/ui-components/UInline';
 import styled from 'styled-components';
 import Block from './Block';
 
@@ -9,6 +10,7 @@ export interface IPostProps {
   activeHashtags: string[];
   text: string;
   onCopyPost: () => void;
+  switchMode: () => void;
 }
 
 export interface IPostState {
@@ -57,6 +59,11 @@ export default class Post extends React.Component<IPostProps, any> {
           <UButton onClick={this.handleCopyClick} appearance="primary" extraText="текст + хэштеги">
             {showSuccessCopyMessage ? 'Готово!' : 'Копировать всё'}
           </UButton>
+          <UBlock visible={[true, false]} marginTop={2}>
+            <UButton onClick={this.props.switchMode} appearance="link">
+              Простой режим
+            </UButton>
+          </UBlock>
         </UBlock>
       </Block>
     );

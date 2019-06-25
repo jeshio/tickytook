@@ -4,10 +4,25 @@ import { bindActionCreators, Dispatch } from 'redux';
 import ICStringIndexes from 'src/core/interfaces/ICStringIndexes';
 import { Store } from '.';
 import Presentation, { IPresentationProps } from './Presentation';
+import PresentationShortMode, { IPresentationShortModeProps } from './PresentationShortMode';
 
-class Container extends Component<Store.ISelectors & Store.IActions> {
+interface IContainerProps extends Store.ISelectors, Store.IActions {
+  isShortModeVersion?: boolean;
+}
+
+class Container extends Component<IContainerProps> {
+  public static defaultProps = {
+    isShortModeVersion: false,
+  };
+
   public render() {
-    return createElement<IPresentationProps>(Presentation, this.props);
+    if (this.props.isExtendedMode) {
+      return createElement<IPresentationProps>(Presentation, this.props);
+    } else if (this.props.isShortModeVersion) {
+      return createElement<IPresentationShortModeProps>(PresentationShortMode, this.props);
+    }
+
+    return null;
   }
 }
 

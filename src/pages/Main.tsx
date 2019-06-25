@@ -3,6 +3,7 @@ import TTheme from 'src/core/types/TTheme';
 import Conclusion from 'src/modules/Constructor/Conclusion';
 import ParamsReceiver from 'src/modules/Constructor/ParamsReceiver';
 import Footer from 'src/modules/Globals/Footer';
+import Header from 'src/modules/Globals/Header';
 import UBlock from 'src/ui-components/UBlock';
 import UGrid from 'src/ui-components/UGrid';
 import { createGlobalStyle } from 'styled-components';
@@ -14,6 +15,7 @@ const GlobalStyle = createGlobalStyle<any>`
     background-color: ${props => (props.theme as TTheme).designColors.background};
     font-size: 15px;
     font-family: 'Montserrat', sans-serif;
+    min-width: 320px;
   }
 
   h1, h2, h3, h4 {
@@ -31,10 +33,11 @@ const Root = styled(UGrid)`
 
 export default () => (
   <Root px={[0, 2, 2]}>
-    <UBlock px={[2, 2, 0]}>
+    <UBlock px={[2, 0, 0]}>
+      <Header />
       <ParamsReceiver />
     </UBlock>
-    <Conclusion />
+    <Conclusion shortModeLeftColumn={<ParamsReceiver isShortModeVersion={true} />} />
     <Footer />
     <GlobalStyle />
   </Root>

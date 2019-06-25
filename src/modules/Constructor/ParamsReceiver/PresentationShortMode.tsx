@@ -5,9 +5,9 @@ import Params from './components/Params';
 import TextReceiver from './components/TextReceiver';
 import { IActions, ISelectors } from './store';
 
-export interface IPresentationProps extends ISelectors, IActions {}
+export interface IPresentationShortModeProps extends ISelectors, IActions {}
 
-export default class Presentation extends Component<IPresentationProps, any> {
+export default class PresentationShortMode extends Component<IPresentationShortModeProps, any> {
   public render() {
     const { text, changeText } = this.props;
     return (
@@ -27,7 +27,7 @@ export default class Presentation extends Component<IPresentationProps, any> {
         <UGrid.Row>
           <UGrid.Col md={24}>
             <UBlock>
-              <Params {...this.props} />
+              <Params onFormSubmit={this.props.wiz} {...this.props} />
             </UBlock>
           </UGrid.Col>
         </UGrid.Row>

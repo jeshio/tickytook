@@ -2,6 +2,7 @@ import * as React from 'react';
 import TTheme from 'src/core/types/TTheme';
 import UBlock from 'src/ui-components/UBlock';
 import UButton from 'src/ui-components/UButton';
+import UInline from 'src/ui-components/UInline';
 import styled from 'styled-components';
 import Block from './Block';
 
@@ -12,6 +13,7 @@ export interface ISimplePostProps {
   loading: boolean;
   onCopyPost: () => void;
   onCopyHashtags: () => void;
+  switchMode: () => void;
 }
 
 export interface ISimplePostState {
@@ -70,16 +72,23 @@ export default class SimplePost extends React.Component<ISimplePostProps, any> {
           ))}
         </Hashtags>
         <UBlock textAlign="center" paddingTop={4}>
-          <Button
-            onClick={this.handleCopyHashtagsClick}
-            appearance="ghost"
-            extraText="только хэштеги"
-          >
-            {showSuccessCopyMessage[1] ? 'Готово!' : 'Копировать'}
-          </Button>
+          <UInline visible={this.props.activeHashtags.length > 0}>
+            <Button
+              onClick={this.handleCopyHashtagsClick}
+              appearance="ghost"
+              extraText="только хэштеги"
+            >
+              {showSuccessCopyMessage[1] ? 'Готово!' : 'Копировать'}
+            </Button>
+          </UInline>
           <Button onClick={this.handleCopyPostClick} appearance="primary" extraText="весь пост">
             {showSuccessCopyMessage[0] ? 'Готово!' : 'Копировать'}
           </Button>
+          <UInline visible={[true, false]}>
+            <UButton onClick={this.props.switchMode} appearance="link">
+              Расширенный режим
+            </UButton>
+          </UInline>
         </UBlock>
       </Root>
     );

@@ -1,9 +1,12 @@
 import * as React from 'react';
+import { ReactComponent as SpellIconComponent } from 'src/images/components/icons/magic-wand.svg';
 import UBlock from 'src/ui-components/UBlock';
 import UButton from 'src/ui-components/UButton';
 import UFlexboxGrid from 'src/ui-components/UFlexboxGrid';
 import UForm from 'src/ui-components/UForm';
 import UGrid from 'src/ui-components/UGrid';
+import UIcon from 'src/ui-components/UIcon';
+import UIconButton from 'src/ui-components/UIconButton';
 import styled from 'styled-components';
 import { display } from 'styled-system';
 
@@ -18,6 +21,7 @@ interface IParamsProps {
   switchSortByAlphabet: () => void;
   setMinimumHashtagLength: (length: number) => void;
   switchMode: () => void;
+  onFormSubmit?: () => void;
 }
 
 interface IParamsState {
@@ -27,9 +31,24 @@ interface IParamsState {
 const FlexUGridRow = styled(UGrid.Row)`
   ${display};
   align-items: center;
+  flex-wrap: wrap;
+`;
+
+const Button = styled(({ Component, ...props }) => <Component {...props} />)`
+  border-radius: 5px;
+  min-width: 50%;
+`;
+
+const Controls = styled(UBlock)`
+  margin-top: 0.5rem;
+  text-align: center;
 `;
 
 class Params extends React.PureComponent<IParamsProps, IParamsState> {
+  public static defaultProps = {
+    onFormSubmit: () => {},
+  };
+
   public state = {
     displayParams: false,
   };
@@ -55,7 +74,7 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
           minimumHashtagLength: minimumHashtagLength.toString(),
         }}
       >
-        <UFlexboxGrid flexDirection={['column', 'row']} align="middle" justify="space-between">
+        <UFlexboxGrid flexDirection={['column', 'row']} align="middle">
           <UFlexboxGrid.Item>
             <UBlock my={0} textAlign={['center', 'right']}>
               <UButton onClick={this.switchParamsDisplay} appearance="link" py={0}>
@@ -63,17 +82,10 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
               </UButton>
             </UBlock>
           </UFlexboxGrid.Item>
-          <UFlexboxGrid.Item>
-            <UBlock my={0} textAlign={['center', 'right']} visible={[false, true]}>
-              <UButton onClick={switchMode} appearance="link" py={0}>
-                {isExtendedMode ? 'Простой режим' : 'Расширенный режим'}
-              </UButton>
-            </UBlock>
-          </UFlexboxGrid.Item>
         </UFlexboxGrid>
         <UBlock visible={displayParams}>
-          <FlexUGridRow display={['block', 'block', 'flex']}>
-            <UGrid.Col sm={7}>
+          <FlexUGridRow display={isExtendedMode ? ['block', 'block', 'flex'] : ['block', 'flex']}>
+            <UGrid.Col sm={isExtendedMode ? 7 : 12}>
               <UBlock marginLeft={2} marginTop={0} visible={[false, false, true]}>
                 <UForm.Input
                   name="minimumHashtagLength"
@@ -95,7 +107,7 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
                 </UForm.Group>
               </UBlock>
             </UGrid.Col>
-            <UGrid.Col sm={5}>
+            <UGrid.Col sm={isExtendedMode ? 5 : 12}>
               <UForm.Checkbox
                 name="convertToLower"
                 checked={convertToLower}
@@ -104,7 +116,7 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
                 перевести в нижний регистр
               </UForm.Checkbox>
             </UGrid.Col>
-            <UGrid.Col sm={5}>
+            <UGrid.Col sm={isExtendedMode ? 5 : 12}>
               <UForm.Checkbox
                 name="sortByAlphabet"
                 checked={sortByAlphabet}
@@ -113,7 +125,7 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
                 сортировать по алфавиту
               </UForm.Checkbox>
             </UGrid.Col>
-            <UGrid.Col sm={6}>
+            <UGrid.Col sm={isExtendedMode ? 6 : 12}>
               <UForm.Checkbox
                 name="deleteNumberWords"
                 checked={deleteNumberWords}
@@ -124,6 +136,18 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
             </UGrid.Col>
           </FlexUGridRow>
         </UBlock>
+        <Controls visible={!this.props.isExtendedMode}>
+          <Button
+            Component={UButton}
+            appearance="primary"
+            icon={<UIcon svg={SpellIconComponent} size="small" />}
+            color="blue"
+            type="submit"
+            onClick={this.props.onFormSubmit}
+          >
+            Наколдовать!
+          </Button>
+        </Controls>
       </UForm>
     );
   }

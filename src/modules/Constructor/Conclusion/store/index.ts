@@ -2,7 +2,7 @@ import uniq from 'lodash/uniq';
 import BaseStore from 'src/core/store/BaseStore';
 import { MODULE_NAME } from '../../constants';
 import { Store as ParamsReceiverStore } from '../../ParamsReceiver';
-import { SUB_MODULE_NAME } from '../constants';
+import { AUTO_HASHTAGS_COUNT, SUB_MODULE_NAME } from '../constants';
 import getHashtagsFromWords from '../utils/getHashtagsFromWords';
 import Api from './api';
 import { IActions, IEndPoints, ISelectors, IStore } from './interfaces';
@@ -36,8 +36,10 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
           loading: false,
           data: extraWords,
         },
-        // если ни одного хэштега не установлена, то добавляем автоматом
-        ...(state.extraHashtags.length === 0 ? { extraHashtags: extraWords.slice(0, 30) } : {}),
+        // если ни одного хэштега не установлено, то добавляем автоматом
+        ...(state.extraHashtags.length === 0
+          ? { extraHashtags: extraWords.slice(0, AUTO_HASHTAGS_COUNT) }
+          : {}),
       };
     },
     switchHashtagActiveStatus: (state, action) => {

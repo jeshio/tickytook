@@ -12,6 +12,8 @@ export interface IPresentationProps extends Selectors, Store.IActions {
   onCopyHashtags: () => void;
   onCopyPost: () => void;
   isExtendedMode: boolean;
+  shortModeLeftColumn: React.ReactElement;
+  switchMode: () => void;
 }
 
 export default class Presentation extends Component<IPresentationProps, any> {
@@ -25,24 +27,35 @@ export default class Presentation extends Component<IPresentationProps, any> {
 
   protected get shortModeTemplate() {
     return (
-      <div>
-        <UBlock visible={this.props.paramsReceiver.text.length > 0}>
-          <SimplePost
-            activeHashtags={this.props.activeHashtags}
-            text={this.props.paramsReceiver.text}
-            onCopyPost={this.props.onCopyPost}
-            onCopyHashtags={this.props.onCopyHashtags}
-            loading={this.props.extraWords.loading}
-          />
+      <UBlock
+        display="flex"
+        flexWrap={'nowrap'}
+        flexDirection={['column', 'column', 'row']}
+        overflow="hidden"
+      >
+        <UBlock flex={1} px={[2, 0]} paddingRight={[2, 0, 2]}>
+          {this.props.shortModeLeftColumn}
         </UBlock>
-        <UBlock visible={this.props.paramsReceiver.text.length === 0} textAlign="center">
-          <Block>
-            <UBlock p={4} paddingTop={6}>
-              Для начала введите текст поста.
-            </UBlock>
-          </Block>
+        <UBlock flex={1}>
+          <UBlock visible={this.props.paramsReceiver.text.length > 0}>
+            <SimplePost
+              activeHashtags={this.props.activeHashtags}
+              text={this.props.paramsReceiver.text}
+              onCopyPost={this.props.onCopyPost}
+              onCopyHashtags={this.props.onCopyHashtags}
+              loading={this.props.extraWords.loading}
+              switchMode={this.props.switchMode}
+            />
+          </UBlock>
+          <UBlock visible={this.props.paramsReceiver.text.length === 0} textAlign="center">
+            <Block>
+              <UBlock p={4} paddingTop={6}>
+                Для начала введите текст поста.
+              </UBlock>
+            </Block>
+          </UBlock>
         </UBlock>
-      </div>
+      </UBlock>
     );
   }
 
@@ -69,6 +82,7 @@ export default class Presentation extends Component<IPresentationProps, any> {
               activeHashtags={this.props.activeHashtags}
               text={this.props.paramsReceiver.text}
               onCopyPost={this.props.onCopyPost}
+              switchMode={this.props.switchMode}
             />
           </UBlock>
         </UBlock>
