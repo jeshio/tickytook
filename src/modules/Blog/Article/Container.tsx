@@ -6,8 +6,12 @@ export interface IContainerProps {}
 
 class Container extends React.Component<IContainerProps, any> {
   public render() {
-    return <Presentation {...this.props} />;
+    return <Presentation />;
   }
 }
 
-export default connect(state => ({}))(Container);
+const mapState2Props = () => {
+  return {};
+};
+
+export default connect(mapState2Props)(Container);

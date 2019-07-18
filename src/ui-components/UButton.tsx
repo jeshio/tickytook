@@ -52,6 +52,11 @@ const StyledButton = styled(Button)`
   &.rs-btn-link {
     color: ${props => (props.theme as TTheme).designColors.link};
     font-weight: 400;
+    padding: 0.05rem 0.5rem;
+
+    svg {
+      fill: ${props => (props.theme as TTheme).designColors.link};
+    }
   }
 
   &.rs-btn-blue {
@@ -87,14 +92,13 @@ const UButton: React.FunctionComponent<IUButtonProps> = ({ noBg, extraText, icon
           style={
             icon
               ? {
-                  paddingLeft: '5px',
-                  paddingBottom: '2px',
+                  paddingLeft: props.children ? '5px' : 0,
                 }
               : { display: 'block', width: '100%' }
           }
         >
           {props.children}
-          <ExtraText>{extraText}</ExtraText>
+          {extraText && <ExtraText>{extraText}</ExtraText>}
         </span>
       </Inner>
     </StyledButton>

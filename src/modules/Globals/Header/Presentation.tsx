@@ -1,25 +1,33 @@
 import * as React from 'react';
-import { ReactComponent as NewSpellIconComponent } from 'src/images/components/icons/reset.svg';
 import LogoIcon from 'src/images/logo-icon.svg';
 import LogoSm from 'src/images/logo-sm.svg';
 import Logo from 'src/images/logo.svg';
 import UBlock from 'src/ui-components/UBlock';
-import UButton from 'src/ui-components/UButton';
-import UIcon from 'src/ui-components/UIcon';
-import UIconButton from 'src/ui-components/UIconButton';
 import { UImage } from 'src/ui-components/UImage';
 import UInline from 'src/ui-components/UInline';
+import styled from 'styled-components';
 
-export interface IPresentationProps {
-  reset: () => void;
-  isExtendedMode: boolean;
-  switchMode: () => void;
-}
+export interface IPresentationProps {}
+
+const Root = styled(UBlock)`
+  position: relative;
+
+  &::after {
+    content: '';
+    background-color: #ece2c2;
+    position: absolute;
+    bottom: -7px;
+    left: 0;
+    width: 100%;
+    height: 7px;
+    border-radius: 5px;
+  }
+`;
 
 export default class Presentation extends React.Component<IPresentationProps, any> {
   public render() {
     return (
-      <UBlock my={[2]}>
+      <Root marginBottom={4} p={2}>
         <UBlock
           display="flex"
           flexDirection="row"
@@ -45,32 +53,8 @@ export default class Presentation extends React.Component<IPresentationProps, an
               />
             </UInline>
           </UBlock>
-          <UBlock my={0} textAlign="right" visible={[false, false, true]}>
-            <UButton onClick={this.props.switchMode} appearance="link" py={0}>
-              {this.props.isExtendedMode ? 'Простой режим' : 'Расширенный режим'}
-            </UButton>
-            <UButton
-              appearance="ghost"
-              onClick={this.props.reset}
-              icon={<UIcon svg={NewSpellIconComponent} />}
-            >
-              Новое заклятие
-            </UButton>
-          </UBlock>
-          <UBlock my={0} textAlign="right" visible={[true, true, false]}>
-            <UInline visible={[false, true]}>
-              <UButton onClick={this.props.switchMode} appearance="link" py={0}>
-                {this.props.isExtendedMode ? 'Упростить' : 'Расширить'}
-              </UButton>
-            </UInline>
-            <UIconButton
-              appearance="ghost"
-              onClick={this.props.reset}
-              svg={NewSpellIconComponent}
-            />
-          </UBlock>
         </UBlock>
-      </UBlock>
+      </Root>
     );
   }
 }

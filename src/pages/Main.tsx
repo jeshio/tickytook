@@ -1,7 +1,7 @@
 import React from 'react';
+import { Link, Route } from 'react-router-dom';
 import TTheme from 'src/core/types/TTheme';
-import Conclusion from 'src/modules/Constructor/Conclusion';
-import ParamsReceiver from 'src/modules/Constructor/ParamsReceiver';
+import Content from 'src/modules/Globals/Content';
 import Footer from 'src/modules/Globals/Footer';
 import Header from 'src/modules/Globals/Header';
 import UBlock from 'src/ui-components/UBlock';
@@ -9,6 +9,8 @@ import UGrid from 'src/ui-components/UGrid';
 import { createGlobalStyle } from 'styled-components';
 import styled from 'styled-components';
 import { space } from 'styled-system';
+import ArticlePage from './Article';
+import GeneratorPage from './Generator';
 
 const GlobalStyle = createGlobalStyle<any>`
   body {
@@ -35,9 +37,13 @@ export default () => (
   <Root px={[0, 2, 2]}>
     <UBlock px={[2, 0, 0]}>
       <Header />
-      <ParamsReceiver />
     </UBlock>
-    <Conclusion shortModeLeftColumn={<ParamsReceiver isShortModeVersion={true} />} />
+
+    <Content>
+      <Route exact={true} path="/" component={GeneratorPage} />
+      <Route exact={true} path="/article" component={ArticlePage} />
+    </Content>
+
     <Footer />
     <GlobalStyle />
   </Root>

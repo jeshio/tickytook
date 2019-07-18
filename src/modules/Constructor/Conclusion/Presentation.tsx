@@ -49,7 +49,7 @@ export default class Presentation extends Component<IPresentationProps, any> {
           </UBlock>
           <UBlock visible={this.props.paramsReceiver.text.length === 0} textAlign="center">
             <Block>
-              <UBlock p={4} paddingTop={6}>
+              <UBlock p={6} paddingTop={7}>
                 Для начала введите текст поста.
               </UBlock>
             </Block>
