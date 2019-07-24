@@ -7,7 +7,7 @@ import Presentation from './Presentation';
 
 export interface IContainerProps extends BaseStore.IActions, BaseStore.ISelectors {}
 
-class Container extends React.Component<IContainerProps, any> {
+class Container extends React.Component<IContainerProps> {
   public render() {
     return <Presentation {...this.props} />;
   }

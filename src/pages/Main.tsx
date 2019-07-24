@@ -4,7 +4,7 @@ import TTheme from 'src/core/types/TTheme';
 import Content from 'src/modules/Globals/Content';
 import Footer from 'src/modules/Globals/Footer';
 import Header from 'src/modules/Globals/Header';
-import UBlock from 'src/ui-components/UBlock';
+import Sidebar from 'src/modules/Globals/Sidebar';
 import UGrid from 'src/ui-components/UGrid';
 import { createGlobalStyle } from 'styled-components';
 import styled from 'styled-components';
@@ -31,13 +31,17 @@ const GlobalStyle = createGlobalStyle<any>`
 
 const Root = styled(UGrid)`
   ${space};
+  overflow: hidden;
+  position: relative;
+  height: 100%;
 `;
 
+// TODO добавить закрывашку сайдбара, при смене роута
 export default () => (
   <Root px={[0, 2, 2]}>
-    <UBlock px={[2, 0, 0]}>
-      <Header />
-    </UBlock>
+    <Header />
+
+    <Sidebar />
 
     <Content>
       <Route exact={true} path="/" component={GeneratorPage} />
