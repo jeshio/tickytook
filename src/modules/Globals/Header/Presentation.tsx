@@ -3,13 +3,15 @@ import { ReactComponent as MenuIconComponent } from 'src/images/components/icons
 import LogoIcon from 'src/images/logo-icon.svg';
 import LogoSm from 'src/images/logo-sm.svg';
 import Logo from 'src/images/logo.svg';
+import { Store as BaseStore } from 'src/modules/Globals/Base';
 import UBlock from 'src/ui-components/UBlock';
 import UIconButton from 'src/ui-components/UIconButton';
 import { UImage } from 'src/ui-components/UImage';
 import UInline from 'src/ui-components/UInline';
 import styled from 'styled-components';
+import Menu from './components/Menu';
 
-export interface IPresentationProps {
+export interface IPresentationProps extends BaseStore.ISelectors {
   switchSidebar: () => void;
 }
 
@@ -57,6 +59,9 @@ export default class Presentation extends React.Component<IPresentationProps, an
               />
             </UInline>
           </UBlock>
+          <UInline visible={[false, false, true]}>
+            <Menu items={this.props.sidebarMainMenuItems} />
+          </UInline>
           <UInline visible={[true, true, false]}>
             <UIconButton
               onClick={this.props.switchSidebar}

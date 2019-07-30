@@ -11,4 +11,8 @@ export const DEFAULT_MAIN_MENU_ITEMS: MenuItem[] = [
     title: 'Статьи',
     link: '/article',
   },
+  {
+    title: 'Контакты',
+    link: '/contacts',
+  },
 ];

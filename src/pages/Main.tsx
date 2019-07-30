@@ -5,6 +5,7 @@ import Content from 'src/modules/Globals/Content';
 import Footer from 'src/modules/Globals/Footer';
 import Header from 'src/modules/Globals/Header';
 import Sidebar from 'src/modules/Globals/Sidebar';
+import Subheader from 'src/modules/Globals/Subheader';
 import UGrid from 'src/ui-components/UGrid';
 import { createGlobalStyle } from 'styled-components';
 import styled from 'styled-components';
@@ -44,6 +45,8 @@ const Root = styled(UGrid)`
 export default () => (
   <Root px={[0, 2, 2]}>
     <Header />
+
+    <Subheader />
 
     <Sidebar />
 
