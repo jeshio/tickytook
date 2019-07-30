@@ -26,6 +26,10 @@ const GlobalStyle = createGlobalStyle<any>`
 
   a {
     color: ${props => (props.theme as TTheme).designColors.link};
+    
+    &:focus, &:hover {
+      color: ${props => (props.theme as TTheme).designColors.link};
+    }
   }
 `;
 

@@ -6,11 +6,13 @@ import UBlock from 'src/ui-components/UBlock';
 import { UImage } from 'src/ui-components/UImage';
 import UInline from 'src/ui-components/UInline';
 
-interface IHeaderProps {}
+interface IHeaderProps {
+  switchSidebar: () => void;
+}
 
 const Header: React.FunctionComponent<IHeaderProps> = props => {
   return (
-    <Link to="/">
+    <Link to="/" onClick={props.switchSidebar}>
       <UBlock p={2} py={4}>
         <UImage src={LogoIcon} width={'2rem'} alt="Волшебник Тикитук" />
         <UInline marginLeft={2}>

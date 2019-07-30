@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { darken, lighten } from 'polished';
 import * as React from 'react';
 import { Button, PropTypes } from 'rsuite';
@@ -85,7 +86,11 @@ const ExtraText = styled.div`
 
 const UButton: React.FunctionComponent<IUButtonProps> = ({ noBg, extraText, icon, ...props }) => {
   return (
-    <StyledButton {...props} {...(noBg ? noBgProps(props) : {})}>
+    <StyledButton
+      {...props}
+      className={cn(props.className, 'u-override')}
+      {...(noBg ? noBgProps(props) : {})}
+    >
       <Inner>
         {icon}
         <span

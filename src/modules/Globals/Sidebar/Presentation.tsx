@@ -1,11 +1,12 @@
 import * as React from 'react';
+import { Store as BaseStore } from 'src/modules/Globals/Base';
 import UBlock from 'src/ui-components/UBlock';
 import styled from 'styled-components';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import Menu from './components/Menu';
 
-export interface IPresentationProps {
-  sidebarIsOpen: boolean;
+export interface IPresentationProps extends BaseStore.ISelectors {
   switchSidebar: () => void;
 }
 
@@ -46,25 +47,29 @@ const Content = styled(UBlock)`
   justify-content: center;
   flex-direction: column;
   flex: 1;
+  width: 100%;
 `;
 
 export default class Presentation extends React.PureComponent<IPresentationProps> {
   public render() {
-    const { sidebarIsOpen } = this.props;
+    const {
+      sidebarIsOpen,
+      sidebarMainMenuItems,
+      sidebarExtraMenuItems,
+      switchSidebar,
+    } = this.props;
 
     return (
       <UBlock visible={[true, true, false]}>
-        <Layout isOpen={sidebarIsOpen} onClick={this.props.switchSidebar} />
+        <Layout isOpen={sidebarIsOpen} onClick={switchSidebar} />
         <Root isOpen={sidebarIsOpen}>
-          <Header />
+          <Header switchSidebar={switchSidebar} />
+          <Menu items={sidebarMainMenuItems} switchSidebar={switchSidebar} />
+
           <Content>
-            <div>
-              test
-              <br />
-              test2
-            </div>
+            <Menu items={sidebarExtraMenuItems} switchSidebar={switchSidebar} />
           </Content>
-          <Footer onCloseClick={this.props.switchSidebar} />
+          <Footer onCloseClick={switchSidebar} />
         </Root>
       </UBlock>
     );
