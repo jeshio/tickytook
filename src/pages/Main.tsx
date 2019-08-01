@@ -1,3 +1,4 @@
+import { darken } from 'polished';
 import React from 'react';
 import { Link, Route } from 'react-router-dom';
 import TTheme from 'src/core/types/TTheme';
@@ -27,9 +28,11 @@ const GlobalStyle = createGlobalStyle<any>`
 
   a {
     color: ${props => (props.theme as TTheme).designColors.link};
+    transition: 0.25s color;
     
     &:focus, &:hover {
-      color: ${props => (props.theme as TTheme).designColors.link};
+      color: ${props => darken(0.07, (props.theme as TTheme).designColors.link)};
+      text-decoration: none;
     }
   }
 `;

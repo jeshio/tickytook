@@ -7,9 +7,15 @@ export interface IPresentationProps extends BaseStore.ISelectors {}
 
 export default class Presentation extends React.PureComponent<IPresentationProps> {
   public render() {
+    const { sidebarExtraMenuItems } = this.props;
+
+    if (sidebarExtraMenuItems.length === 0) {
+      return null;
+    }
+
     return (
-      <UBlock marginTop={2} marginBottom={3} visible={[false, false, true]}>
-        <Menu items={this.props.sidebarExtraMenuItems} />
+      <UBlock marginTop={2} marginBottom={5} visible={[false, false, true]} textAlign="center">
+        <Menu items={sidebarExtraMenuItems} />
       </UBlock>
     );
   }

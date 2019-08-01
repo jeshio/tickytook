@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { ReactComponent as MenuIconComponent } from 'src/images/components/icons/menu-sm.svg';
 import LogoIcon from 'src/images/logo-icon.svg';
 import LogoSm from 'src/images/logo-sm.svg';
@@ -40,26 +41,28 @@ export default class Presentation extends React.Component<IPresentationProps, an
           justifyContent="space-between"
           alignItems="center"
         >
-          <UBlock mx={[1]} my={0}>
-            <UInline mr={[1, 2]}>
-              <UImage src={LogoIcon} width={['3rem']} alt="Волшебник Тикитук" />
-            </UInline>
-            <UInline visible={[false, false, true]}>
-              <UImage
-                src={Logo}
-                width={['18rem', '21rem']}
-                alt="Tickytook.ru - генератор хэштегов"
-              />
-            </UInline>
-            <UInline visible={[true, true, false]}>
-              <UImage
-                src={LogoSm}
-                width={['11rem', '14rem', '16rem']}
-                alt="Tickytook.ru - генератор хэштегов"
-              />
-            </UInline>
-          </UBlock>
-          <UInline visible={[false, false, true]}>
+          <Link to="/">
+            <UBlock mx={[1]} my={0}>
+              <UInline mr={[1, 2]}>
+                <UImage src={LogoIcon} width={['3rem']} alt="Волшебник Тикитук" />
+              </UInline>
+              <UInline visible={[false, false, true]}>
+                <UImage
+                  src={Logo}
+                  width={['18rem', '21rem']}
+                  alt="Tickytook.ru - генератор хэштегов"
+                />
+              </UInline>
+              <UInline visible={[true, true, false]}>
+                <UImage
+                  src={LogoSm}
+                  width={['11rem', '14rem', '16rem']}
+                  alt="Tickytook.ru - генератор хэштегов"
+                />
+              </UInline>
+            </UBlock>
+          </Link>
+          <UInline visible={[false, false, true]} paddingRight={3} paddingTop={2}>
             <Menu items={this.props.sidebarMainMenuItems} />
           </UInline>
           <UInline visible={[true, true, false]}>

@@ -17,7 +17,11 @@ const itemCss = `
 `;
 
 const StyledLink = styled(Link)`
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1.5rem;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: block;
 `;
 
 const Menu: React.FunctionComponent<IMenuProps> = props => {

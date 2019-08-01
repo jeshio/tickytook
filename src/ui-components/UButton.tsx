@@ -44,10 +44,6 @@ const StyledButton = styled(Button)`
 
   &.rs-btn-ghost {
     font-weight: 400;
-
-    svg {
-      fill: #34c3ff;
-    }
   }
 
   &.rs-btn-link {
@@ -64,7 +60,33 @@ const StyledButton = styled(Button)`
     background-color: ${props => (props.theme as TTheme).colors.blue};
 
     &:hover {
-      background-color: ${props => lighten(0.05, (props.theme as TTheme).colors.blue)};
+      background-color: ${props => darken(0.05, (props.theme as TTheme).colors.blue)};
+    }
+  }
+
+  &.rs-btn-ghost.rs-btn-active.rs-btn-focus,
+  &.rs-btn-ghost.rs-btn-active:focus,
+  &.rs-btn-ghost:active.rs-btn-focus,
+  &.rs-btn-ghost:active:focus,
+  &.rs-open > .rs-dropdown-toggle.rs-btn-ghost.rs-btn-focus,
+  &.rs-open > .rs-dropdown-toggle.rs-btn-ghost:focus,
+  &.rs-btn-ghost {
+    color: ${props => (props.theme as TTheme).colors.blue};
+    border-color: ${props => (props.theme as TTheme).colors.blue};
+    transition: 0.25s all;
+
+    svg {
+      transition: 0.25s all;
+      fill: ${props => (props.theme as TTheme).colors.blue};
+    }
+
+    &:hover {
+      color: ${props => darken(0.05, (props.theme as TTheme).colors.blue)};
+      border-color: ${props => darken(0.05, (props.theme as TTheme).colors.blue)};
+
+      svg {
+        fill: ${props => darken(0.05, (props.theme as TTheme).colors.blue)};
+      }
     }
   }
 
