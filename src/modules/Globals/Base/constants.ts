@@ -9,7 +9,7 @@ export const DEFAULT_MAIN_MENU_ITEMS: MenuItem[] = [
   },
   {
     title: 'Статьи',
-    link: '/article',
+    link: '/articles',
   },
   {
     title: 'Контакты',

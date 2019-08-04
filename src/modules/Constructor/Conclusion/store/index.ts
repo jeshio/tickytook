@@ -5,7 +5,7 @@ import { Store as ParamsReceiverStore } from '../../ParamsReceiver';
 import { AUTO_HASHTAGS_COUNT, SUB_MODULE_NAME } from '../constants';
 import getHashtagsFromWords from '../utils/getHashtagsFromWords';
 import Api from './api';
-import { IActions, IEndPoints, ISelectors, IStore } from './interfaces';
+import { IActions, ISelectors, IStore } from './interfaces';
 import sagas from './sagas';
 
 const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(

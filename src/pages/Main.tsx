@@ -11,7 +11,7 @@ import UGrid from 'src/ui-components/UGrid';
 import { createGlobalStyle } from 'styled-components';
 import styled from 'styled-components';
 import { space } from 'styled-system';
-import ArticlePage from './Article';
+import ArticlesListPage from './ArticlesListPage';
 import GeneratorPage from './Generator';
 
 const GlobalStyle = createGlobalStyle<any>`
@@ -55,7 +55,7 @@ export default () => (
 
     <Content>
       <Route exact={true} path="/" component={GeneratorPage} />
-      <Route exact={true} path="/article" component={ArticlePage} />
+      <Route exact={true} path="/articles" component={ArticlesListPage} />
     </Content>
 
     <Footer />
