@@ -11,6 +11,7 @@ import UGrid from 'src/ui-components/UGrid';
 import { createGlobalStyle } from 'styled-components';
 import styled from 'styled-components';
 import { space } from 'styled-system';
+import ArticlePage from './ArticlePage';
 import ArticlesListPage from './ArticlesListPage';
 import GeneratorPage from './Generator';
 
@@ -44,7 +45,7 @@ const Root = styled(UGrid)`
   height: 100%;
 `;
 
-// TODO добавить закрывашку сайдбара, при смене роута
+// TODO добавить 404
 export default () => (
   <Root px={[0, 2, 2]}>
     <Header />
@@ -56,6 +57,7 @@ export default () => (
     <Content>
       <Route exact={true} path="/" component={GeneratorPage} />
       <Route exact={true} path="/articles" component={ArticlesListPage} />
+      <Route exact={true} path="/articles/:slug" component={ArticlePage} />
     </Content>
 
     <Footer />

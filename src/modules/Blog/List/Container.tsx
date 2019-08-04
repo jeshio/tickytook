@@ -14,7 +14,7 @@ class Container extends React.Component<IContainerProps> {
   }
 
   public render() {
-    return <Presentation />;
+    return <Presentation {...this.props} />;
   }
 }
 

@@ -6,7 +6,9 @@ declare module 'modules/Blog/List' {
   interface Actions extends Store.IActions {}
 
   interface IArticle {
+    id: string;
     title: string;
+    slug: string;
     logo: {
       url: string;
       title: string;

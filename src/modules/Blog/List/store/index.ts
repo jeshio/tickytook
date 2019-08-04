@@ -29,10 +29,42 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
           data: { $set: action.payload[0] },
         },
       }),
+
+    fetchArticle: state =>
+      update(state, {
+        article: {
+          loading: { $set: true },
+        },
+      }),
+    fetchArticleFailure: state =>
+      update(state, {
+        article: {
+          loading: { $set: false },
+        },
+      }),
+    fetchArticleSuccess: (state, action) =>
+      update(state, {
+        article: {
+          loading: { $set: false },
+          data: { $set: action.payload[0] },
+        },
+      }),
+    resetArticle: state =>
+      update(state, {
+        article: {
+          data: {
+            $set: null,
+          },
+        },
+      }),
   },
   {
     articles: {
       data: [],
+      loading: false,
+    },
+    article: {
+      data: null,
       loading: false,
     },
   }

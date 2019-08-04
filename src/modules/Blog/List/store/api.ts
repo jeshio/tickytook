@@ -17,6 +17,10 @@ interface ListResponse {
       };
       title: string;
       text: string;
+      slug: string;
+    };
+    sys: {
+      id: string;
     };
   }>;
   includes: {
@@ -47,8 +51,10 @@ const formatResponse = (resultData: ListResponse): IArticle[] => {
         : {};
 
       return {
+        id: item.sys.id,
         title: item.fields.title,
         text: item.fields.text,
+        slug: item.fields.slug,
         logo: {
           title: get(logoAsset, 'fields.title', ''),
           url: get(logoAsset, 'fields.file.url', ''),
@@ -62,6 +68,13 @@ Api.addEndPoint('articles', {
   failureResponse: response => ({ error: 'test' }),
   method: 'get',
   successResponse: response => formatResponse(response as ListResponse),
+  url: `https://cdn.contentful.com/spaces/60wx9rdh5fwz/entries?access_token=twKpbbcLNEa8v29ppOgCLS1IEsClvVdfG91ab752Axc&content_type=article`,
+});
+
+Api.addEndPoint('articleBySlug', {
+  failureResponse: response => ({ error: 'test' }),
+  method: 'get',
+  successResponse: response => formatResponse(response as ListResponse)[0],
   url: `https://cdn.contentful.com/spaces/60wx9rdh5fwz/entries?access_token=twKpbbcLNEa8v29ppOgCLS1IEsClvVdfG91ab752Axc&content_type=article`,
 });
 

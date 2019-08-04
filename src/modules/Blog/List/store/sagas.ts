@@ -1,6 +1,7 @@
 import { call, cancelled, put, takeLatest } from 'redux-saga/effects';
 import SagaService from 'src/core/services/SagaService';
 import BaseStore from 'src/core/store/BaseStore';
+import ICAction from 'src/core/store/interfaces/ICAction';
 import Api from './api';
 import { IActions, IEndPoints, ISagaWorkers, ISelectors, IStore } from './interfaces';
 
@@ -26,9 +27,32 @@ export default function sagas(
     }
   });
 
-  // article fetcher
+  sagaService.addSagaWorker('fetchArticle', function*(action: ICAction<[string]>) {
+    try {
+      const requestData: ReturnType<IEndPoints['articleBySlug']['successResponse']> = yield call(
+        store.api.articleBySlug,
+        {
+          'fields.slug': action.payload[0],
+        }
+      );
+      yield put(store.actions.fetchArticleSuccess(requestData));
+    } catch (e) {
+      yield put(store.actions.fetchArticleFailure());
+    } finally {
+      if (yield cancelled()) {
+        yield put(store.actions.fetchArticleFailure());
+      }
+    }
+  });
+
+  // articles fetcher
   sagaService.addSagaWatcher(function*() {
     yield takeLatest(store.actions.fetchArticles.type, sagaService.sagaWorkers.fetchArticles);
+  });
+
+  // article fetcher
+  sagaService.addSagaWatcher(function*() {
+    yield takeLatest(store.actions.fetchArticle.type, sagaService.sagaWorkers.fetchArticle);
   });
 
   return sagaService.rootSaga;
