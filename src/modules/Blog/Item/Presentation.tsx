@@ -1,9 +1,9 @@
 import { Actions, Selectors } from 'modules/Blog/List';
-import raw from 'raw.macro';
 import * as React from 'react';
-import ReactMarkdown from 'react-markdown';
-import { UImage } from 'src/ui-components/UImage';
-const markdown = raw('../../../mocks/articles/test.md');
+import UBlock from 'src/ui-components/UBlock';
+import UShareButtons from 'src/ui-components/UShareButtons';
+import Content from './components/Content';
+import ShortDescription from './components/ShortDescription';
 
 export interface IPresentationProps extends Actions, Selectors {}
 
@@ -15,11 +15,22 @@ export default class Presentation extends React.PureComponent<IPresentationProps
     }
 
     return (
-      <div>
-        <UImage src={article.logo.url} alt={article.logo.title} height="180px" />
-        <h1>{article.title}</h1>
-        {<ReactMarkdown source={article.text} />}
-      </div>
+      <UBlock marginBottom={[5, 4]}>
+        <UBlock marginTop={[3, 5]} marginBottom={2}>
+          <ShortDescription {...article} />
+        </UBlock>
+
+        <UBlock my={4} display="flex" alignItems="center" justifyContent="center">
+          <UBlock visible={[false, true]}>Поделиться&nbsp;</UBlock>
+          <UShareButtons />
+        </UBlock>
+
+        <Content markdownText={article.text} />
+
+        <UBlock marginTop={[4, 2]} visible={String(article.text).length > 300}>
+          <UShareButtons />
+        </UBlock>
+      </UBlock>
     );
   }
 }

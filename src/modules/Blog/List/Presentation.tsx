@@ -1,6 +1,7 @@
 import { Selectors } from 'modules/Blog/List';
 import * as React from 'react';
-import { Article } from './components/Article';
+import UTitle from 'src/ui-components/UTitle';
+import List from './components/List';
 
 export interface IPresentationProps extends Selectors {}
 
@@ -8,9 +9,8 @@ export default class Presentation extends React.PureComponent<IPresentationProps
   public render() {
     return (
       <div>
-        {this.props.articles.data.map(item => (
-          <Article key={item.id} {...item} />
-        ))}
+        <UTitle>Статьи</UTitle>
+        <List items={this.props.articles.data} />
       </div>
     );
   }

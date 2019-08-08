@@ -13,6 +13,7 @@ declare module 'modules/Blog/List' {
       url: string;
       title: string;
     };
+    shortDescription?: string;
     text: string;
   }
 }

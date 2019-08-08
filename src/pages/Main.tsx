@@ -24,7 +24,8 @@ const GlobalStyle = createGlobalStyle<any>`
   }
 
   h1, h2, h3, h4 {
-    font-family: Franklin Gothic;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 
   a {

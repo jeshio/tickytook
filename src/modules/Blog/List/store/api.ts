@@ -17,6 +17,7 @@ interface ListResponse {
       };
       title: string;
       text: string;
+      shortDescription?: string;
       slug: string;
     };
     sys: {
@@ -54,6 +55,7 @@ const formatResponse = (resultData: ListResponse): IArticle[] => {
         id: item.sys.id,
         title: item.fields.title,
         text: item.fields.text,
+        shortDescription: item.fields.shortDescription,
         slug: item.fields.slug,
         logo: {
           title: get(logoAsset, 'fields.title', ''),
