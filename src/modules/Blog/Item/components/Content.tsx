@@ -22,7 +22,7 @@ const Root = styled(UBlock)`
 
 const Content: React.FunctionComponent<IContentProps> = props => {
   return (
-    <Root p={[4, 4, 5]} py={[5, 5, 6]} borderRadius={[0, '5px']}>
+    <Root p={[4, 4, 5]} py={[5, 5, 6]} mx={[0, 2, 4]} borderRadius={[0, '5px']}>
       <ReactMarkdown source={props.markdownText} />
     </Root>
   );

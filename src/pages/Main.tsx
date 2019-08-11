@@ -8,6 +8,7 @@ import Header from 'src/modules/Globals/Header';
 import Sidebar from 'src/modules/Globals/Sidebar';
 import Subheader from 'src/modules/Globals/Subheader';
 import UGrid from 'src/ui-components/UGrid';
+import UHelmet from 'src/ui-components/UHelmet';
 import { createGlobalStyle } from 'styled-components';
 import styled from 'styled-components';
 import { space } from 'styled-system';
@@ -49,6 +50,7 @@ const Root = styled(UGrid)`
 // TODO добавить 404
 export default () => (
   <Root px={[0, 2, 2]}>
+    <UHelmet />
     <Header />
 
     <Subheader />

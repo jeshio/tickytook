@@ -33,6 +33,8 @@ const Logo = styled(UImage)`
   object-fit: cover;
   transform: scale(1);
   transition: 0.25s transform;
+  min-height: 300px;
+  background-color: ${({ theme }: ICWithTheme) => rgba(theme.colors.blue, 0.8)};
 `;
 
 const Description = styled.div`
