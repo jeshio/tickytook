@@ -1,6 +1,6 @@
 import { darken } from 'polished';
 import React from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import TTheme from 'src/core/types/TTheme';
 import Content from 'src/modules/Globals/Content';
 import Footer from 'src/modules/Globals/Footer';
@@ -14,7 +14,9 @@ import styled from 'styled-components';
 import { space } from 'styled-system';
 import ArticlePage from './ArticlePage';
 import ArticlesListPage from './ArticlesListPage';
+import Contacts from './Contacts';
 import GeneratorPage from './Generator';
+import NotFound from './NotFound';
 
 const GlobalStyle = createGlobalStyle<any>`
   body {
@@ -58,9 +60,14 @@ export default () => (
     <Sidebar />
 
     <Content>
-      <Route exact={true} path="/" component={GeneratorPage} />
-      <Route exact={true} path="/articles" component={ArticlesListPage} />
-      <Route exact={true} path="/articles/:slug" component={ArticlePage} />
+      <Switch>
+        <Route exact={true} path="/" component={GeneratorPage} />
+        <Route exact={true} path="/articles" component={ArticlesListPage} />
+        <Route exact={true} path="/articles/:slug" component={ArticlePage} />
+        <Route exact={true} path="/contacts" component={Contacts} />
+
+        <Route component={NotFound} />
+      </Switch>
     </Content>
 
     <Footer />

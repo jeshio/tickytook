@@ -6,6 +6,8 @@ import * as cssType from 'styled-components/cssprop';
 import {
   alignItems,
   AlignItemsProps,
+  backgroundColor,
+  BackgroundColorProps,
   borderRadius,
   BorderRadiusProps,
   DisplayProps,
@@ -21,6 +23,8 @@ import {
   JustifyContentProps,
   justifyItems,
   JustifyItemsProps,
+  maxWidth,
+  MaxWidthProps,
   overflow,
   OverflowProps,
   space,
@@ -43,6 +47,8 @@ export interface IUBlockProps
     FlexBasisProps,
     BorderRadiusProps,
     OverflowProps,
+    MaxWidthProps,
+    BackgroundColorProps,
     VisibleProps {
   ref?: React.RefObject<HTMLDivElement>;
 }
@@ -60,6 +66,8 @@ const Root = styled.div<any>`
   ${flex}
   ${borderRadius};
   ${overflow};
+  ${maxWidth};
+  ${backgroundColor};
   ${props => props.css}
 `;
 
