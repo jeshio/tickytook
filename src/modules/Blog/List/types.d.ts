@@ -15,5 +15,7 @@ declare module 'modules/Blog/List' {
     };
     shortDescription?: string;
     text: string;
+    createdAt: string;
+    updatedAt: string;
   }
 }

@@ -1,5 +1,6 @@
 import { Selectors } from 'modules/Blog/List';
 import * as React from 'react';
+import ICJsonLd from 'src/core/interfaces/ICJsonLd';
 import UHelmet from 'src/ui-components/UHelmet';
 import USpinner from 'src/ui-components/USpinner';
 import UTitle from 'src/ui-components/UTitle';

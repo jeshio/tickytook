@@ -22,6 +22,8 @@ interface ListResponse {
     };
     sys: {
       id: string;
+      createdAt: string;
+      updatedAt: string;
     };
   }>;
   includes: {
@@ -61,6 +63,8 @@ const formatResponse = (resultData: ListResponse): IArticle[] => {
           title: get(logoAsset, 'fields.title', ''),
           url: get(logoAsset, 'fields.file.url', ''),
         },
+        createdAt: item.sys.createdAt,
+        updatedAt: item.sys.updatedAt,
       };
     }
   );
