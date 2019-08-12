@@ -9,7 +9,7 @@ export interface IUHelmetProps extends React.PropsWithChildren<{}> {
   description?: string;
   logoUrl?: string;
   ogType?: 'website' | 'article' | 'book' | 'profile' | string;
-  jsonLd?: ICJsonLd;
+  jsonLds?: ICJsonLd[];
 }
 
 export default class UHelmet extends React.PureComponent<IUHelmetProps> {
@@ -32,10 +32,19 @@ export default class UHelmet extends React.PureComponent<IUHelmetProps> {
   }
 
   get jsonLd() {
-    const { jsonLd } = this.props;
-    const content: ICJsonLd = { ...JSON_LD, ...(jsonLd ? jsonLd : {}) };
+    const { jsonLds } = this.props;
 
-    return JSON.stringify(content);
+    return [
+      <script type="application/ld+json" key="jsonLd">
+        {JSON.stringify(JSON_LD)}
+      </script>,
+    ].concat(
+      (jsonLds || []).map(jsonLd => (
+        <script type="application/ld+json" key="jsonLd">
+          {JSON.stringify(jsonLd)}
+        </script>
+      ))
+    );
   }
 
   get openGraph() {
@@ -49,21 +58,23 @@ export default class UHelmet extends React.PureComponent<IUHelmetProps> {
       <meta
         property="og:description"
         key="og:description"
-        content={truncate(description, { length: 90 })}
+        content={truncate(description, { length: 180 })}
       />,
       <meta property="og:url" key="og:url" content={window.location.href} />,
       <meta property="og:site_name" key="og:site_name" content="Тикитук" />,
       logoUrl && <meta property="og:image" key="og:image" content={logoUrl} />,
-      <meta property="og:image" key="og:image1" content="https://tickytook.ru/logo-sm.svg" />,
+      <meta property="og:image" key="og:image1" content="https://tickytook.ru/logo-sm.png" />,
       <meta property="og:image" key="og:image2" content={JSON_LD.logo} />,
     ];
   }
 
-  get twitterScheme() {
+  get socialsScheme() {
     const { title, description } = this;
     const { ogType: type, logoUrl } = this.props;
 
     return [
+      <meta property="vk:image" key="vk:image" content="https://tickytook.ru/logo-sm.png" />,
+      logoUrl && <meta property="vk:image" key="vk:image2" content={logoUrl} />,
       <meta name="twitter:card" key="twitter:card" content="summary" />,
       <meta name="twitter:title" key="twitter:title" content={title} />,
       <meta name="twitter:description" key="twitter:description" content={description} />,
@@ -79,15 +90,11 @@ export default class UHelmet extends React.PureComponent<IUHelmetProps> {
 
     result.push(<meta name="description" content={this.description} key="description" />);
 
-    result.push(
-      <script type="application/ld+json" key="jsonLd">
-        {this.jsonLd}
-      </script>
-    );
+    result.push(this.jsonLd);
 
     result.push(this.openGraph);
 
-    result.push(this.twitterScheme);
+    result.push(this.socialsScheme);
 
     if (children) {
       result.push(children);

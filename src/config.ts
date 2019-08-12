@@ -10,6 +10,6 @@ export const JSON_LD: ICJsonLd = {
   name: 'Тикитук',
   alternateName: 'Tickytook',
   url: 'https://tickytook.ru',
-  logo: 'https://tickytook.ru/logo-icon.svg',
+  logo: 'https://tickytook.ru/logo-icon.png',
   sameAs: 'https://www.instagram.com/tickytook.app/',
 };

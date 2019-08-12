@@ -5,6 +5,7 @@
   "scripts": {
     "start": "react-scripts start",
     "start:prod": "cross-env NODE_ENV=production node ./build/server/server/index.js",
+    "start:dev": "nodemon ./build/server/server/index.js",
     "build": "react-scripts build && yarn build:server",
     "build:server": "tsc -p tsconfig.server.json",
     "test": "react-scripts test",
@@ -99,6 +100,7 @@
     "ignore-styles": "^5.0.1",
     "lint-staged": "^8.1.5",
     "module-alias": "^2.2.0",
+    "nodemon": "^1.19.1",
     "prettier": "^1.16.4",
     "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "redux-logger": "^3.0.6",

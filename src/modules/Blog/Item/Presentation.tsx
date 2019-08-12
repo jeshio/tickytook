@@ -17,44 +17,47 @@ import ShortDescription from './components/ShortDescription';
 export interface IPresentationProps extends Actions, Selectors {}
 
 export default class Presentation extends React.PureComponent<IPresentationProps, any> {
-  get jsonLd(): ICJsonLd {
+  get jsonLds(): ICJsonLd[] {
     const article = this.props.article.data;
 
     if (!article) {
-      return {};
+      return [{}];
     }
 
-    return {
-      '@type': 'Article',
-      mainEntityOfPage: {
-        '@type': 'WebPage',
-        '@id': window.location.href,
-      },
-      headline: article.title,
-      description: article.shortDescription,
-      image: {
-        '@type': 'ImageObject',
-        url: article.logo.url,
-        width: 1024,
-        height: 1024,
-      },
-      author: {
-        '@type': 'Organization',
-        name: 'Тикитук',
-      },
-      publisher: {
-        '@type': 'Organization',
-        name: 'Тикитук',
-        logo: {
-          '@type': 'ImageObject',
-          url: JSON_LD.logo || '',
-          width: 60,
-          height: 60,
+    return [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': window.location.href,
         },
+        headline: article.title,
+        description: article.shortDescription,
+        image: {
+          '@type': 'ImageObject',
+          url: article.logo.url,
+          width: 1024,
+          height: 1024,
+        },
+        author: {
+          '@type': 'Organization',
+          name: 'Тикитук',
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Тикитук',
+          logo: {
+            '@type': 'ImageObject',
+            url: JSON_LD.logo || '',
+            width: 60,
+            height: 60,
+          },
+        },
+        datePublished: article.createdAt,
+        dateModified: article.updatedAt,
       },
-      datePublished: article.createdAt,
-      dateModified: article.updatedAt,
-    };
+    ];
   }
 
   public render() {
@@ -73,7 +76,7 @@ export default class Presentation extends React.PureComponent<IPresentationProps
         <UHelmet
           title={article.title}
           description={article.shortDescription}
-          jsonLd={this.jsonLd}
+          jsonLds={this.jsonLds}
           ogType="article"
           logoUrl={article.logo.url}
         />

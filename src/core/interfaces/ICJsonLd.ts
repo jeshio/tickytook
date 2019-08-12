@@ -1,5 +1,5 @@
 export default interface ICJsonLd {
-  '@context'?: string;
+  '@context'?: 'https://schema.org';
   '@type'?: string;
   name?: string;
   alternateName?: string;
