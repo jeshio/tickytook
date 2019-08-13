@@ -20,7 +20,6 @@ interface IParamsProps {
   switchDeleteNumberWords: () => void;
   switchSortByAlphabet: () => void;
   setMinimumHashtagLength: (length: number) => void;
-  switchMode: () => void;
   onFormSubmit?: () => void;
 }
 
@@ -32,16 +31,6 @@ const FlexUGridRow = styled(UGrid.Row)`
   ${display};
   align-items: center;
   flex-wrap: wrap;
-`;
-
-const Button = styled(({ Component, ...props }) => <Component {...props} />)`
-  border-radius: 5px;
-  min-width: 50%;
-`;
-
-const Controls = styled(UBlock)`
-  margin-top: 0.5rem;
-  text-align: center;
 `;
 
 class Params extends React.PureComponent<IParamsProps, IParamsState> {
@@ -63,7 +52,6 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
       switchDeleteNumberWords,
       switchSortByAlphabet,
       setMinimumHashtagLength,
-      switchMode,
       isExtendedMode,
     } = this.props;
     const { displayParams } = this.state;
@@ -74,80 +62,70 @@ class Params extends React.PureComponent<IParamsProps, IParamsState> {
           minimumHashtagLength: minimumHashtagLength.toString(),
         }}
       >
-        <UFlexboxGrid flexDirection={['column', 'row']} align="middle">
-          <UFlexboxGrid.Item>
-            <UBlock my={0} textAlign={['center', 'right']}>
-              <UButton onClick={this.switchParamsDisplay} appearance="link" py={0}>
-                {displayParams ? 'Скрыть параметры' : 'Показать параметры'}...
-              </UButton>
-            </UBlock>
-          </UFlexboxGrid.Item>
-        </UFlexboxGrid>
-        <UBlock visible={displayParams}>
-          <FlexUGridRow display={isExtendedMode ? ['block', 'block', 'flex'] : ['block', 'flex']}>
-            <UGrid.Col sm={isExtendedMode ? 7 : 12}>
-              <UBlock marginLeft={2} marginTop={0} visible={[false, false, true]}>
-                <UForm.Input
-                  name="minimumHashtagLength"
-                  type="number"
-                  placeholder="убрать хэштеги длиной менее"
-                  onChange={onChangeMinimumHashtagLength}
-                  label="Минимальная длина хэштега"
-                />
+        <UBlock visible={isExtendedMode}>
+          <UFlexboxGrid flexDirection={['column', 'row']} align="middle">
+            <UFlexboxGrid.Item>
+              <UBlock my={0} textAlign={['center', 'right']}>
+                <UButton onClick={this.switchParamsDisplay} appearance="link" py={0}>
+                  {displayParams ? 'Скрыть параметры' : 'Показать параметры'}...
+                </UButton>
               </UBlock>
-              <UBlock marginLeft={2} marginTop={0} visible={[true, true, false]}>
-                <UForm.Group>
-                  <UForm.Label>Минимальная длина хэштега</UForm.Label>
+            </UFlexboxGrid.Item>
+          </UFlexboxGrid>
+          <UBlock visible={displayParams}>
+            <FlexUGridRow display={['block', 'block', 'flex']}>
+              <UGrid.Col sm={7}>
+                <UBlock marginLeft={2} marginTop={0} visible={[false, false, true]}>
                   <UForm.Input
                     name="minimumHashtagLength"
                     type="number"
                     placeholder="убрать хэштеги длиной менее"
                     onChange={onChangeMinimumHashtagLength}
+                    label="Минимальная длина хэштега"
                   />
-                </UForm.Group>
-              </UBlock>
-            </UGrid.Col>
-            <UGrid.Col sm={isExtendedMode ? 5 : 12}>
-              <UForm.Checkbox
-                name="convertToLower"
-                checked={convertToLower}
-                onChange={switchConvertToLower}
-              >
-                перевести в нижний регистр
-              </UForm.Checkbox>
-            </UGrid.Col>
-            <UGrid.Col sm={isExtendedMode ? 5 : 12}>
-              <UForm.Checkbox
-                name="sortByAlphabet"
-                checked={sortByAlphabet}
-                onChange={switchSortByAlphabet}
-              >
-                сортировать по алфавиту
-              </UForm.Checkbox>
-            </UGrid.Col>
-            <UGrid.Col sm={isExtendedMode ? 6 : 12}>
-              <UForm.Checkbox
-                name="deleteNumberWords"
-                checked={deleteNumberWords}
-                onChange={switchDeleteNumberWords}
-              >
-                убрать хэштеги целиком из цифр
-              </UForm.Checkbox>
-            </UGrid.Col>
-          </FlexUGridRow>
+                </UBlock>
+                <UBlock marginLeft={2} marginTop={0} visible={[true, true, false]}>
+                  <UForm.Group>
+                    <UForm.Label>Минимальная длина хэштега</UForm.Label>
+                    <UForm.Input
+                      name="minimumHashtagLength"
+                      type="number"
+                      placeholder="убрать хэштеги длиной менее"
+                      onChange={onChangeMinimumHashtagLength}
+                    />
+                  </UForm.Group>
+                </UBlock>
+              </UGrid.Col>
+              <UGrid.Col sm={5}>
+                <UForm.Checkbox
+                  name="convertToLower"
+                  checked={convertToLower}
+                  onChange={switchConvertToLower}
+                >
+                  перевести в нижний регистр
+                </UForm.Checkbox>
+              </UGrid.Col>
+              <UGrid.Col sm={5}>
+                <UForm.Checkbox
+                  name="sortByAlphabet"
+                  checked={sortByAlphabet}
+                  onChange={switchSortByAlphabet}
+                >
+                  сортировать по алфавиту
+                </UForm.Checkbox>
+              </UGrid.Col>
+              <UGrid.Col sm={6}>
+                <UForm.Checkbox
+                  name="deleteNumberWords"
+                  checked={deleteNumberWords}
+                  onChange={switchDeleteNumberWords}
+                >
+                  убрать хэштеги целиком из цифр
+                </UForm.Checkbox>
+              </UGrid.Col>
+            </FlexUGridRow>
+          </UBlock>
         </UBlock>
-        <Controls visible={!this.props.isExtendedMode}>
-          <Button
-            Component={UButton}
-            appearance="primary"
-            icon={<UIcon svg={SpellIconComponent} size="small" />}
-            color="blue"
-            type="submit"
-            onClick={this.props.onFormSubmit}
-          >
-            Наколдовать!
-          </Button>
-        </Controls>
       </UForm>
     );
   }

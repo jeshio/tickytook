@@ -10,7 +10,7 @@ const Root = styled.div`
   justify-content: center;
   height: 48px;
   width: 48px;
-  background-color: ${props => (props.theme as TTheme).colors.red};
+  background-color: ${props => (props.theme as TTheme).colors.lightRed};
   color: #fff;
   font-size: 28px;
   font-family: Microsoft YaHei, sans-serif;

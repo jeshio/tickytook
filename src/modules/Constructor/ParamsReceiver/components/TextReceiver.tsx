@@ -1,6 +1,7 @@
 import debounce from 'lodash/debounce';
 import * as React from 'react';
 import { ReactComponent as SpellIconComponent } from 'src/images/components/icons/magic-wand.svg';
+import UBlock from 'src/ui-components/UBlock';
 import UButton from 'src/ui-components/UButton';
 import UFlexboxGrid from 'src/ui-components/UFlexboxGrid';
 import UForm from 'src/ui-components/UForm';
@@ -42,6 +43,16 @@ const Button = styled(({ Component, ...props }) => <Component {...props} />)`
   border-radius: 0 5px 5px 0;
   height: 48px;
   min-width: 48px;
+`;
+
+const ShortBlockButton = styled(({ Component, ...props }) => <Component {...props} />)`
+  border-radius: 5px;
+  min-width: 50%;
+`;
+
+const ShortBlockControls = styled(UBlock)`
+  margin-top: 0.5rem;
+  text-align: center;
 `;
 
 export default class TextReceiver extends React.PureComponent<TextReceiverProps, any> {
@@ -120,6 +131,18 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
               </UInline>
             </UFlexboxGrid.Item>
           </UFlexboxGrid>
+          <ShortBlockControls visible={!this.props.isExtendedMode}>
+            <ShortBlockButton
+              Component={UButton}
+              appearance="primary"
+              icon={<UIcon svg={SpellIconComponent} size="small" />}
+              color="blue"
+              type="submit"
+              onClick={onFormSubmit}
+            >
+              Наколдовать!
+            </ShortBlockButton>
+          </ShortBlockControls>
         </UForm>
       </Root>
     );
