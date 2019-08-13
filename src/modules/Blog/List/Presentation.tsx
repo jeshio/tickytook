@@ -1,6 +1,6 @@
 import { Selectors } from 'modules/Blog/List';
 import * as React from 'react';
-import ICJsonLd from 'src/core/interfaces/ICJsonLd';
+import UBlock from 'src/ui-components/UBlock';
 import UHelmet from 'src/ui-components/UHelmet';
 import USpinner from 'src/ui-components/USpinner';
 import UTitle from 'src/ui-components/UTitle';
@@ -20,6 +20,16 @@ export default class Presentation extends React.PureComponent<IPresentationProps
         <USpinner loading={this.props.articles.loading}>
           <List items={this.props.articles.data} />
         </USpinner>
+        <UBlock
+          visible={!this.props.articles.loading && this.props.articles.data.length === 0}
+          textAlign="center"
+          minHeight="6rem"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          Статьи пишутся прямо сейчас и скоро здесь появятся
+        </UBlock>
       </div>
     );
   }

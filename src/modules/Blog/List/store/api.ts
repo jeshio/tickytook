@@ -19,6 +19,7 @@ interface ListResponse {
       text: string;
       shortDescription?: string;
       slug: string;
+      hidden: boolean;
     };
     sys: {
       id: string;
@@ -59,6 +60,7 @@ const formatResponse = (resultData: ListResponse): IArticle[] => {
         text: item.fields.text,
         shortDescription: item.fields.shortDescription,
         slug: item.fields.slug,
+        hidden: item.fields.hidden,
         logo: {
           title: get(logoAsset, 'fields.title', ''),
           url: get(logoAsset, 'fields.file.url', ''),

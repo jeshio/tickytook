@@ -67,6 +67,12 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
       data: null,
       loading: false,
     },
+  },
+  {
+    articles: state => ({
+      ...state.articles,
+      data: state.articles.data.filter(item => !item.hidden),
+    }),
   }
 );
 

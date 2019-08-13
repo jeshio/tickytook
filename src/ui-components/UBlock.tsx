@@ -25,6 +25,8 @@ import {
   JustifyItemsProps,
   maxWidth,
   MaxWidthProps,
+  minHeight,
+  MinHeightProps,
   overflow,
   OverflowProps,
   space,
@@ -49,6 +51,7 @@ export interface IUBlockProps
     OverflowProps,
     MaxWidthProps,
     BackgroundColorProps,
+    MinHeightProps,
     VisibleProps {
   ref?: React.RefObject<HTMLDivElement>;
 }
@@ -67,6 +70,7 @@ const Root = styled.div<any>`
   ${borderRadius};
   ${overflow};
   ${maxWidth};
+  ${minHeight};
   ${backgroundColor};
   ${props => props.css}
 `;

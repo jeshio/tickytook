@@ -15,6 +15,7 @@ declare module 'modules/Blog/List' {
     };
     shortDescription?: string;
     text: string;
+    hidden: boolean;
     createdAt: string;
     updatedAt: string;
   }
