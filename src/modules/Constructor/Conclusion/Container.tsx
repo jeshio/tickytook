@@ -5,10 +5,10 @@ import ICStringIndexes from 'src/core/interfaces/ICStringIndexes';
 import copyTextToClipboard from 'src/core/utils/copyTextToClipboard';
 import { Store } from '.';
 import { Store as ParamsReceiverStore } from '../ParamsReceiver';
-import { Selectors } from './module';
+import { Actions, Selectors } from './module';
 import Presentation, { IPresentationProps } from './Presentation';
 
-type PropsType = Selectors & Store.IActions;
+type PropsType = { shortModeLeftColumn: React.ReactElement } & Selectors & Actions;
 
 class Container extends Component<PropsType> {
   public render() {
@@ -16,6 +16,8 @@ class Container extends Component<PropsType> {
       ...this.props,
       onCopyHashtags: this.handleCopyHashtags,
       onCopyPost: this.handleCopyPost,
+      isExtendedMode: this.props.paramsReceiver.isExtendedMode,
+      switchMode: this.props.paramsReceiverActions.switchMode,
     });
   }
 
@@ -36,8 +38,14 @@ class Container extends Component<PropsType> {
   };
 }
 
-export default connect<Selectors, Store.IActions, void, ParamsReceiverStore.IStore & Store.IStore>(
+export default connect<Selectors, Actions, void, ParamsReceiverStore.IStore & Store.IStore>(
   state => ({ paramsReceiver: ParamsReceiverStore.selectors(state), ...Store.selectors(state) }),
   (dispatch: Dispatch) =>
-    bindActionCreators(Store.actions as ICStringIndexes, dispatch) as Store.IActions
+    ({
+      ...bindActionCreators(Store.actions as ICStringIndexes, dispatch),
+      paramsReceiverActions: bindActionCreators(
+        ParamsReceiverStore.actions as ICStringIndexes,
+        dispatch
+      ),
+    } as Actions)
 )(Container);

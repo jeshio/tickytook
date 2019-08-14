@@ -57,7 +57,7 @@ class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsText
               appearance="primary"
               extraText="только хэштеги"
             >
-              {showSuccessCopyMessage[1] ? 'Скопировано!' : 'Копировать из котла'}
+              {showSuccessCopyMessage[1] ? 'Готово!' : 'Копировать из котла'}
             </UButton>
           </UBlock>
         </UBlock>

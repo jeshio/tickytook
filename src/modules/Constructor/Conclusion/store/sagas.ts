@@ -25,12 +25,12 @@ export default function sagas(
   sagaService.addSagaWorker('fetchExtraWords', function*() {
     try {
       const currentStoreSelectors = store.selectors(yield select());
-      const requestData: ReturnType<IEndPoints['extraWords']['successResponse']> = (yield call(
+      const requestData: ReturnType<IEndPoints['extraWords']['successResponse']> = yield call(
         store.api.extraWords,
         {
           words: currentStoreSelectors.words,
         }
-      )).data;
+      );
 
       yield put(store.actions.fetchExtraWordsSuccess(requestData.result || []));
     } catch (e) {

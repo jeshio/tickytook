@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { darken, lighten } from 'polished';
 import * as React from 'react';
 import { Button, PropTypes } from 'rsuite';
@@ -43,22 +44,49 @@ const StyledButton = styled(Button)`
 
   &.rs-btn-ghost {
     font-weight: 400;
-
-    svg {
-      fill: #34c3ff;
-    }
   }
 
   &.rs-btn-link {
     color: ${props => (props.theme as TTheme).designColors.link};
     font-weight: 400;
+    padding: 0.05rem 0.5rem;
+
+    svg {
+      fill: ${props => (props.theme as TTheme).designColors.link};
+    }
   }
 
   &.rs-btn-blue {
     background-color: ${props => (props.theme as TTheme).colors.blue};
 
     &:hover {
-      background-color: ${props => lighten(0.05, (props.theme as TTheme).colors.blue)};
+      background-color: ${props => darken(0.05, (props.theme as TTheme).colors.blue)};
+    }
+  }
+
+  &.rs-btn-ghost.rs-btn-active.rs-btn-focus,
+  &.rs-btn-ghost.rs-btn-active:focus,
+  &.rs-btn-ghost:active.rs-btn-focus,
+  &.rs-btn-ghost:active:focus,
+  &.rs-open > .rs-dropdown-toggle.rs-btn-ghost.rs-btn-focus,
+  &.rs-open > .rs-dropdown-toggle.rs-btn-ghost:focus,
+  &.rs-btn-ghost {
+    color: ${props => (props.theme as TTheme).colors.blue};
+    border-color: ${props => (props.theme as TTheme).colors.blue};
+    transition: 0.25s all;
+
+    svg {
+      transition: 0.25s all;
+      fill: ${props => (props.theme as TTheme).colors.blue};
+    }
+
+    &:hover {
+      color: ${props => darken(0.05, (props.theme as TTheme).colors.blue)};
+      border-color: ${props => darken(0.05, (props.theme as TTheme).colors.blue)};
+
+      svg {
+        fill: ${props => darken(0.05, (props.theme as TTheme).colors.blue)};
+      }
     }
   }
 
@@ -70,6 +98,7 @@ const StyledButton = styled(Button)`
 const Inner = styled.span`
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 const ExtraText = styled.div`
@@ -79,21 +108,24 @@ const ExtraText = styled.div`
 
 const UButton: React.FunctionComponent<IUButtonProps> = ({ noBg, extraText, icon, ...props }) => {
   return (
-    <StyledButton {...props} {...(noBg ? noBgProps(props) : {})}>
+    <StyledButton
+      {...props}
+      className={cn(props.className, 'u-override')}
+      {...(noBg ? noBgProps(props) : {})}
+    >
       <Inner>
         {icon}
         <span
           style={
             icon
               ? {
-                  paddingLeft: '5px',
-                  paddingBottom: '2px',
+                  paddingLeft: props.children ? '5px' : 0,
                 }
-              : {}
+              : { display: 'block', width: '100%' }
           }
         >
           {props.children}
-          <ExtraText>{extraText}</ExtraText>
+          {extraText && <ExtraText>{extraText}</ExtraText>}
         </span>
       </Inner>
     </StyledButton>

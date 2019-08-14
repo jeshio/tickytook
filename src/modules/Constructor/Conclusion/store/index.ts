@@ -2,10 +2,10 @@ import uniq from 'lodash/uniq';
 import BaseStore from 'src/core/store/BaseStore';
 import { MODULE_NAME } from '../../constants';
 import { Store as ParamsReceiverStore } from '../../ParamsReceiver';
-import { SUB_MODULE_NAME } from '../constants';
+import { AUTO_HASHTAGS_COUNT, SUB_MODULE_NAME } from '../constants';
 import getHashtagsFromWords from '../utils/getHashtagsFromWords';
 import Api from './api';
-import { IActions, IEndPoints, ISelectors, IStore } from './interfaces';
+import { IActions, ISelectors, IStore } from './interfaces';
 import sagas from './sagas';
 
 const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
@@ -25,14 +25,23 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
       ...state,
       extraWords: { ...state.extraWords, loading: false },
     }),
-    fetchExtraWordsSuccess: (state, action) => ({
-      ...state,
-      extraWords: {
-        ...state.extraWords,
-        loading: false,
-        data: uniq(action.payload[0].length > 0 ? action.payload[0] : state.extraWords.data),
-      },
-    }),
+    fetchExtraWordsSuccess: (state, action) => {
+      const extraWords = uniq(
+        action.payload[0].length > 0 ? action.payload[0] : state.extraWords.data
+      );
+      return {
+        ...state,
+        extraWords: {
+          ...state.extraWords,
+          loading: false,
+          data: extraWords,
+        },
+        // если ни одного хэштега не установлено, то добавляем автоматом
+        ...(state.extraHashtags.length === 0
+          ? { extraHashtags: extraWords.slice(0, AUTO_HASHTAGS_COUNT) }
+          : {}),
+      };
+    },
     switchHashtagActiveStatus: (state, action) => {
       const hashtag = action.payload[0];
       const inactiveHashtags = new Set(state.inactiveHashtags);

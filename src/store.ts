@@ -11,7 +11,7 @@ declare global {
 
 const initialState = {};
 const enhancers = [] as Array<() => void>;
-const middlewares = [];
+const middlewares: any[] = [];
 const sagaMiddleware = createSagaMiddleware();
 
 middlewares.push(sagaMiddleware);

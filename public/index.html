@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <!-- Google Tag Manager -->
     <script>
-      if ('%NODE_ENV%' === 'production') {
+      const env = '%NODE_ENV%';
+      if (env === 'production') {
         (function(w, d, s, l, i) {
           w[l] = w[l] || [];
           w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
@@ -14,11 +15,30 @@
           j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
           f.parentNode.insertBefore(j, f);
         })(window, document, 'script', 'dataLayer', 'GTM-M8MGVRK');
+      } else {
+        (function(w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != 'dataLayer' ? '&l=' + l : '';
+          j.async = true;
+          j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' +
+            i +
+            dl +
+            '&gtm_auth=aMw-FuxsbcQOotN616y3Dg&gtm_preview=env-8&gtm_cookies_win=x';
+          f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-M8MGVRK');
       }
     </script>
     <!-- End Google Tag Manager -->
 
     <meta charset="utf-8" />
+    <meta
+      name="keywords"
+      content="хэштеги, instagram, тикитук, генератор, соцсети, twitter, facebook, вконтакте"
+    />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="theme-color" content="#000000" />
@@ -27,10 +47,6 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500"
-      rel="stylesheet"
-    />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -40,7 +56,7 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Tickytook — наколдуй хэштеги, генератор хэштегов</title>
+    <react-helmet-replacer></react-helmet-replacer>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
@@ -66,5 +82,9 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500"
+      rel="stylesheet"
+    />
   </body>
 </html>

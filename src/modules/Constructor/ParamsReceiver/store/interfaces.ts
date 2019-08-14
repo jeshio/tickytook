@@ -6,6 +6,7 @@ export interface IStore {
   deleteNumberWords: boolean;
   sortByAlphabet: boolean;
   minimumHashtagLength: number;
+  isExtendedMode: boolean;
 }
 
 export interface ISelectors extends IStore {}
@@ -13,6 +14,7 @@ export interface ISelectors extends IStore {}
 export interface IActions {
   changeText: (text: string) => ICAction;
   wiz: () => ICAction;
+  switchMode: () => ICAction;
   switchConvertToLower: () => ICAction;
   switchDeleteNumberWords: () => ICAction;
   switchSortByAlphabet: () => ICAction;

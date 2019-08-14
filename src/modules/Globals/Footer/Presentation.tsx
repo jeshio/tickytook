@@ -10,9 +10,9 @@ const Root = styled(UBlock)`
 
 const Presentation: React.FunctionComponent<IPresentationProps> = props => {
   return (
-    <Root textAlign="center" py={4} borderRadius={[0, '5px']}>
+    <Root textAlign="center" marginTop={[2, 4, 5]} py={4} borderRadius={[0, '5px']}>
       © 2019 Все права защищены,{' '}
-      <a href="https://www.instagram.com/ga_ivanov/" target="_blank">
+      <a href="https://www.instagram.com/jeshio.ru/" target="_blank">
         @jeshio
       </a>
     </Root>

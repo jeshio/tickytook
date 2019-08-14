@@ -8,15 +8,16 @@ interface IArrayExtended {
 
 const breakpoints: IArrayExtended = ['480px', '992px', '1200px', '1600px'];
 
-breakpoints.sm = breakpoints[1];
-breakpoints.md = breakpoints[2];
-breakpoints.lg = breakpoints[3];
-breakpoints.xl = breakpoints[4];
+breakpoints.sm = breakpoints[0];
+breakpoints.md = breakpoints[1];
+breakpoints.lg = breakpoints[2];
+breakpoints.xl = breakpoints[3];
 
 export default {
   breakpoints,
   colors: {
-    red: '#FC6F6F',
+    red: '#e84b33',
+    lightRed: '#FC6F6F',
     blue: 'cornflowerblue',
     darkGrey: '#777',
     grey: '#B5B5B5',

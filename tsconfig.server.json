@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./build/server",
+    "target": "es2017",
+    "lib": ["es6", "dom"],
+    "noImplicitAny": false,
+    "isolatedModules": false,
+    "esModuleInterop": true,
+    "noEmit": false,
+    "strict": false
+  },
+  "include": ["src", "server"]
+}

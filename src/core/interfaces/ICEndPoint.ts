@@ -1,4 +1,4 @@
-export default interface ICEndPoint<Params, SuccessResponse, FailureResponse, Data = {}> {
+export default interface ICEndPoint<SuccessResponse, FailureResponse = {}, Params = {}, Data = {}> {
   url: string;
   method: 'get' | 'post' | 'put' | 'delete';
   params?: Params;
