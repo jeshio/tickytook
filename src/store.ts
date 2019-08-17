@@ -9,31 +9,34 @@ declare global {
   }
 }
 
-const initialState = {};
-const enhancers = [] as Array<() => void>;
-const middlewares: any[] = [];
-const sagaMiddleware = createSagaMiddleware();
+const getStore = (initialState = {}) => {
+  const enhancers = [] as Array<() => void>;
+  const middlewares: any[] = [];
+  const sagaMiddleware = createSagaMiddleware();
 
-middlewares.push(sagaMiddleware);
+  middlewares.push(sagaMiddleware);
 
-if (process.env.NODE_ENV === 'development') {
-  const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__ || {};
+  if (process.env.NODE_ENV === 'development') {
+    const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__ || {};
 
-  if (typeof devToolsExtension === 'function') {
-    enhancers.push(devToolsExtension());
+    if (typeof devToolsExtension === 'function') {
+      enhancers.push(devToolsExtension());
+    }
+
+    const logger = createLogger();
+    middlewares.push(logger);
   }
 
-  const logger = createLogger();
-  middlewares.push(logger);
-}
+  const composedEnhancers: StoreEnhancer<{}, {}> = compose(
+    applyMiddleware(...middlewares),
+    ...enhancers
+  );
 
-const composedEnhancers: StoreEnhancer<{}, {}> = compose(
-  applyMiddleware(...middlewares),
-  ...enhancers
-);
+  const store = createStore(rootReducer, initialState, composedEnhancers);
 
-const store = createStore(rootReducer, initialState, composedEnhancers);
+  sagaMiddleware.run(rootSaga);
 
-sagaMiddleware.run(rootSaga);
+  return store;
+};
 
-export default store;
+export default getStore;

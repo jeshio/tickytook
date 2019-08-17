@@ -10,7 +10,7 @@ export default function sagas(
 ) {
   const sagaService = new SagaService<ISagaWorkers>();
 
-  sagaService.addSagaWorker('fetchArticles', function*() {
+  sagaService.addSagaWorker('fetchArticles', function*(payload) {
     try {
       const requestData: ReturnType<IEndPoints['articles']['successResponse']> = yield call(
         store.api.articles,
@@ -18,6 +18,7 @@ export default function sagas(
       );
 
       yield put(store.actions.fetchArticlesSuccess(requestData));
+      payload.payload[0]();
     } catch (e) {
       yield put(store.actions.fetchArticlesFailure());
     } finally {
@@ -36,6 +37,7 @@ export default function sagas(
         }
       );
       yield put(store.actions.fetchArticleSuccess(requestData));
+      (action as any).payload[1]();
     } catch (e) {
       yield put(store.actions.fetchArticleFailure());
     } finally {

@@ -1,10 +1,11 @@
 import truncate from 'lodash/truncate';
 import * as React from 'react';
 import Helmet from 'react-helmet';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { JSON_LD } from 'src/config';
 import ICJsonLd from 'src/core/interfaces/ICJsonLd';
 
-export interface IUHelmetProps extends React.PropsWithChildren<{}> {
+export interface IUHelmetProps extends React.PropsWithChildren<{}>, RouteComponentProps<{}> {
   title?: string;
   description?: string;
   logoUrl?: string;
@@ -12,7 +13,7 @@ export interface IUHelmetProps extends React.PropsWithChildren<{}> {
   jsonLds?: ICJsonLd[];
 }
 
-export default class UHelmet extends React.PureComponent<IUHelmetProps> {
+class UHelmet extends React.PureComponent<IUHelmetProps> {
   get title() {
     if (!this.props.title) {
       return 'Тикитук — наколдуй хэштеги, генератор хэштегов одним кликом';
@@ -49,7 +50,11 @@ export default class UHelmet extends React.PureComponent<IUHelmetProps> {
 
   get openGraph() {
     const { title, description } = this;
-    const { ogType, logoUrl } = this.props;
+    const {
+      ogType,
+      logoUrl,
+      location: { pathname },
+    } = this.props;
 
     return [
       <meta property="og:locale" key="og:locale" content="ru_RU" />,
@@ -60,7 +65,7 @@ export default class UHelmet extends React.PureComponent<IUHelmetProps> {
         key="og:description"
         content={truncate(description, { length: 180 })}
       />,
-      <meta property="og:url" key="og:url" content={window.location.href} />,
+      <meta property="og:url" key="og:url" content={pathname} />,
       <meta property="og:site_name" key="og:site_name" content="Тикитук" />,
       logoUrl && <meta property="og:image" key="og:image" content={logoUrl} />,
       <meta property="og:image" key="og:image1" content="https://tickytook.ru/logo-sm.png" />,
@@ -78,7 +83,7 @@ export default class UHelmet extends React.PureComponent<IUHelmetProps> {
       <meta name="twitter:card" key="twitter:card" content="summary" />,
       <meta name="twitter:title" key="twitter:title" content={title} />,
       <meta name="twitter:description" key="twitter:description" content={description} />,
-      <meta name="twitter:image" key="twitter:image" content={logoUrl || ''} />,
+      logoUrl && <meta name="twitter:image" key="twitter:image" content={logoUrl} />,
     ];
   }
 
@@ -107,3 +112,5 @@ export default class UHelmet extends React.PureComponent<IUHelmetProps> {
     return <Helmet>{this.build()}</Helmet>;
   }
 }
+
+export default withRouter(UHelmet);

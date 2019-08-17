@@ -2,6 +2,7 @@
 import 'babel-polyfill';
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
+import { frontloadServerRender } from 'react-frontload';
 
 import fs from 'fs';
 import path from 'path';
@@ -10,9 +11,12 @@ import express from 'express';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Helmet from 'react-helmet';
+import ReactRouter from 'react-router';
+import { StaticRouter } from 'react-router-dom';
 import { ServerStyleSheet } from 'styled-components';
 
-import App from '../src/App.ssr';
+import App from '../src/App';
+import getStore from '../src/store';
 
 const IS_PROD = process.env.NODE_ENV === 'production';
 
@@ -29,12 +33,13 @@ const router = express.Router();
   },
 };
 
-const serverRenderer = (req, res, next) => {
-  fs.readFile(path.resolve('./build/index.html'), 'utf8', (err, data) => {
+const serverRenderer = async (req, res, next) => {
+  await fs.readFile(path.resolve('./build/index.html'), 'utf8', async (err, data) => {
     const sheet = new ServerStyleSheet();
     let html;
     let styleTags;
     let helmetContent;
+    let preloadedState;
 
     if (err) {
       console.error(err);
@@ -42,13 +47,31 @@ const serverRenderer = (req, res, next) => {
     }
 
     try {
-      html = ReactDOMServer.renderToString(sheet.collectStyles(<App />)) || '';
+      const context = {};
+      const store = getStore();
+      html = await frontloadServerRender(
+        () =>
+          ReactDOMServer.renderToString(
+            sheet.collectStyles(
+              React.createElement(
+                StaticRouter,
+                {
+                  location: req.originalUrl,
+                  context,
+                },
+                React.createElement(App, { store })
+              )
+            )
+          ) || ''
+      );
+
       styleTags = sheet.getStyleTags() || '';
 
       const helmet = Helmet.renderStatic();
       helmetContent = `${helmet.title.toString()}
       ${helmet.meta.toString()}
       ${helmet.link.toString()}`;
+      preloadedState = store.getState();
     } catch (error) {
       // handle error
       console.error(error);
@@ -57,9 +80,14 @@ const serverRenderer = (req, res, next) => {
     }
 
     return res.send(
-      data
-        .replace('<react-helmet-replacer></react-helmet-replacer>', helmetContent)
-        .replace('<div id="root"></div>', `${styleTags}<div id="root">${html}</div>`)
+      data.replace('<react-helmet-replacer></react-helmet-replacer>', helmetContent).replace(
+        '<div id="root"></div>',
+        `${styleTags}<div id="root">${html}</div>
+        <script>window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(
+          /</g,
+          '\\u003c'
+        )}</script>`
+      )
     );
   });
 };
