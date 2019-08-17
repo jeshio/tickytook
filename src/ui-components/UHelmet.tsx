@@ -13,16 +13,22 @@ export interface IUHelmetProps extends React.PropsWithChildren<{}>, RouteCompone
   jsonLds?: ICJsonLd[];
 }
 
+const DEFAULT_TITLE_TEXT = 'Тикитук — наколдуй хэштеги, генератор хэштегов одним кликом';
+
+const handleDynamicTitle = (title: string) =>
+  `${truncate(title, {
+    length: 29,
+    omission: '..',
+  })} • генератор хэштегов Тикитук`;
+
 class UHelmet extends React.PureComponent<IUHelmetProps> {
   get title() {
-    if (!this.props.title) {
-      return 'Тикитук — наколдуй хэштеги, генератор хэштегов одним кликом';
+    const { title } = this.props;
+    if (!title) {
+      return DEFAULT_TITLE_TEXT;
     }
 
-    return `${truncate(this.props.title, {
-      length: 29,
-      omission: '..',
-    })} • генератор хэштегов Тикитук`;
+    return handleDynamicTitle(title);
   }
 
   get description() {
@@ -51,6 +57,7 @@ class UHelmet extends React.PureComponent<IUHelmetProps> {
   get openGraph() {
     const { title, description } = this;
     const {
+      title: originalTitle,
       ogType,
       logoUrl,
       location: { pathname },
@@ -59,7 +66,7 @@ class UHelmet extends React.PureComponent<IUHelmetProps> {
     return [
       <meta property="og:locale" key="og:locale" content="ru_RU" />,
       <meta property="og:type" key="og:type" content={ogType || 'website'} />,
-      <meta property="og:title" key="og:title" content={title} />,
+      <meta property="og:title" key="og:title" content={originalTitle || title} />,
       <meta
         property="og:description"
         key="og:description"
@@ -68,22 +75,22 @@ class UHelmet extends React.PureComponent<IUHelmetProps> {
       <meta property="og:url" key="og:url" content={pathname} />,
       <meta property="og:site_name" key="og:site_name" content="Тикитук" />,
       logoUrl && <meta property="og:image" key="og:image" content={logoUrl} />,
-      <meta property="og:image" key="og:image1" content="https://tickytook.ru/logo-sm.png" />,
-      <meta property="og:image" key="og:image2" content={JSON_LD.logo} />,
+      <meta property="og:image" key="og:image1" content={JSON_LD.logo} />,
     ];
   }
 
   get socialsScheme() {
     const { title, description } = this;
-    const { ogType: type, logoUrl } = this.props;
+    const { logoUrl, title: originalTitle } = this.props;
 
     return [
-      <meta property="vk:image" key="vk:image" content="https://tickytook.ru/logo-sm.png" />,
-      logoUrl && <meta property="vk:image" key="vk:image2" content={logoUrl} />,
+      logoUrl && <meta property="vk:image" key="vk:image" content={logoUrl} />,
+      <meta property="vk:image" key="vk:image2" content={JSON_LD.logo} />,
       <meta name="twitter:card" key="twitter:card" content="summary" />,
-      <meta name="twitter:title" key="twitter:title" content={title} />,
+      <meta name="twitter:title" key="twitter:title" content={originalTitle || title} />,
       <meta name="twitter:description" key="twitter:description" content={description} />,
-      logoUrl && <meta name="twitter:image" key="twitter:image" content={logoUrl} />,
+      <meta name="twitter:image" key="twitter:image" content={JSON_LD.logo} />,
+      logoUrl && <meta name="twitter:image" key="twitter:image1" content={logoUrl} />,
     ];
   }
 
