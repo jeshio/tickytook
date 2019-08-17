@@ -1,5 +1,6 @@
 import { Actions, Selectors } from 'modules/Blog/List';
 import * as React from 'react';
+import { frontloadConnect } from 'react-frontload';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
@@ -15,11 +16,6 @@ interface IPathParams {
 export interface IContainerProps extends Selectors, Actions, RouteComponentProps<IPathParams> {}
 
 class Container extends React.Component<IContainerProps, any> {
-  public componentDidMount() {
-    const { slug } = this.props.match.params;
-    this.props.fetchArticle(slug);
-  }
-
   public componentWillUnmount() {
     this.props.resetArticle();
   }
@@ -35,5 +31,9 @@ export default compose(
     state => Store.selectors(state),
     (dispatch: Dispatch) =>
       bindActionCreators(Store.actions as ICStringIndexes, dispatch) as Actions
-  )
+  ),
+  frontloadConnect(async (props: IContainerProps) => {
+    const { slug } = props.match.params;
+    await new Promise(resolve => (props.fetchArticle as any)(slug, resolve));
+  })
 )(Container) as React.ComponentType;
