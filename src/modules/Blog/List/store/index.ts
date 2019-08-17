@@ -71,7 +71,7 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
   {
     articles: state => ({
       ...state.articles,
-      data: state.articles.data.filter(item => true || !item.hidden),
+      data: state.articles.data.filter(item => !item.hidden),
     }),
   }
 );
