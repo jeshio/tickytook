@@ -1,3 +1,4 @@
+import update from 'immutability-helper';
 import uniq from 'lodash/uniq';
 import BaseStore from 'src/core/store/BaseStore';
 import { MODULE_NAME } from '../../constants';
@@ -12,35 +13,36 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
   MODULE_NAME,
   SUB_MODULE_NAME,
   {
-    addExtraHashtag: (state, action) => ({
-      ...state,
-      extraHashtags: [...state.extraHashtags, action.payload[0]],
-    }),
+    addExtraHashtag: (state, action) =>
+      update(state, {
+        extraHashtags: { $set: [...state.extraHashtags, action.payload[0]] },
+      }),
     changeWords: (state, action) => ({
       ...state,
       words: action.payload[0],
     }),
-    fetchExtraWords: state => ({ ...state, extraWords: { ...state.extraWords, loading: true } }),
-    fetchExtraWordsFailure: state => ({
-      ...state,
-      extraWords: { ...state.extraWords, loading: false },
-    }),
+    fetchExtraWords: state => update(state, { extraWords: { loading: { $set: true } } }),
+    fetchExtraWordsFailure: state =>
+      update(state, {
+        extraWords: { loading: { $set: false } },
+      }),
     fetchExtraWordsSuccess: (state, action) => {
       const extraWords = uniq(
         action.payload[0].length > 0 ? action.payload[0] : state.extraWords.data
       );
-      return {
-        ...state,
+      return update(state, {
         extraWords: {
-          ...state.extraWords,
-          loading: false,
-          data: extraWords,
+          loading: { $set: false },
+          data: { $set: extraWords },
         },
         // если ни одного хэштега не установлено, то добавляем автоматом
-        ...(state.extraHashtags.length === 0
-          ? { extraHashtags: extraWords.slice(0, AUTO_HASHTAGS_COUNT) }
-          : {}),
-      };
+        extraHashtags: {
+          $set:
+            state.extraHashtags.length === 0
+              ? extraWords.slice(0, AUTO_HASHTAGS_COUNT)
+              : state.extraHashtags,
+        },
+      });
     },
     switchHashtagActiveStatus: (state, action) => {
       const hashtag = action.payload[0];
@@ -50,10 +52,9 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
       } else {
         inactiveHashtags.add(hashtag);
       }
-      return {
-        ...state,
-        inactiveHashtags,
-      };
+      return update(state, {
+        inactiveHashtags: { $set: inactiveHashtags },
+      });
     },
     reset: state => state,
   },
@@ -67,20 +68,24 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
     words: [],
   },
   {
-    extraWords: (s, globalStore) => ({
-      ...s.extraWords,
-      data: getHashtagsFromWords(
-        s.extraWords.data,
-        { ...s, ...ParamsReceiverStore.selectors(globalStore) },
-        false
-      ),
-    }),
+    inactiveHashtags: state => new Set(state.inactiveHashtags), // SSR fix
+    extraWords: (s, globalStore, stateSelectors) =>
+      update(s.extraWords, {
+        data: {
+          $set: getHashtagsFromWords(
+            s.extraWords.data,
+            { ...s, ...ParamsReceiverStore.selectors(globalStore) },
+            false
+          ),
+        },
+      }),
     hashtags: (s, globalStore) =>
       getHashtagsFromWords([], { ...s, ...ParamsReceiverStore.selectors(globalStore) }, false).map(
         w => `#${w}`
       ),
-    activeHashtags: (s, globalStore, stateSelectors) =>
-      stateSelectors.hashtags.filter(h => !s.inactiveHashtags.has(h)),
+    activeHashtags: (s, globalStore, stateSelectors) => {
+      return stateSelectors.hashtags.filter(h => !stateSelectors.inactiveHashtags.has(h));
+    },
   }
 );
 
