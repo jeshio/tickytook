@@ -46,11 +46,11 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
     },
     switchHashtagActiveStatus: (state, action) => {
       const hashtag = action.payload[0];
-      const inactiveHashtags = new Set(state.inactiveHashtags);
-      if (state.inactiveHashtags.has(hashtag)) {
-        inactiveHashtags.delete(hashtag);
+      const inactiveHashtags = [...state.inactiveHashtags];
+      if (state.inactiveHashtags.includes(hashtag)) {
+        inactiveHashtags.splice(state.inactiveHashtags.indexOf(hashtag), 1);
       } else {
-        inactiveHashtags.add(hashtag);
+        inactiveHashtags.push(hashtag);
       }
       return update(state, {
         inactiveHashtags: { $set: inactiveHashtags },
@@ -64,12 +64,11 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
       data: [],
       loading: false,
     },
-    inactiveHashtags: new Set(),
+    inactiveHashtags: [],
     words: [],
   },
   {
-    inactiveHashtags: state => new Set(state.inactiveHashtags), // SSR fix
-    extraWords: (s, globalStore, stateSelectors) =>
+    extraWords: (s, globalStore) =>
       update(s.extraWords, {
         data: {
           $set: getHashtagsFromWords(
@@ -84,7 +83,7 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
         w => `#${w}`
       ),
     activeHashtags: (s, globalStore, stateSelectors) => {
-      return stateSelectors.hashtags.filter(h => !stateSelectors.inactiveHashtags.has(h));
+      return stateSelectors.hashtags.filter(h => !stateSelectors.inactiveHashtags.includes(h));
     },
   }
 );

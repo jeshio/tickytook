@@ -10,7 +10,7 @@ import Block from './Block';
 interface IHashtagsTextProps {
   hashtags: string[];
   activeHashtags: string[];
-  inactiveHashtags: Set<string>;
+  inactiveHashtags: string[];
   onCopyHashtags: () => void;
   switchHashtagActiveStatus: (hashtag: string) => void;
 }
@@ -39,7 +39,7 @@ class HashtagsText extends React.PureComponent<IHashtagsTextProps, IHashtagsText
             {hashtags.map((h, i) => (
               <UHashtag
                 key={i}
-                isDeleted={inactiveHashtags.has(h)}
+                isDeleted={inactiveHashtags.includes(h)}
                 onClick={this.handleHashtagClick(h)}
               >
                 {h}

@@ -6,7 +6,7 @@ import ICSagas from 'src/core/store/interfaces/ICSagas';
 
 export interface IStore {
   words: string[];
-  inactiveHashtags: Set<string>;
+  inactiveHashtags: string[];
   extraWords: {
     data: string[];
     loading: boolean;

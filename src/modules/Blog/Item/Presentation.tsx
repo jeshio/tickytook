@@ -116,7 +116,7 @@ export default class Presentation extends React.PureComponent<IPresentationProps
 
         <Content markdownText={article.text} />
 
-        <UBlock marginTop={[4, 2]} visible={String(article.text).length > 300}>
+        <UBlock marginTop={4} visible={String(article.text).length > 300}>
           <UShareButtons />
         </UBlock>
       </UBlock>
