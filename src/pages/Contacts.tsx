@@ -10,7 +10,10 @@ interface IContactsProps {}
 const Contacts: React.FunctionComponent<IContactsProps> = props => {
   return (
     <UBlock>
-      <UHelmet title="Контактная информация" />
+      <UHelmet
+        title="Контактная информация"
+        description="Контактная информация для связи с создателем проекта."
+      />
 
       <UTitle>Контакты</UTitle>
 

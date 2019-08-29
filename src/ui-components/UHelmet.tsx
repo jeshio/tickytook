@@ -17,9 +17,9 @@ const DEFAULT_TITLE_TEXT = 'Тикитук — наколдуй хэштеги, 
 
 const handleDynamicTitle = (title: string) =>
   `${truncate(title, {
-    length: 29,
+    length: 48,
     omission: '..',
-  })} • генератор хэштегов Тикитук`;
+  })} • Тикитук`;
 
 class UHelmet extends React.PureComponent<IUHelmetProps> {
   get title() {
