@@ -76,7 +76,7 @@ Api.addEndPoint('articles', {
   failureResponse: response => ({ error: 'test' }),
   method: 'get',
   successResponse: response => formatResponse(response as ListResponse),
-  url: `https://cdn.contentful.com/spaces/60wx9rdh5fwz/entries?access_token=twKpbbcLNEa8v29ppOgCLS1IEsClvVdfG91ab752Axc&content_type=article`,
+  url: `https://cdn.contentful.com/spaces/60wx9rdh5fwz/entries?access_token=twKpbbcLNEa8v29ppOgCLS1IEsClvVdfG91ab752Axc&content_type=article&order=-sys.createdAt`,
 });
 
 Api.addEndPoint('articleBySlug', {
