@@ -15,7 +15,7 @@ const Root = styled(UBlock)`
   h3,
   h4 {
     margin-top: 1.2rem;
-    margin-bottom: 0.8rem;
+    margin-bottom: 1rem;
     font-size: 140%;
 
     &:first-child {
@@ -25,6 +25,11 @@ const Root = styled(UBlock)`
 
   p {
     text-align: justify;
+  }
+
+  ul,
+  ol {
+    margin: 1rem 0;
   }
 `;
 
