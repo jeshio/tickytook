@@ -1,5 +1,6 @@
 import get from 'lodash/get';
 import { IArticle } from 'modules/Blog/List';
+import { ARTICLES_LIST } from 'src/config/api';
 import ApiService from 'src/core/services/ApiService';
 import { IEndPoints } from './interfaces';
 
@@ -75,15 +76,16 @@ const formatResponse = (resultData: ListResponse): IArticle[] => {
 Api.addEndPoint('articles', {
   failureResponse: response => ({ error: 'test' }),
   method: 'get',
-  successResponse: response => formatResponse(response as ListResponse),
-  url: `https://cdn.contentful.com/spaces/60wx9rdh5fwz/entries?access_token=twKpbbcLNEa8v29ppOgCLS1IEsClvVdfG91ab752Axc&content_type=article&order=-sys.createdAt`,
+  successResponse: response =>
+    formatResponse(response as ListResponse).filter(item => !item.hidden),
+  url: ARTICLES_LIST,
 });
 
 Api.addEndPoint('articleBySlug', {
   failureResponse: response => ({ error: 'test' }),
   method: 'get',
   successResponse: response => formatResponse(response as ListResponse)[0],
-  url: `https://cdn.contentful.com/spaces/60wx9rdh5fwz/entries?access_token=twKpbbcLNEa8v29ppOgCLS1IEsClvVdfG91ab752Axc&content_type=article`,
+  url: ARTICLES_LIST,
 });
 
 export default Api;

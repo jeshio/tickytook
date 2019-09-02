@@ -5,10 +5,11 @@
     "target": "es2017",
     "lib": ["es6", "dom"],
     "noImplicitAny": false,
-    "isolatedModules": false,
     "esModuleInterop": true,
+    "isolatedModules": false,
     "noEmit": false,
     "strict": false
   },
-  "include": ["src", "server"]
+  "include": ["src", "server"],
+  "exclude": []
 }

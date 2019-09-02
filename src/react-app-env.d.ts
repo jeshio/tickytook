@@ -5,3 +5,5 @@ declare module 'react-adsense';
 declare module 'raw.macro';
 
 declare module 'react-share';
+
+declare module 'react-router-sitemap';
