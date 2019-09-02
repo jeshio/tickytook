@@ -17,13 +17,11 @@ const Contacts: React.FunctionComponent<IContactsProps> = props => {
 
       <UTitle>Контакты</UTitle>
 
-      <UBlock p={[3, 5, 8]} backgroundColor="#fff" borderRadius={[0, '5px']}>
-        <UBlock marginBottom={4} mx="auto">
-          Мой псевдоним jeshio. Если у вас есть идея или предложение, либо информация об ошибке,
-          буду рад ответить на ваши сообщения о них.
+      <UBlock p={[3, 6, 8]} backgroundColor="#fff" borderRadius={[0, '5px']}>
+        <UBlock px={[4, 7, '3rem']} marginBottom={[2, 4]} mx="auto">
+          Если у вас есть идея или предложение, либо информация об ошибке, пожалуйста,
+          воспользуйтесь одним из следующих способов для связи:
           <br />
-          <br />
-          Вы можете связаться со мной одним из следующих способов:
         </UBlock>
         <UBlock display="flex" justifyContent="space-around" py={4}>
           <UBlock>

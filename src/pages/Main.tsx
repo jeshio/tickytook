@@ -1,6 +1,5 @@
 import { darken } from 'polished';
 import React from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
 import TTheme from 'src/core/types/TTheme';
 import Content from 'src/modules/Globals/Content';
 import Footer from 'src/modules/Globals/Footer';
@@ -12,11 +11,7 @@ import UHelmet from 'src/ui-components/UHelmet';
 import { createGlobalStyle } from 'styled-components';
 import styled from 'styled-components';
 import { space } from 'styled-system';
-import ArticlePage from './ArticlePage';
-import ArticlesListPage from './ArticlesListPage';
-import Contacts from './Contacts';
-import GeneratorPage from './Generator';
-import NotFound from './NotFound';
+import router from './router';
 
 const GlobalStyle = createGlobalStyle<any>`
   body {
@@ -49,7 +44,6 @@ const Root = styled(UGrid)`
   height: 100%;
 `;
 
-// TODO добавить 404
 export default () => (
   <Root px={[0, 2, 2]}>
     <UHelmet />
@@ -59,16 +53,7 @@ export default () => (
 
     <Sidebar />
 
-    <Content>
-      <Switch>
-        <Route exact={true} path="/" component={GeneratorPage} />
-        <Route exact={true} path="/articles" component={ArticlesListPage} />
-        <Route exact={true} path="/articles/:slug" component={ArticlePage} />
-        <Route exact={true} path="/contacts" component={Contacts} />
-
-        <Route component={NotFound} />
-      </Switch>
-    </Content>
+    <Content>{router}</Content>
 
     <Footer />
     <GlobalStyle />
