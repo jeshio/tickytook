@@ -13,6 +13,9 @@ COPY . /usr/app
 
 RUN yarn build
 
+# для копированяи sitemap сгенерированного предыдущей командой
+COPY . /usr/app
+
 EXPOSE 80
 CMD ["yarn", "start:prod"]
 
