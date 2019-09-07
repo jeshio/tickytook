@@ -1,36 +1,34 @@
+import { IActions, IProps, ISelectors } from 'modules/Constructor/Conclusion';
 import { Component, createElement } from 'react';
-import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
+import connect from 'src/core/hocs/connect';
 import ICStringIndexes from 'src/core/interfaces/ICStringIndexes';
 import copyTextToClipboard from 'src/core/utils/copyTextToClipboard';
-import { Store } from '.';
-import { Store as ParamsReceiverStore } from '../ParamsReceiver';
-import { Actions, Selectors } from './module';
-import Presentation, { IPresentationProps } from './Presentation';
+import { Store } from '..';
+import Presentation from './Presentation';
 
-type PropsType = { shortModeLeftColumn: React.ReactElement } & Selectors & Actions;
+type PropsType = { shortModeLeftColumn: React.ReactElement } & IProps;
 
 class Container extends Component<PropsType> {
   public render() {
-    return createElement<IPresentationProps>(Presentation, {
+    return createElement(Presentation, {
       ...this.props,
       onCopyHashtags: this.handleCopyHashtags,
       onCopyPost: this.handleCopyPost,
-      isExtendedMode: this.props.paramsReceiver.isExtendedMode,
-      switchMode: this.props.paramsReceiverActions.switchMode,
     });
   }
 
   private handleCopyHashtags = () => {
-    const { activeHashtags } = this.props;
+    const {
+      selectors: { activeHashtags },
+    } = this.props;
     const textToCopy = activeHashtags.join(' ');
     copyTextToClipboard(textToCopy);
   };
 
   private handleCopyPost = () => {
     const {
-      activeHashtags,
-      paramsReceiver: { text },
+      selectors: { activeHashtags, text },
     } = this.props;
     const hashtagsToCopy = activeHashtags.join(' ');
     const postToCopy = `${text}\n\n${hashtagsToCopy}`;
@@ -38,14 +36,7 @@ class Container extends Component<PropsType> {
   };
 }
 
-export default connect<Selectors, Actions, void, ParamsReceiverStore.IStore & Store.IStore>(
-  state => ({ paramsReceiver: ParamsReceiverStore.selectors(state), ...Store.selectors(state) }),
-  (dispatch: Dispatch) =>
-    ({
-      ...bindActionCreators(Store.actions as ICStringIndexes, dispatch),
-      paramsReceiverActions: bindActionCreators(
-        ParamsReceiverStore.actions as ICStringIndexes,
-        dispatch
-      ),
-    } as Actions)
+export default connect<ISelectors, IActions>(
+  state => Store.selectors(state),
+  (dispatch: Dispatch) => bindActionCreators(Store.actions as ICStringIndexes, dispatch) as IActions
 )(Container);

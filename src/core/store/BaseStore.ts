@@ -14,7 +14,6 @@ export default class BaseStore<
   ActionsWithType = AddTypeToKeys<ActionsT, { type: string }>
 > {
   protected moduleName: string;
-  protected subModuleName: string;
   protected reducersList: Array<TReducer<StoreT, any>> = [];
   protected pActions: ActionsWithType = {} as ActionsWithType;
   protected pSelectors: SelectorsT = {} as SelectorsT;
@@ -23,7 +22,6 @@ export default class BaseStore<
 
   constructor(
     moduleName: string,
-    subModuleName: string,
     initialActions: {
       [P in keyof ActionsT]: TReducer<StoreT, Parameters<ActionsT[P]>>
     } = {} as ActionsT,
@@ -44,7 +42,6 @@ export default class BaseStore<
       } = {} as SelectorsT
   ) {
     this.moduleName = moduleName;
-    this.subModuleName = subModuleName;
     this.setAction = this.setAction.bind(this);
     this.addStoreField = this.addStoreField.bind(this);
     if (initialActions) {
@@ -83,7 +80,7 @@ export default class BaseStore<
       (base, selectorName: string) => ({
         ...base,
         [selectorName]: this.pSelectors[selectorName](
-          store[this.moduleName][this.subModuleName],
+          store[this.moduleName],
           store,
           base as SelectorsT
         ),
@@ -124,7 +121,7 @@ export default class BaseStore<
 
   public addStoreField = <K extends keyof StoreT>(name: K, initialValue: StoreT[K]) => {
     this.pInitialStore = { ...this.pInitialStore, [name]: initialValue };
-    this.addSelector(name as keyof SelectorsT, (store: StoreT) => store[name]);
+    this.addSelector(name as keyof SelectorsT, (store: StoreT) => store[name] as SelectorsT[K]);
     return this;
   };
 
@@ -145,6 +142,6 @@ export default class BaseStore<
   };
 
   protected makeActionType(actionName: keyof ActionsT) {
-    return `${this.moduleName}/${this.subModuleName}/${actionName}`;
+    return `${this.moduleName}/${actionName}`;
   }
 }

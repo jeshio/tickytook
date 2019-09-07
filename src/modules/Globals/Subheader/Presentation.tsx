@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Store as BaseStore } from 'src/modules/Globals/Base';
+import { Store as GlobalStore } from 'src/modules/Globals';
 import UBlock from 'src/ui-components/UBlock';
 import Menu from './components/Menu';
 
-export interface IPresentationProps extends BaseStore.ISelectors {}
+export interface IPresentationProps extends GlobalStore.ISelectors {}
 
 export default class Presentation extends React.PureComponent<IPresentationProps> {
   public render() {

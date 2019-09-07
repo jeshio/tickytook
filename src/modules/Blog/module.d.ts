@@ -1,10 +1,4 @@
-import { Store } from '.';
-
-declare module 'modules/Blog/List' {
-  interface Selectors extends Store.ISelectors {}
-
-  interface Actions extends Store.IActions {}
-
+declare module 'modules/Blog' {
   interface IArticle {
     id: string;
     title: string;

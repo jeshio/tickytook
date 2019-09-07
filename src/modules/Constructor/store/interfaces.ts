@@ -5,6 +5,7 @@ import ICAction from 'src/core/store/interfaces/ICAction';
 import ICSagas from 'src/core/store/interfaces/ICSagas';
 
 export interface IStore {
+  text: string;
   words: string[];
   inactiveHashtags: string[];
   extraWords: {
@@ -12,6 +13,13 @@ export interface IStore {
     loading: boolean;
   };
   extraHashtags: string[];
+  params: {
+    convertToLower: boolean;
+    deleteNumberWords: boolean;
+    sortByAlphabet: boolean;
+    minimumHashtagLength: number;
+  };
+  isExtendedMode: boolean;
 }
 
 export interface ISelectors extends IStore {
@@ -20,12 +28,17 @@ export interface ISelectors extends IStore {
 }
 
 export interface IActions {
+  wiz: () => ICAction;
+  changeText: (text: string) => ICAction;
   changeWords: (words: string[]) => ICAction;
   switchHashtagActiveStatus: (hashtag: string) => ICAction;
   addExtraHashtag: (extraHashtag: string) => ICAction;
   fetchExtraWords: () => ICAction;
   fetchExtraWordsFailure: () => ICAction;
   fetchExtraWordsSuccess: (extraWords: string[]) => ICAction;
+  switchMode: () => ICAction;
+  switchParam: (param: 'convertToLower' | 'deleteNumberWords' | 'sortByAlphabet') => ICAction;
+  setMinimumHashtagLength: (length: number) => ICAction;
   reset: () => ICAction;
 }
 

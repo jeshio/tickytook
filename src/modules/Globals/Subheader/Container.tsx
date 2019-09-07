@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Store as BaseStore } from 'src/modules/Globals/Base';
+import { Store as GlobalStore } from 'src/modules/Globals';
 import Presentation from './Presentation';
 
-export interface IContainerProps extends BaseStore.ISelectors {}
+export interface IContainerProps extends GlobalStore.ISelectors {}
 
 class Container extends React.Component<IContainerProps> {
   public render() {
@@ -11,4 +11,4 @@ class Container extends React.Component<IContainerProps> {
   }
 }
 
-export default connect<BaseStore.ISelectors>(state => BaseStore.selectors(state))(Container);
+export default connect<GlobalStore.ISelectors>(state => GlobalStore.selectors(state))(Container);

@@ -1,17 +1,18 @@
+import { IActions, IProps, ISelectors } from 'modules/Constructor/ParamsReceiver';
 import { MenuItem } from 'modules/Globals/Sidebar';
 import { Component, createElement } from 'react';
-import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
+import connect from 'src/core/hocs/connect';
 import ICStringIndexes from 'src/core/interfaces/ICStringIndexes';
 import { ReactComponent as AutoModeIconComponent } from 'src/images/components/icons/auto-mode.svg';
 import { ReactComponent as ManualModeIconComponent } from 'src/images/components/icons/manual-mode.svg';
 import { ReactComponent as NewSpellIconComponent } from 'src/images/components/icons/reset.svg';
-import { Store as BaseStore } from 'src/modules/Globals/Base';
-import { Actions, Selectors, Store } from '.';
+import * as Global from 'src/modules/Globals';
+import { Store } from '..';
 import Presentation, { IPresentationProps } from './Presentation';
 import PresentationShortMode, { IPresentationShortModeProps } from './PresentationShortMode';
 
-interface IContainerProps extends Selectors, Actions {
+interface IContainerProps extends IProps {
   isShortModeVersion?: boolean;
 }
 
@@ -19,13 +20,13 @@ const getSidebarItems = (props: IContainerProps): MenuItem[] => {
   return [
     {
       title: 'Новое заклятие',
-      onClick: props.reset,
+      onClick: props.actions.reset,
       svg: NewSpellIconComponent,
     },
     {
-      title: props.isExtendedMode ? 'Меньше настроек' : 'Больше настроек',
-      onClick: props.switchMode,
-      svg: props.isExtendedMode ? AutoModeIconComponent : ManualModeIconComponent,
+      title: props.selectors.isExtendedMode ? 'Меньше настроек' : 'Больше настроек',
+      onClick: props.actions.switchMode,
+      svg: props.selectors.isExtendedMode ? AutoModeIconComponent : ManualModeIconComponent,
     },
   ];
 };
@@ -44,7 +45,7 @@ class Container extends Component<IContainerProps> {
   }
 
   public componentWillUnmount() {
-    this.props.baseActions.resetSidebarExtraMenuItems();
+    this.props.actions.global.resetSidebarExtraMenuItems();
   }
 
   public updateSideBar = () => {
@@ -52,14 +53,14 @@ class Container extends Component<IContainerProps> {
 
     if (
       JSON.stringify(sidebarItems) !==
-      JSON.stringify(this.props.baseSelectors.sidebarExtraMenuItems)
+      JSON.stringify(this.props.selectors.global.sidebarExtraMenuItems)
     ) {
-      this.props.baseActions.setSidebarExtraMenuItems(sidebarItems);
+      this.props.actions.global.setSidebarExtraMenuItems(sidebarItems);
     }
   };
 
   public render() {
-    if (this.props.isExtendedMode) {
+    if (this.props.selectors.isExtendedMode) {
       return createElement<IPresentationProps>(Presentation, this.props);
     } else if (this.props.isShortModeVersion) {
       return createElement<IPresentationShortModeProps>(PresentationShortMode, this.props);
@@ -69,11 +70,11 @@ class Container extends Component<IContainerProps> {
   }
 }
 
-export default connect<Selectors, Actions, void, Store.IStore>(
-  state => ({ ...Store.selectors(state), baseSelectors: BaseStore.selectors(state) } as Selectors),
+export default connect<ISelectors, IActions, void, Store.IStore>(
+  state => ({ ...Store.selectors(state), global: Global.Store.selectors(state) } as ISelectors),
   (dispatch: Dispatch) =>
     ({
       ...bindActionCreators(Store.actions as ICStringIndexes, dispatch),
-      baseActions: bindActionCreators(BaseStore.actions as ICStringIndexes, dispatch),
-    } as Actions)
+      global: bindActionCreators(Global.Store.actions as ICStringIndexes, dispatch),
+    } as IActions)
 )(Container);

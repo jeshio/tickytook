@@ -1,9 +1,8 @@
 import update from 'immutability-helper';
 import uniq from 'lodash/uniq';
 import BaseStore from 'src/core/store/BaseStore';
-import { MODULE_NAME } from '../../constants';
-import { Store as ParamsReceiverStore } from '../../ParamsReceiver';
-import { AUTO_HASHTAGS_COUNT, SUB_MODULE_NAME } from '../constants';
+import { MODULE_NAME } from '../constants';
+import { AUTO_HASHTAGS_COUNT } from '../constants';
 import getHashtagsFromWords from '../utils/getHashtagsFromWords';
 import Api from './api';
 import { IActions, ISelectors, IStore } from './interfaces';
@@ -11,7 +10,6 @@ import sagas from './sagas';
 
 const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
   MODULE_NAME,
-  SUB_MODULE_NAME,
   {
     addExtraHashtag: (state, action) =>
       update(state, {
@@ -56,9 +54,29 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
         inactiveHashtags: { $set: inactiveHashtags },
       });
     },
+
+    changeText: (state, action) => ({
+      ...state,
+      text: action.payload[0],
+    }),
+    setMinimumHashtagLength: (state, action) =>
+      update(state, {
+        params: {
+          minimumHashtagLength: { $set: action.payload[0] },
+        },
+      }),
+    switchParam: (state, action) =>
+      update(state, {
+        params: {
+          [action.payload[0]]: { $set: !state.params[action.payload[0]] },
+        },
+      }),
+    wiz: state => state,
+    switchMode: state => ({ ...state, isExtendedMode: !state.isExtendedMode }),
     reset: state => state,
   },
   {
+    text: '', // 'Привет, тут у нас небольшое предложение с 8 членами.',
     extraHashtags: [],
     extraWords: {
       data: [],
@@ -66,22 +84,22 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
     },
     inactiveHashtags: [],
     words: [],
+    params: {
+      convertToLower: true,
+      deleteNumberWords: true,
+      minimumHashtagLength: 3,
+      sortByAlphabet: false,
+    },
+    isExtendedMode: false,
   },
   {
-    extraWords: (s, globalStore) =>
+    extraWords: s =>
       update(s.extraWords, {
         data: {
-          $set: getHashtagsFromWords(
-            s.extraWords.data,
-            { ...s, ...ParamsReceiverStore.selectors(globalStore) },
-            false
-          ),
+          $set: getHashtagsFromWords(s.extraWords.data, { ...s, ...s.params }, false),
         },
       }),
-    hashtags: (s, globalStore) =>
-      getHashtagsFromWords([], { ...s, ...ParamsReceiverStore.selectors(globalStore) }, false).map(
-        w => `#${w}`
-      ),
+    hashtags: s => getHashtagsFromWords([], { ...s, ...s.params }, false).map(w => `#${w}`),
     activeHashtags: (s, globalStore, stateSelectors) => {
       return stateSelectors.hashtags.filter(h => !stateSelectors.inactiveHashtags.includes(h));
     },

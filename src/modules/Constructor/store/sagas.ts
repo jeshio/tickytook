@@ -2,7 +2,7 @@ import isEqual from 'lodash/isEqual';
 import { call, cancel, cancelled, delay, fork, put, race, select, take } from 'redux-saga/effects';
 import SagaService from 'src/core/services/SagaService';
 import BaseStore from 'src/core/store/BaseStore';
-import { Store as ParamsReceiverStore } from '../../ParamsReceiver';
+import { Store } from '..';
 import splitTextOnWords from '../utils/splitTextOnWords';
 import Api from './api';
 import { IActions, IEndPoints, ISagaWorkers, ISelectors, IStore } from './interfaces';
@@ -49,7 +49,7 @@ export default function sagas(
 
       while (true) {
         const action = yield race({
-          wiz: take(ParamsReceiverStore.actions.wiz.type),
+          wiz: take(Store.actions.wiz.type),
           fetchExtraWords: take(store.actions.fetchExtraWords.type),
         });
 
@@ -74,7 +74,7 @@ export default function sagas(
 
   // words updater
   sagaService.addSagaWatcher(function*() {
-    const firstVersionText = ParamsReceiverStore.selectors(yield select()).text;
+    const firstVersionText = Store.selectors(yield select()).text;
     yield call(sagaService.sagaWorkers.updateWords, firstVersionText);
 
     if (String(firstVersionText).length > 0) {
@@ -82,13 +82,10 @@ export default function sagas(
     }
 
     while (true) {
-      const oldText = ParamsReceiverStore.selectors(yield select()).text;
-      yield race([
-        take(ParamsReceiverStore.actions.changeText.type),
-        take(ParamsReceiverStore.actions.reset.type),
-      ]);
+      const oldText = Store.selectors(yield select()).text;
+      yield race([take(Store.actions.changeText.type), take(Store.actions.reset.type)]);
 
-      const newText = ParamsReceiverStore.selectors(yield select()).text;
+      const newText = Store.selectors(yield select()).text;
 
       if (oldText !== newText) {
         yield call(sagaService.sagaWorkers.updateWords, newText);
@@ -98,7 +95,7 @@ export default function sagas(
 
   sagaService.addSagaWatcher(function*() {
     while (true) {
-      yield take(ParamsReceiverStore.actions.reset.type);
+      yield take(Store.actions.reset.type);
       yield put(store.actions.reset());
     }
   });

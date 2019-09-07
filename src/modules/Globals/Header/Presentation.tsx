@@ -4,7 +4,7 @@ import { ReactComponent as MenuIconComponent } from 'src/images/components/icons
 import LogoIcon from 'src/images/logo-icon.svg';
 import LogoSm from 'src/images/logo-sm.svg';
 import Logo from 'src/images/logo.svg';
-import { Store as BaseStore } from 'src/modules/Globals/Base';
+import { Store as GlobalStore } from 'src/modules/Globals';
 import UBlock from 'src/ui-components/UBlock';
 import UIconButton from 'src/ui-components/UIconButton';
 import { UImage } from 'src/ui-components/UImage';
@@ -12,7 +12,7 @@ import UInline from 'src/ui-components/UInline';
 import styled from 'styled-components';
 import Menu from './components/Menu';
 
-export interface IPresentationProps extends BaseStore.ISelectors {
+export interface IPresentationProps extends GlobalStore.ISelectors {
   switchSidebar: () => void;
 }
 

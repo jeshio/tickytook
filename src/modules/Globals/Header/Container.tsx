@@ -2,10 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import ICStringIndexes from 'src/core/interfaces/ICStringIndexes';
-import { Store as BaseStore } from 'src/modules/Globals/Base';
+import { Store as GlobalStore } from 'src/modules/Globals';
 import Presentation from './Presentation';
 
-export interface IContainerProps extends BaseStore.IActions, BaseStore.ISelectors {}
+export interface IContainerProps extends GlobalStore.IActions, GlobalStore.ISelectors {}
 
 class Container extends React.Component<IContainerProps, any> {
   public render() {
@@ -13,8 +13,8 @@ class Container extends React.Component<IContainerProps, any> {
   }
 }
 
-export default connect<BaseStore.ISelectors, BaseStore.IActions>(
-  state => BaseStore.selectors(state) as BaseStore.ISelectors,
+export default connect<GlobalStore.ISelectors, GlobalStore.IActions>(
+  state => GlobalStore.selectors(state) as GlobalStore.ISelectors,
   (dispatch: Dispatch) =>
-    bindActionCreators(BaseStore.actions as ICStringIndexes, dispatch) as BaseStore.IActions
+    bindActionCreators(GlobalStore.actions as ICStringIndexes, dispatch) as GlobalStore.IActions
 )(Container);

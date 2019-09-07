@@ -1,4 +1,4 @@
-import { IArticle } from 'modules/Blog/List';
+import { IArticle } from 'modules/Blog';
 import * as React from 'react';
 import TTheme from 'src/core/types/TTheme';
 import UBlock from 'src/ui-components/UBlock';

@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Store as BaseStore } from 'src/modules/Globals/Base';
+import { Store as GlobalStore } from 'src/modules/Globals';
 import UBlock from 'src/ui-components/UBlock';
 import styled from 'styled-components';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Menu from './components/Menu';
 
-export interface IPresentationProps extends BaseStore.ISelectors {
+export interface IPresentationProps extends GlobalStore.ISelectors {
   switchSidebar: () => void;
 }
 

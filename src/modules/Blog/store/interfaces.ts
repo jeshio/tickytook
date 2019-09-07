@@ -1,4 +1,4 @@
-import { IArticle } from 'modules/Blog/List';
+import { IArticle } from 'modules/Blog';
 import { Saga } from 'redux-saga';
 import ICEndPoint from 'src/core/interfaces/ICEndPoint';
 import ICEndPoints from 'src/core/interfaces/ICEndPoints';

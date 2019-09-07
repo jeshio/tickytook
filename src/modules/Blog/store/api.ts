@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import { IArticle } from 'modules/Blog/List';
+import { IArticle } from 'modules/Blog';
 import { ARTICLES_LIST } from 'src/config/api';
 import ApiService from 'src/core/services/ApiService';
 import { IEndPoints } from './interfaces';

@@ -1,10 +1,5 @@
-import buildModuleStore from 'src/core/helpers/buildModuleStore';
-import * as Base from './Base';
-
-const subModules = [Base];
-
-const { reducers, rootSaga } = buildModuleStore(subModules);
-
-export { reducers, rootSaga };
+import * as Store from './store';
 
 export * from './constants';
+
+export { Store };

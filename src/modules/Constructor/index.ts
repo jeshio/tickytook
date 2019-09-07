@@ -1,11 +1,5 @@
-import buildModuleStore from 'src/core/helpers/buildModuleStore';
-import * as Conclusion from './Conclusion';
-import * as ParamsReceiver from './ParamsReceiver';
+import * as Store from './store';
 
-const subModules = [ParamsReceiver, Conclusion];
-
-const { reducers, rootSaga } = buildModuleStore(subModules);
-
-export { reducers, rootSaga };
+export { Store };
 
 export * from './constants';

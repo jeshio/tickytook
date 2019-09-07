@@ -1,14 +1,12 @@
 import update from 'immutability-helper';
 import BaseStore from 'src/core/store/BaseStore';
-import { MODULE_NAME } from '../../constants';
-import { SUB_MODULE_NAME } from '../constants';
+import { MODULE_NAME } from '../constants';
 import Api from './api';
 import { IActions, ISelectors, IStore } from './interfaces';
 import sagas from './sagas';
 
 const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
   MODULE_NAME,
-  SUB_MODULE_NAME,
   {
     fetchArticles: state =>
       update(state, {
