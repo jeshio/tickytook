@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Store as GlobalStore } from 'src/modules/Globals';
+import { Store as GlobalStore } from 'src/modules/Global';
 import UBlock from 'src/ui-components/UBlock';
 import Menu from './components/Menu';
 

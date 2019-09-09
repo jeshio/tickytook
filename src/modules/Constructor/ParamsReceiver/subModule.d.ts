@@ -1,5 +1,5 @@
 import ICPropsWithStore from 'src/core/interfaces/ICPropsWithStore';
-import * as Global from 'src/modules/Globals';
+import * as Global from 'src/modules/Global';
 import { Store } from '..';
 
 declare module 'modules/Constructor/ParamsReceiver' {

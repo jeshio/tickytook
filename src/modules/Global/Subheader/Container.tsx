@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Store as GlobalStore } from 'src/modules/Globals';
+import { Store as GlobalStore } from 'src/modules/Global';
 import Presentation from './Presentation';
 
 export interface IContainerProps extends GlobalStore.ISelectors {}

@@ -7,7 +7,7 @@ import ICStringIndexes from 'src/core/interfaces/ICStringIndexes';
 import { ReactComponent as AutoModeIconComponent } from 'src/images/components/icons/auto-mode.svg';
 import { ReactComponent as ManualModeIconComponent } from 'src/images/components/icons/manual-mode.svg';
 import { ReactComponent as NewSpellIconComponent } from 'src/images/components/icons/reset.svg';
-import * as Global from 'src/modules/Globals';
+import * as Global from 'src/modules/Global';
 import { Store } from '..';
 import Presentation, { IPresentationProps } from './Presentation';
 import PresentationShortMode, { IPresentationShortModeProps } from './PresentationShortMode';

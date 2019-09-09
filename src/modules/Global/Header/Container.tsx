@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import ICStringIndexes from 'src/core/interfaces/ICStringIndexes';
-import { Store as GlobalStore } from 'src/modules/Globals';
+import { Store as GlobalStore } from 'src/modules/Global';
 import Presentation from './Presentation';
 
 export interface IContainerProps extends GlobalStore.IActions, GlobalStore.ISelectors {}

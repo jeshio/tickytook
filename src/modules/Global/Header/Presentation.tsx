@@ -4,7 +4,7 @@ import { ReactComponent as MenuIconComponent } from 'src/images/components/icons
 import LogoIcon from 'src/images/logo-icon.svg';
 import LogoSm from 'src/images/logo-sm.svg';
 import Logo from 'src/images/logo.svg';
-import { Store as GlobalStore } from 'src/modules/Globals';
+import { Store as GlobalStore } from 'src/modules/Global';
 import UBlock from 'src/ui-components/UBlock';
 import UIconButton from 'src/ui-components/UIconButton';
 import { UImage } from 'src/ui-components/UImage';
