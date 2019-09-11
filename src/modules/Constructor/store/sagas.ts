@@ -1,4 +1,5 @@
 import isEqual from 'lodash/isEqual';
+import { Saga } from 'redux-saga';
 import { call, cancel, cancelled, delay, fork, put, race, select, take } from 'redux-saga/effects';
 import SagaService from 'src/core/services/SagaService';
 import BaseStore from 'src/core/store/BaseStore';
@@ -12,8 +13,8 @@ export default function sagas(
 ) {
   const sagaService = new SagaService<ISagaWorkers>();
 
-  sagaService.addSagaWorker('updateWords', function*(text: string) {
-    const currentStore = yield select();
+  sagaService.addSagaWorker('updateWords', function*(text) {
+    const currentStore = ((yield select()) as unknown) as IStore;
     const oldWords = store.selectors(currentStore).words;
     const words = splitTextOnWords(text);
 
@@ -24,13 +25,10 @@ export default function sagas(
 
   sagaService.addSagaWorker('fetchExtraWords', function*() {
     try {
-      const currentStoreSelectors = store.selectors(yield select());
-      const requestData: ReturnType<IEndPoints['extraWords']['successResponse']> = yield call(
-        store.api.extraWords,
-        {
-          words: currentStoreSelectors.words,
-        }
-      );
+      const currentStoreSelectors = store.selectors(((yield select()) as unknown) as IStore);
+      const requestData = ((yield call(store.api.extraWords, {
+        words: currentStoreSelectors.words,
+      })) as unknown) as ReturnType<IEndPoints['extraWords']['successResponse']>;
 
       yield put(store.actions.fetchExtraWordsSuccess(requestData.result || []));
     } catch (e) {
@@ -40,7 +38,7 @@ export default function sagas(
         yield put(store.actions.fetchExtraWordsFailure());
       }
     }
-  });
+  } as Saga);
 
   // extra words fetcher
   sagaService.addSagaWatcher(function*() {
@@ -74,7 +72,7 @@ export default function sagas(
 
   // words updater
   sagaService.addSagaWatcher(function*() {
-    const firstVersionText = Store.selectors(yield select()).text;
+    const firstVersionText = Store.selectors(((yield select()) as unknown) as IStore).text;
     yield call(sagaService.sagaWorkers.updateWords, firstVersionText);
 
     if (String(firstVersionText).length > 0) {
@@ -82,10 +80,10 @@ export default function sagas(
     }
 
     while (true) {
-      const oldText = Store.selectors(yield select()).text;
+      const oldText = Store.selectors(((yield select()) as unknown) as IStore).text;
       yield race([take(Store.actions.changeText.type), take(Store.actions.reset.type)]);
 
-      const newText = Store.selectors(yield select()).text;
+      const newText = Store.selectors(((yield select()) as unknown) as IStore).text;
 
       if (oldText !== newText) {
         yield call(sagaService.sagaWorkers.updateWords, newText);

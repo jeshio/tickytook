@@ -1,7 +1,7 @@
+import { SagaIterator } from 'redux-saga';
 import { call, cancelled, put, takeLatest } from 'redux-saga/effects';
 import SagaService from 'src/core/services/SagaService';
 import BaseStore from 'src/core/store/BaseStore';
-import ICAction from 'src/core/store/interfaces/ICAction';
 import Api from './api';
 import { IActions, IEndPoints, ISagaWorkers, ISelectors, IStore } from './interfaces';
 
@@ -10,15 +10,17 @@ export default function sagas(
 ) {
   const sagaService = new SagaService<ISagaWorkers>();
 
-  sagaService.addSagaWorker('fetchArticles', function*(payload) {
+  sagaService.addSagaWorker('fetchArticles', function*(action) {
     try {
-      const requestData: ReturnType<IEndPoints['articles']['successResponse']> = yield call(
-        store.api.articles,
-        undefined
-      );
+      const requestDataGenerator: unknown = yield call(store.api.articles, undefined);
+      const requestData = requestDataGenerator as ReturnType<
+        IEndPoints['articles']['successResponse']
+      >;
 
       yield put(store.actions.fetchArticlesSuccess(requestData));
-      payload.payload[0]();
+      if (action.payload[0]) {
+        action.payload[0].resolve();
+      }
     } catch (e) {
       yield put(store.actions.fetchArticlesFailure());
     } finally {
@@ -28,16 +30,19 @@ export default function sagas(
     }
   });
 
-  sagaService.addSagaWorker('fetchArticle', function*(action: ICAction<[string]>) {
+  sagaService.addSagaWorker('fetchArticle', function*(action) {
     try {
-      const requestData: ReturnType<IEndPoints['articleBySlug']['successResponse']> = yield call(
-        store.api.articleBySlug,
-        {
-          'fields.slug': action.payload[0],
-        }
-      );
+      const requestDataGenerator: unknown = yield call(store.api.articleBySlug, {
+        'fields.slug': action.payload[0],
+      });
+      const requestData = requestDataGenerator as ReturnType<
+        IEndPoints['articleBySlug']['successResponse']
+      >;
       yield put(store.actions.fetchArticleSuccess(requestData));
-      (action as any).payload[1]();
+
+      if (action.payload[1]) {
+        action.payload[1].resolve();
+      }
     } catch (e) {
       yield put(store.actions.fetchArticleFailure());
     } finally {

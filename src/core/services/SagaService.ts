@@ -1,27 +1,28 @@
 import { Saga } from '@redux-saga/core';
 import { all, fork } from 'redux-saga/effects';
+import { ICSagas } from '../store/interfaces/ICSagas';
 
-export default class SagaService<SagaWorkers extends { [key: string]: Saga }> {
-  protected pSagaWorkers: SagaWorkers = {} as SagaWorkers;
-  protected pSagaWatchers: Saga[] = [];
+export default class SagaService<SagaWorkers extends ICSagas<{}>> {
+  protected _sagaWorkers: SagaWorkers = {} as SagaWorkers;
+  protected _sagaWatchers: Saga[] = [];
 
   constructor() {
     this.rootSaga = this.rootSaga.bind(this);
   }
 
   public get sagaWorkers() {
-    return this.pSagaWorkers;
+    return this._sagaWorkers;
   }
 
   public *rootSaga() {
-    yield all(this.pSagaWatchers.map(s => fork(s)));
+    yield all(this._sagaWatchers.map(s => fork(s)));
   }
 
   public addSagaWorker<K extends keyof SagaWorkers>(name: K, sagaWorker: SagaWorkers[K]) {
-    this.pSagaWorkers[name] = sagaWorker;
+    this._sagaWorkers[name] = sagaWorker;
   }
 
   public addSagaWatcher(sagaWatcher: Saga) {
-    this.pSagaWatchers.push(sagaWatcher);
+    this._sagaWatchers.push(sagaWatcher);
   }
 }

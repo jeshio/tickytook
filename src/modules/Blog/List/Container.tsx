@@ -22,6 +22,6 @@ export default compose(
       bindActionCreators(Store.actions as ICStringIndexes, dispatch) as IActions
   ),
   frontloadConnect(async (props: IContainerProps) => {
-    await new Promise(resolve => (props.actions.fetchArticles as any)(resolve));
+    await new Promise((resolve, reject) => props.actions.fetchArticles({ resolve, reject }));
   })
 )(Container) as React.ComponentType;
