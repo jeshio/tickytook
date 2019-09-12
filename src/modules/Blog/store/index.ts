@@ -2,10 +2,10 @@ import update from 'immutability-helper';
 import BaseStore from 'src/core/store/BaseStore';
 import { MODULE_NAME } from '../constants';
 import Api from './api';
-import { IActions, ISelectors, IStore } from './interfaces';
+import { IActionsParameters, ISelectors, IStore } from './interfaces';
 import sagas from './sagas';
 
-const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
+const store = new BaseStore<IStore, IActionsParameters, ISelectors, typeof Api.endPoints>(
   MODULE_NAME,
   {
     fetchArticles: state =>

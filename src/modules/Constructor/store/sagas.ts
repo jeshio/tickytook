@@ -6,10 +6,10 @@ import BaseStore from 'src/core/store/BaseStore';
 import { Store } from '..';
 import splitTextOnWords from '../utils/splitTextOnWords';
 import Api from './api';
-import { IActions, IEndPoints, ISagaWorkers, ISelectors, IStore } from './interfaces';
+import { IActionsParameters, IEndPoints, ISagaWorkers, ISelectors, IStore } from './interfaces';
 
 export default function sagas(
-  store: BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>
+  store: BaseStore<IStore, IActionsParameters, ISelectors, typeof Api.endPoints>
 ) {
   const sagaService = new SagaService<ISagaWorkers>();
 

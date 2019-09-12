@@ -1,5 +1,5 @@
 import { MenuItem } from 'modules/Globals/Sidebar';
-import ICAction from 'src/core/store/interfaces/ICAction';
+import { ActionsFromActionsParameters } from 'src/core/store/types/ActionFromActionParameters';
 
 export interface IStore {
   sidebarIsOpen: boolean;
@@ -9,8 +9,10 @@ export interface IStore {
 
 export interface ISelectors extends IStore {}
 
-export interface IActions {
-  switchSidebar: () => ICAction;
-  setSidebarExtraMenuItems: (menuItems: MenuItem[]) => ICAction;
-  resetSidebarExtraMenuItems: () => ICAction;
+export interface IActionsParameters {
+  switchSidebar: [];
+  setSidebarExtraMenuItems: [MenuItem[]];
+  resetSidebarExtraMenuItems: [];
 }
+
+export interface IActions extends ActionsFromActionsParameters<IActionsParameters> {}

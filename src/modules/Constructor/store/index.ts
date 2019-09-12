@@ -5,10 +5,10 @@ import { MODULE_NAME } from '../constants';
 import { AUTO_HASHTAGS_COUNT } from '../constants';
 import getHashtagsFromWords from '../utils/getHashtagsFromWords';
 import Api from './api';
-import { IActions, ISelectors, IStore } from './interfaces';
+import { IActionsParameters, ISelectors, IStore } from './interfaces';
 import sagas from './sagas';
 
-const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
+const store = new BaseStore<IStore, IActionsParameters, ISelectors, typeof Api.endPoints>(
   MODULE_NAME,
   {
     addExtraHashtag: (state, action) =>

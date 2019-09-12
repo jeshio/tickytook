@@ -3,10 +3,10 @@ import { call, cancelled, put, takeLatest } from 'redux-saga/effects';
 import SagaService from 'src/core/services/SagaService';
 import BaseStore from 'src/core/store/BaseStore';
 import Api from './api';
-import { IActions, IEndPoints, ISagaWorkers, ISelectors, IStore } from './interfaces';
+import { IActionsParameters, IEndPoints, ISagaWorkers, ISelectors, IStore } from './interfaces';
 
 export default function sagas(
-  store: BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>
+  store: BaseStore<IStore, IActionsParameters, ISelectors, typeof Api.endPoints>
 ) {
   const sagaService = new SagaService<ISagaWorkers>();
 

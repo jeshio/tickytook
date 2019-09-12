@@ -1,8 +1,7 @@
-import { Saga } from '@redux-saga/core';
 import ICEndPoint from 'src/core/interfaces/ICEndPoint';
 import ICEndPoints from 'src/core/interfaces/ICEndPoints';
-import ICAction from 'src/core/store/interfaces/ICAction';
 import { ICSagas } from 'src/core/store/interfaces/ICSagas';
+import { ActionsFromActionsParameters } from 'src/core/store/types/ActionFromActionParameters';
 
 export interface IStore {
   text: string;
@@ -27,25 +26,27 @@ export interface ISelectors extends IStore {
   activeHashtags: string[];
 }
 
-export interface IActions {
-  wiz: () => ICAction;
-  changeText: (text: string) => ICAction;
-  changeWords: (words: string[]) => ICAction;
-  switchHashtagActiveStatus: (hashtag: string) => ICAction;
-  addExtraHashtag: (extraHashtag: string) => ICAction;
-  fetchExtraWords: () => ICAction;
-  fetchExtraWordsFailure: () => ICAction;
-  fetchExtraWordsSuccess: (extraWords: string[]) => ICAction;
-  switchMode: () => ICAction;
-  switchParam: (param: 'convertToLower' | 'deleteNumberWords' | 'sortByAlphabet') => ICAction;
-  setMinimumHashtagLength: (length: number) => ICAction;
-  reset: () => ICAction;
+export interface IActionsParameters {
+  wiz: [];
+  changeText: [string];
+  changeWords: [string[]];
+  switchHashtagActiveStatus: [string];
+  addExtraHashtag: [string];
+  fetchExtraWords: [];
+  fetchExtraWordsFailure: [];
+  fetchExtraWordsSuccess: [string[]];
+  switchMode: [];
+  switchParam: ['convertToLower' | 'deleteNumberWords' | 'sortByAlphabet'];
+  setMinimumHashtagLength: [number];
+  reset: [];
 }
+
+export interface IActions extends ActionsFromActionsParameters<IActionsParameters> {}
 
 export interface ISagaWorkers
   extends ICSagas<{
     fetchExtraWords: [];
-    updateWords: Parameters<IActions['changeText']>;
+    updateWords: IActionsParameters['changeText'];
   }> {}
 
 export interface IEndPoints extends ICEndPoints {

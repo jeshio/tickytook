@@ -1,9 +1,9 @@
 import BaseStore from 'src/core/store/BaseStore';
 import { DEFAULT_MAIN_MENU_ITEMS } from '../constants';
 import { MODULE_NAME } from '../constants';
-import { IActions, ISelectors, IStore } from './interfaces';
+import { IActionsParameters, ISelectors, IStore } from './interfaces';
 
-const store = new BaseStore<IStore, IActions, ISelectors>(
+const store = new BaseStore<IStore, IActionsParameters, ISelectors>(
   MODULE_NAME,
   {
     switchSidebar: state => ({ ...state, sidebarIsOpen: !state.sidebarIsOpen }),

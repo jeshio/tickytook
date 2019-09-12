@@ -1,10 +1,10 @@
 import { IArticle } from 'modules/Blog';
-import { Saga } from 'redux-saga';
 import ICEndPoint from 'src/core/interfaces/ICEndPoint';
 import ICEndPoints from 'src/core/interfaces/ICEndPoints';
 import ICAction from 'src/core/store/interfaces/ICAction';
 import ICActionPromise from 'src/core/store/interfaces/ICActionPromise';
 import { ICSagas } from 'src/core/store/interfaces/ICSagas';
+import { ActionsFromActionsParameters } from 'src/core/store/types/ActionFromActionParameters';
 
 export interface IStore {
   articles: {
@@ -19,15 +19,17 @@ export interface IStore {
 
 export interface ISelectors extends IStore {}
 
-export interface IActions {
-  fetchArticles: (promise?: ICActionPromise) => ICAction;
-  fetchArticlesFailure: () => ICAction;
-  fetchArticlesSuccess: (articles: IArticle[]) => ICAction;
-  fetchArticle: (slug: string, promise?: ICActionPromise) => ICAction;
-  fetchArticleFailure: () => ICAction;
-  fetchArticleSuccess: (article: IArticle) => ICAction;
-  resetArticle: () => ICAction;
+export interface IActionsParameters {
+  fetchArticles: [ICActionPromise];
+  fetchArticlesFailure: [];
+  fetchArticlesSuccess: [IArticle[]];
+  fetchArticle: [string, ICActionPromise];
+  fetchArticleFailure: [];
+  fetchArticleSuccess: [IArticle];
+  resetArticle: [];
 }
+
+export interface IActions extends ActionsFromActionsParameters<IActionsParameters> {}
 
 export interface IEndPoints extends ICEndPoints {
   articles: ICEndPoint<IArticle[]>;
@@ -36,6 +38,6 @@ export interface IEndPoints extends ICEndPoints {
 
 export interface ISagaWorkers
   extends ICSagas<{
-    fetchArticles: [ICAction<Parameters<IActions['fetchArticles']>>];
-    fetchArticle: [ICAction<Parameters<IActions['fetchArticle']>>];
+    fetchArticles: [ICAction<IActionsParameters['fetchArticles']>];
+    fetchArticle: [ICAction<IActionsParameters['fetchArticle']>];
   }> {}
