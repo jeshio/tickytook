@@ -18,10 +18,14 @@ class Container extends React.Component<IContainerProps> {
 export default compose(
   connect<ISelectors, IActions>(
     state => Store.selectors(state),
-    (dispatch: Dispatch) =>
-      bindActionCreators(Store.actions as ICStringIndexes, dispatch) as IActions
+    (dispatch: Dispatch) => ({
+      ...(bindActionCreators(Store.actions as ICStringIndexes, dispatch) as IActions),
+      fetchArticles: bindActionCreators(Store.actions.fetchArticles, dispatch),
+    })
   ),
   frontloadConnect(async (props: IContainerProps) => {
-    await new Promise((resolve, reject) => props.actions.fetchArticles({ resolve, reject }));
+    await new Promise((resolve, reject) =>
+      props.actions.fetchArticles.request({ resolve, reject })
+    );
   })
 )(Container) as React.ComponentType;

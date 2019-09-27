@@ -3,6 +3,7 @@ import ICEndPoint from 'src/core/interfaces/ICEndPoint';
 import ICEndPoints from 'src/core/interfaces/ICEndPoints';
 import ICAction from 'src/core/store/interfaces/ICAction';
 import ICActionPromise from 'src/core/store/interfaces/ICActionPromise';
+import ICApiAction from 'src/core/store/interfaces/ICApiAction';
 import { ICSagas } from 'src/core/store/interfaces/ICSagas';
 import { ActionsFromActionsParameters } from 'src/core/store/types/ActionFromActionParameters';
 
@@ -20,16 +21,13 @@ export interface IStore {
 export interface ISelectors extends IStore {}
 
 export interface IActionsParameters {
-  fetchArticles: [ICActionPromise];
-  fetchArticlesFailure: [];
-  fetchArticlesSuccess: [IArticle[]];
-  fetchArticle: [string, ICActionPromise];
-  fetchArticleFailure: [];
-  fetchArticleSuccess: [IArticle];
   resetArticle: [];
 }
 
-export interface IActions extends ActionsFromActionsParameters<IActionsParameters> {}
+export interface IActions extends ActionsFromActionsParameters<IActionsParameters> {
+  fetchArticle: ICApiAction<[string, ICActionPromise], [IArticle]>;
+  fetchArticles: ICApiAction<[ICActionPromise], [IArticle[]]>;
+}
 
 export interface IEndPoints extends ICEndPoints {
   articles: ICEndPoint<IArticle[]>;
@@ -38,6 +36,6 @@ export interface IEndPoints extends ICEndPoints {
 
 export interface ISagaWorkers
   extends ICSagas<{
-    fetchArticles: [ICAction<IActionsParameters['fetchArticles']>];
-    fetchArticle: [ICAction<IActionsParameters['fetchArticle']>];
+    fetchArticles: [ReturnType<IActions['fetchArticles']['request']>];
+    fetchArticle: [ReturnType<IActions['fetchArticle']['request']>];
   }> {}

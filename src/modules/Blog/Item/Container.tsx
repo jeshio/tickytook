@@ -30,11 +30,15 @@ export default compose(
   withRouter,
   connect<ISelectors, IActions>(
     state => Store.selectors(state),
-    (dispatch: Dispatch) =>
-      bindActionCreators(Store.actions as ICStringIndexes, dispatch) as IActions
+    (dispatch: Dispatch) => ({
+      ...(bindActionCreators(Store.actions as ICStringIndexes, dispatch) as IActions),
+      fetchArticle: bindActionCreators(Store.actions.fetchArticle, dispatch),
+    })
   ),
   frontloadConnect(async (props: IContainerProps) => {
     const { slug } = props.match.params;
-    await new Promise(resolve => (props.actions.fetchArticle as any)(slug, resolve));
+    await new Promise((resolve, reject) =>
+      props.actions.fetchArticle.request(slug, { resolve, reject })
+    );
   })
 )(Container) as React.ComponentType;

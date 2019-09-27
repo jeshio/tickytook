@@ -1,65 +1,39 @@
-import { SagaIterator } from 'redux-saga';
 import { call, cancelled, put, takeLatest } from 'redux-saga/effects';
 import SagaService from 'src/core/services/SagaService';
 import BaseStore from 'src/core/store/BaseStore';
 import Api from './api';
-import { IActionsParameters, IEndPoints, ISagaWorkers, ISelectors, IStore } from './interfaces';
+import { IActions, IEndPoints, ISagaWorkers, ISelectors, IStore } from './interfaces';
 
 export default function sagas(
-  store: BaseStore<IStore, IActionsParameters, ISelectors, typeof Api.endPoints>
+  store: BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>
 ) {
-  const sagaService = new SagaService<ISagaWorkers>();
+  const sagaService = new SagaService<ISagaWorkers, IStore>(store);
 
-  sagaService.addSagaWorker('fetchArticles', function*(action) {
-    try {
-      const requestDataGenerator: unknown = yield call(store.api.articles, undefined);
-      const requestData = requestDataGenerator as ReturnType<
-        IEndPoints['articles']['successResponse']
-      >;
+  sagaService.addSagaApiRequestWorker(
+    'fetchArticles',
+    store.actions.fetchArticles,
+    store.api.articles,
+    () => ({})
+  );
 
-      yield put(store.actions.fetchArticlesSuccess(requestData));
-      if (action.payload[0]) {
-        action.payload[0].resolve();
-      }
-    } catch (e) {
-      yield put(store.actions.fetchArticlesFailure());
-    } finally {
-      if (yield cancelled()) {
-        yield put(store.actions.fetchArticlesFailure());
-      }
-    }
-  });
-
-  sagaService.addSagaWorker('fetchArticle', function*(action) {
-    try {
-      const requestDataGenerator: unknown = yield call(store.api.articleBySlug, {
-        'fields.slug': action.payload[0],
-      });
-      const requestData = requestDataGenerator as ReturnType<
-        IEndPoints['articleBySlug']['successResponse']
-      >;
-      yield put(store.actions.fetchArticleSuccess(requestData));
-
-      if (action.payload[1]) {
-        action.payload[1].resolve();
-      }
-    } catch (e) {
-      yield put(store.actions.fetchArticleFailure());
-    } finally {
-      if (yield cancelled()) {
-        yield put(store.actions.fetchArticleFailure());
-      }
-    }
-  });
+  sagaService.addSagaApiRequestWorker(
+    'fetchArticle',
+    store.actions.fetchArticle,
+    store.api.articleBySlug,
+    action => ({ 'fields.slug': action.payload[0] })
+  );
 
   // articles fetcher
   sagaService.addSagaWatcher(function*() {
-    yield takeLatest(store.actions.fetchArticles.type, sagaService.sagaWorkers.fetchArticles);
+    yield takeLatest(
+      store.actions.fetchArticles.request.type,
+      sagaService.sagaWorkers.fetchArticles
+    );
   });
 
   // article fetcher
   sagaService.addSagaWatcher(function*() {
-    yield takeLatest(store.actions.fetchArticle.type, sagaService.sagaWorkers.fetchArticle);
+    yield takeLatest(store.actions.fetchArticle.request.type, sagaService.sagaWorkers.fetchArticle);
   });
 
   return sagaService.rootSaga;

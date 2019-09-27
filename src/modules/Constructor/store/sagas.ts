@@ -1,17 +1,16 @@
 import isEqual from 'lodash/isEqual';
-import { Saga } from 'redux-saga';
 import { call, cancel, cancelled, delay, fork, put, race, select, take } from 'redux-saga/effects';
 import SagaService from 'src/core/services/SagaService';
 import BaseStore from 'src/core/store/BaseStore';
 import { Store } from '..';
 import splitTextOnWords from '../utils/splitTextOnWords';
 import Api from './api';
-import { IActionsParameters, IEndPoints, ISagaWorkers, ISelectors, IStore } from './interfaces';
+import { IActions, IEndPoints, ISagaWorkers, ISelectors, IStore } from './interfaces';
 
 export default function sagas(
-  store: BaseStore<IStore, IActionsParameters, ISelectors, typeof Api.endPoints>
+  store: BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>
 ) {
-  const sagaService = new SagaService<ISagaWorkers>();
+  const sagaService = new SagaService<ISagaWorkers, IStore>(store);
 
   sagaService.addSagaWorker('updateWords', function*(text) {
     const currentStore = ((yield select()) as unknown) as IStore;
@@ -23,22 +22,12 @@ export default function sagas(
     }
   });
 
-  sagaService.addSagaWorker('fetchExtraWords', function*() {
-    try {
-      const currentStoreSelectors = store.selectors(((yield select()) as unknown) as IStore);
-      const requestData = ((yield call(store.api.extraWords, {
-        words: currentStoreSelectors.words,
-      })) as unknown) as ReturnType<IEndPoints['extraWords']['successResponse']>;
-
-      yield put(store.actions.fetchExtraWordsSuccess(requestData.result || []));
-    } catch (e) {
-      yield put(store.actions.fetchExtraWordsFailure());
-    } finally {
-      if (yield cancelled()) {
-        yield put(store.actions.fetchExtraWordsFailure());
-      }
-    }
-  } as Saga);
+  sagaService.addSagaApiRequestWorker(
+    'fetchExtraWords',
+    store.actions.fetchExtraWords,
+    store.api.extraWords,
+    (action, { words }) => ({ words })
+  );
 
   // extra words fetcher
   sagaService.addSagaWatcher(function*() {
@@ -48,7 +37,7 @@ export default function sagas(
       while (true) {
         const action = yield race({
           wiz: take(Store.actions.wiz.type),
-          fetchExtraWords: take(store.actions.fetchExtraWords.type),
+          fetchExtraWords: take(store.actions.fetchExtraWords.request.type),
         });
 
         if (lastTask) {
@@ -57,7 +46,7 @@ export default function sagas(
 
         lastTask = yield fork(function*() {
           if (!action.fetchExtraWords) {
-            yield put(store.actions.fetchExtraWords());
+            yield put(store.actions.fetchExtraWords.request());
           }
 
           const fetchTask = yield fork(sagaService.sagaWorkers.fetchExtraWords);
@@ -76,7 +65,7 @@ export default function sagas(
     yield call(sagaService.sagaWorkers.updateWords, firstVersionText);
 
     if (String(firstVersionText).length > 0) {
-      yield put(store.actions.fetchExtraWords());
+      yield put(store.actions.fetchExtraWords.request());
     }
 
     while (true) {

@@ -7,7 +7,7 @@ const Api = new ApiService<IEndPoints>();
 Api.addEndPoint('extraWords', {
   failureResponse: response => ({ error: 'test' }),
   method: 'post',
-  successResponse: response => response,
+  successResponse: response => response.result,
   url: `${API_URL}/extra-words`,
 });
 

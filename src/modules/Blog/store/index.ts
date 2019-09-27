@@ -1,52 +1,16 @@
 import update from 'immutability-helper';
 import BaseStore from 'src/core/store/BaseStore';
+import { getApiReducer } from 'src/core/store/helpers/getApiReducer';
 import { MODULE_NAME } from '../constants';
 import Api from './api';
-import { IActionsParameters, ISelectors, IStore } from './interfaces';
+import { IActions, ISelectors, IStore } from './interfaces';
 import sagas from './sagas';
 
-const store = new BaseStore<IStore, IActionsParameters, ISelectors, typeof Api.endPoints>(
+const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
   MODULE_NAME,
   {
-    fetchArticles: state =>
-      update(state, {
-        articles: {
-          loading: { $set: true },
-        },
-      }),
-    fetchArticlesFailure: state =>
-      update(state, {
-        articles: {
-          loading: { $set: false },
-        },
-      }),
-    fetchArticlesSuccess: (state, action) =>
-      update(state, {
-        articles: {
-          loading: { $set: false },
-          data: { $set: action.payload[0] },
-        },
-      }),
-
-    fetchArticle: state =>
-      update(state, {
-        article: {
-          loading: { $set: true },
-        },
-      }),
-    fetchArticleFailure: state =>
-      update(state, {
-        article: {
-          loading: { $set: false },
-        },
-      }),
-    fetchArticleSuccess: (state, action) =>
-      update(state, {
-        article: {
-          loading: { $set: false },
-          data: { $set: action.payload[0] },
-        },
-      }),
+    fetchArticles: getApiReducer('articles'),
+    fetchArticle: getApiReducer('article'),
     resetArticle: state =>
       update(state, {
         article: {

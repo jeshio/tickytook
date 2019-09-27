@@ -1,14 +1,15 @@
 import update from 'immutability-helper';
 import uniq from 'lodash/uniq';
 import BaseStore from 'src/core/store/BaseStore';
+import { getApiReducer } from 'src/core/store/helpers/getApiReducer';
 import { MODULE_NAME } from '../constants';
 import { AUTO_HASHTAGS_COUNT } from '../constants';
 import getHashtagsFromWords from '../utils/getHashtagsFromWords';
 import Api from './api';
-import { IActionsParameters, ISelectors, IStore } from './interfaces';
+import { IActions, ISelectors, IStore } from './interfaces';
 import sagas from './sagas';
 
-const store = new BaseStore<IStore, IActionsParameters, ISelectors, typeof Api.endPoints>(
+const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
   MODULE_NAME,
   {
     addExtraHashtag: (state, action) =>
@@ -19,28 +20,26 @@ const store = new BaseStore<IStore, IActionsParameters, ISelectors, typeof Api.e
       ...state,
       words: action.payload[0],
     }),
-    fetchExtraWords: state => update(state, { extraWords: { loading: { $set: true } } }),
-    fetchExtraWordsFailure: state =>
-      update(state, {
-        extraWords: { loading: { $set: false } },
-      }),
-    fetchExtraWordsSuccess: (state, action) => {
-      const extraWords = uniq(
-        action.payload[0].length > 0 ? action.payload[0] : state.extraWords.data
-      );
-      return update(state, {
-        extraWords: {
-          loading: { $set: false },
-          data: { $set: extraWords },
-        },
-        // если ни одного хэштега не установлено, то добавляем автоматом
-        extraHashtags: {
-          $set:
-            state.extraHashtags.length === 0
-              ? extraWords.slice(0, AUTO_HASHTAGS_COUNT)
-              : state.extraHashtags,
-        },
-      });
+    fetchExtraWords: {
+      ...getApiReducer('extraWords'),
+      success: (state, action) => {
+        const extraWords = uniq(
+          action.payload[0].length > 0 ? action.payload[0] : state.extraWords.data
+        );
+        return update(state, {
+          extraWords: {
+            loading: { $set: false },
+            data: { $set: extraWords },
+          },
+          // если ни одного хэштега не установлено, то добавляем автоматом
+          extraHashtags: {
+            $set:
+              state.extraHashtags.length === 0
+                ? extraWords.slice(0, AUTO_HASHTAGS_COUNT)
+                : state.extraHashtags,
+          },
+        });
+      },
     },
     switchHashtagActiveStatus: (state, action) => {
       const hashtag = action.payload[0];

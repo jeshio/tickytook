@@ -1,5 +1,7 @@
 import ICEndPoint from 'src/core/interfaces/ICEndPoint';
 import ICEndPoints from 'src/core/interfaces/ICEndPoints';
+import ICActionPromise from 'src/core/store/interfaces/ICActionPromise';
+import ICApiAction from 'src/core/store/interfaces/ICApiAction';
 import { ICSagas } from 'src/core/store/interfaces/ICSagas';
 import { ActionsFromActionsParameters } from 'src/core/store/types/ActionFromActionParameters';
 
@@ -32,16 +34,15 @@ export interface IActionsParameters {
   changeWords: [string[]];
   switchHashtagActiveStatus: [string];
   addExtraHashtag: [string];
-  fetchExtraWords: [];
-  fetchExtraWordsFailure: [];
-  fetchExtraWordsSuccess: [string[]];
   switchMode: [];
   switchParam: ['convertToLower' | 'deleteNumberWords' | 'sortByAlphabet'];
   setMinimumHashtagLength: [number];
   reset: [];
 }
 
-export interface IActions extends ActionsFromActionsParameters<IActionsParameters> {}
+export interface IActions extends ActionsFromActionsParameters<IActionsParameters> {
+  fetchExtraWords: ICApiAction<[], [string[]]>;
+}
 
 export interface ISagaWorkers
   extends ICSagas<{
