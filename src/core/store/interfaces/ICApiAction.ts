@@ -1,9 +1,9 @@
 import ICAction from './ICAction';
 
 export default interface ICApiAction<
-  Parameters extends any[],
-  SuccessParameters extends any[] = [],
-  FailureParameters extends any[] = []
+  Parameters extends any[] = any[],
+  SuccessParameters extends any[] = any[],
+  FailureParameters extends any[] = any[]
 > {
   request: (...args: Parameters) => ICAction<Parameters>;
   success: (...args: SuccessParameters) => ICAction<SuccessParameters>;

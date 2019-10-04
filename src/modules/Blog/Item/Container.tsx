@@ -4,7 +4,8 @@ import * as React from 'react';
 import { frontloadConnect } from 'react-frontload';
 import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
-import { bindActionCreators, compose, Dispatch } from 'redux';
+import { compose, Dispatch } from 'redux';
+import bindActionCreatorsWithApi from 'src/core/helpers/bindActionCreatorsWithApi';
 import connect from 'src/core/hocs/connect';
 import ICStringIndexes from 'src/core/interfaces/ICStringIndexes';
 import { Store } from '..';
@@ -30,10 +31,8 @@ export default compose(
   withRouter,
   connect<ISelectors, IActions>(
     state => Store.selectors(state),
-    (dispatch: Dispatch) => ({
-      ...(bindActionCreators(Store.actions as ICStringIndexes, dispatch) as IActions),
-      fetchArticle: bindActionCreators(Store.actions.fetchArticle, dispatch),
-    })
+    (dispatch: Dispatch) =>
+      bindActionCreatorsWithApi(Store.actions as ICStringIndexes, dispatch) as IActions
   ),
   frontloadConnect(async (props: IContainerProps) => {
     const { slug } = props.match.params;
