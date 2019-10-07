@@ -13,7 +13,7 @@ import UIcon from './UIcon';
 export interface IUButtonProps extends ButtonProps, SpaceProps, VisibleProps {
   noBg?: boolean;
   extraText?: string;
-  icon?: UIcon;
+  icon?: ReturnType<typeof UIcon>;
 }
 
 const noBgProps = (props: IUButtonProps) => ({

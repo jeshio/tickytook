@@ -1,11 +1,11 @@
 import { darken } from 'polished';
 import React from 'react';
 import TTheme from 'src/core/types/TTheme';
-import Content from 'src/modules/Globals/Content';
-import Footer from 'src/modules/Globals/Footer';
-import Header from 'src/modules/Globals/Header';
-import Sidebar from 'src/modules/Globals/Sidebar';
-import Subheader from 'src/modules/Globals/Subheader';
+import Content from 'src/modules/Global/Content';
+import Footer from 'src/modules/Global/Footer';
+import Header from 'src/modules/Global/Header';
+import Sidebar from 'src/modules/Global/Sidebar';
+import Subheader from 'src/modules/Global/Subheader';
 import UGrid from 'src/ui-components/UGrid';
 import UHelmet from 'src/ui-components/UHelmet';
 import { createGlobalStyle } from 'styled-components';

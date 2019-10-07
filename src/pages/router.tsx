@@ -1,11 +1,15 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import ArticlePage from './ArticlePage';
-import ArticlesListPage from './ArticlesListPage';
+import ArticlePage from './articles/ArticlePage';
+import ArticlesListPage from './articles/ArticlesListPage';
 import Contacts from './Contacts';
 import GeneratorPage from './Generator';
 import NotFound from './NotFound';
 
+/**
+ * Здесь все роуты
+ * Каждый из них попадёт в site-map
+ */
 export default (
   <Switch>
     <Route exact={true} path="/" component={GeneratorPage} />

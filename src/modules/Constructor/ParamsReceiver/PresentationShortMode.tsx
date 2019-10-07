@@ -1,25 +1,25 @@
+import { IProps } from 'modules/Constructor/ParamsReceiver';
 import React, { Component } from 'react';
 import UBlock from 'src/ui-components/UBlock';
 import UGrid from 'src/ui-components/UGrid';
 import Params from './components/Params';
 import TextReceiver from './components/TextReceiver';
-import { IActions, ISelectors } from './store';
 
-export interface IPresentationShortModeProps extends ISelectors, IActions {}
+export interface IPresentationShortModeProps extends IProps {}
 
 export default class PresentationShortMode extends Component<IPresentationShortModeProps, any> {
   public render() {
-    const { text, changeText } = this.props;
+    const { actions, selectors } = this.props;
     return (
       <UBlock marginBottom={[3]}>
         <UGrid.Row>
           <UGrid.Col md={24}>
             <UBlock>
               <TextReceiver
-                value={text}
-                onChange={changeText}
-                onFormSubmit={this.props.wiz}
-                isExtendedMode={this.props.isExtendedMode}
+                value={selectors.text}
+                onChange={actions.changeText}
+                onFormSubmit={actions.wiz}
+                isExtendedMode={selectors.isExtendedMode}
               />
             </UBlock>
           </UGrid.Col>
@@ -27,7 +27,18 @@ export default class PresentationShortMode extends Component<IPresentationShortM
         <UGrid.Row>
           <UGrid.Col md={24}>
             <UBlock>
-              <Params onFormSubmit={this.props.wiz} {...this.props} />
+              <Params
+                onFormSubmit={actions.wiz}
+                convertToLower={selectors.params.convertToLower}
+                deleteNumberWords={selectors.params.deleteNumberWords}
+                sortByAlphabet={selectors.params.sortByAlphabet}
+                isExtendedMode={selectors.isExtendedMode}
+                minimumHashtagLength={selectors.params.minimumHashtagLength}
+                setMinimumHashtagLength={actions.setMinimumHashtagLength}
+                switchConvertToLower={actions.switchParam.bind(null, 'convertToLower')}
+                switchDeleteNumberWords={actions.switchParam.bind(null, 'deleteNumberWords')}
+                switchSortByAlphabet={actions.switchParam.bind(null, 'sortByAlphabet')}
+              />
             </UBlock>
           </UGrid.Col>
         </UGrid.Row>

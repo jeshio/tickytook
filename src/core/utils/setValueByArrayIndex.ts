@@ -5,7 +5,7 @@ export default function setValueByArrayIndex<T = any>(
 ) {
   const result = [...array];
 
-  result[index] = value;
+  result[index] = value as any;
 
   return result as typeof array;
 }

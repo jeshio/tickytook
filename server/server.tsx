@@ -11,7 +11,7 @@ import express from 'express';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Helmet from 'react-helmet';
-import ReactRouter from 'react-router';
+import ReactRouter, { StaticContext } from 'react-router';
 import { StaticRouter } from 'react-router-dom';
 import { ServerStyleSheet } from 'styled-components';
 
@@ -47,7 +47,7 @@ const serverRenderer = async (req, res, next) => {
     }
 
     try {
-      const context = {};
+      const context = {} as StaticContext;
       const store = getStore();
       html = await frontloadServerRender(
         () =>
@@ -64,6 +64,10 @@ const serverRenderer = async (req, res, next) => {
             )
           ) || ''
       );
+
+      if (context.statusCode) {
+        res.status(context.statusCode);
+      }
 
       styleTags = sheet.getStyleTags() || '';
 

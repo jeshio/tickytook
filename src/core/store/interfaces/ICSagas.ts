@@ -1,5 +1,3 @@
 import { Saga } from '@redux-saga/core';
 
-export default interface ICSagas {
-  [key: string]: Saga;
-}
+export type ICSagas<T extends { [key: string]: any }> = { [K in keyof T]: Saga<T[K]> };
