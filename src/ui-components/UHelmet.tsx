@@ -13,7 +13,7 @@ export interface IUHelmetProps extends React.PropsWithChildren<{}>, RouteCompone
   jsonLds?: ICJsonLd[];
 }
 
-const DEFAULT_TITLE_TEXT = 'Тикитук — наколдуй хэштеги, генератор хэштегов одним кликом';
+const DEFAULT_TITLE_TEXT = 'Тикитук — генератор хэштегов одним кликом';
 
 const handleDynamicTitle = (title: string) =>
   `${truncate(title, {
@@ -34,7 +34,7 @@ class UHelmet extends React.PureComponent<IUHelmetProps> {
   get description() {
     return (
       this.props.description ||
-      '20 хэштегов за один клик, попробуй! Волшебник Тикитук подберёт лучшие хэштеги для твоих постов в Instagram и других соцсетях.'
+      '15 хэштегов за один клик, попробуй! Волшебник Тикитук подберёт лучшие хэштеги для твоих постов в Instagram и других соцсетях.'
     );
   }
 

@@ -1,6 +1,6 @@
 import Sitemap from 'react-router-sitemap';
 
-import Api from './modules/Blog/List/store/api';
+import Api from './modules/Blog/store/api';
 import router from './pages/router';
 
 /**

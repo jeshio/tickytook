@@ -1,5 +1,4 @@
-import get from 'lodash/get';
-import { Actions, IArticle, Selectors } from 'modules/Blog/List';
+import { IProps } from 'modules/Blog/Item';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { JSON_LD } from 'src/config';
@@ -14,11 +13,11 @@ import USpinner from 'src/ui-components/USpinner';
 import Content from './components/Content';
 import ShortDescription from './components/ShortDescription';
 
-export interface IPresentationProps extends Actions, Selectors {}
+export interface IPresentationProps extends IProps {}
 
 export default class Presentation extends React.PureComponent<IPresentationProps, any> {
   get jsonLds(): ICJsonLd[] {
-    const article = this.props.article.data;
+    const article = this.props.selectors.article.data;
 
     if (!article) {
       return [{}];
@@ -61,7 +60,7 @@ export default class Presentation extends React.PureComponent<IPresentationProps
   }
 
   public render() {
-    const { data: article, loading } = this.props.article;
+    const { data: article, loading } = this.props.selectors.article;
 
     if (loading) {
       return <USpinner loading={loading} />;

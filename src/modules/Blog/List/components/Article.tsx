@@ -1,4 +1,4 @@
-import { IArticle } from 'modules/Blog/List';
+import { IArticle } from 'modules/Blog';
 import { rgba } from 'polished';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
@@ -20,7 +20,7 @@ const Root = styled(Link)`
 
     .c-short-description {
       -webkit-line-clamp: 99;
-      max-height: unset;
+      max-height: 350px;
     }
 
     .c-logo {
@@ -64,6 +64,7 @@ const ShortDescription = styled.p`
   max-height: 67px;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  transition: 0.5s max-height;
 `;
 
 const getShortDescriptionComponent = (shortDescription?: string) =>

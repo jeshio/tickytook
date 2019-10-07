@@ -1,24 +1,21 @@
+import { IProps } from 'modules/Constructor/Conclusion';
 import React, { Component } from 'react';
 import UBlock from 'src/ui-components/UBlock';
-import { Store } from '.';
 import Block from './components/Block';
 import ExtraWords from './components/ExtraWords';
 import HashtagsText from './components/HashtagsText';
 import Post from './components/Post';
 import SimplePost from './components/SimplePost';
-import { Selectors } from './module';
 
-export interface IPresentationProps extends Selectors, Store.IActions {
+export interface IPresentationProps extends IProps {
   onCopyHashtags: () => void;
   onCopyPost: () => void;
-  isExtendedMode: boolean;
   shortModeLeftColumn: React.ReactElement;
-  switchMode: () => void;
 }
 
 export default class Presentation extends Component<IPresentationProps, any> {
   public render() {
-    if (this.props.isExtendedMode) {
+    if (this.props.selectors.isExtendedMode) {
       return this.extendedModeTemplate;
     }
 
@@ -26,6 +23,7 @@ export default class Presentation extends Component<IPresentationProps, any> {
   }
 
   protected get shortModeTemplate() {
+    const { selectors, actions, onCopyHashtags, onCopyPost, shortModeLeftColumn } = this.props;
     return (
       <UBlock
         display="flex"
@@ -34,20 +32,20 @@ export default class Presentation extends Component<IPresentationProps, any> {
         overflow="hidden"
       >
         <UBlock flex={1} px={[2, 0]} paddingRight={[2, 0, 2]}>
-          {this.props.shortModeLeftColumn}
+          {shortModeLeftColumn}
         </UBlock>
         <UBlock flex={1}>
-          <UBlock visible={this.props.paramsReceiver.text.length > 0}>
+          <UBlock visible={selectors.text.length > 0}>
             <SimplePost
-              activeHashtags={this.props.activeHashtags}
-              text={this.props.paramsReceiver.text}
-              onCopyPost={this.props.onCopyPost}
-              onCopyHashtags={this.props.onCopyHashtags}
-              loading={this.props.extraWords.loading}
-              switchMode={this.props.switchMode}
+              activeHashtags={selectors.activeHashtags}
+              text={selectors.text}
+              onCopyPost={onCopyPost}
+              onCopyHashtags={onCopyHashtags}
+              loading={selectors.extraWords.loading}
+              switchMode={actions.switchMode}
             />
           </UBlock>
-          <UBlock visible={this.props.paramsReceiver.text.length === 0} textAlign="center">
+          <UBlock visible={selectors.text.length === 0} textAlign="center">
             <Block>
               <UBlock p={6} paddingTop={7}>
                 Для начала введите текст поста.
@@ -60,6 +58,7 @@ export default class Presentation extends Component<IPresentationProps, any> {
   }
 
   protected get extendedModeTemplate() {
+    const { selectors, actions, onCopyHashtags, onCopyPost } = this.props;
     return (
       <UBlock
         display="flex"
@@ -69,20 +68,26 @@ export default class Presentation extends Component<IPresentationProps, any> {
       >
         <UBlock paddingRight={[0, 1]} flex={1}>
           <ExtraWords
-            extraHashtags={this.props.extraHashtags}
-            extraWords={this.props.extraWords.data}
-            loading={this.props.extraWords.loading}
-            onExtraWordClick={this.props.addExtraHashtag}
+            extraHashtags={selectors.extraHashtags}
+            extraWords={selectors.extraWords.data}
+            loading={selectors.extraWords.loading}
+            onExtraWordClick={actions.addExtraHashtag}
           />
         </UBlock>
         <UBlock paddingLeft={[0, 1]} flex={1}>
-          <HashtagsText {...this.props} />
-          <UBlock visible={this.props.paramsReceiver.text.length > 0}>
+          <HashtagsText
+            activeHashtags={selectors.activeHashtags}
+            hashtags={selectors.hashtags}
+            inactiveHashtags={selectors.inactiveHashtags}
+            onCopyHashtags={onCopyHashtags}
+            switchHashtagActiveStatus={actions.switchHashtagActiveStatus}
+          />
+          <UBlock visible={selectors.text.length > 0}>
             <Post
-              activeHashtags={this.props.activeHashtags}
-              text={this.props.paramsReceiver.text}
-              onCopyPost={this.props.onCopyPost}
-              switchMode={this.props.switchMode}
+              activeHashtags={selectors.activeHashtags}
+              text={selectors.text}
+              onCopyPost={onCopyPost}
+              switchMode={actions.switchMode}
             />
           </UBlock>
         </UBlock>
