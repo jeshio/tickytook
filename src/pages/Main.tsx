@@ -2,6 +2,7 @@ import { darken } from 'polished';
 import React from 'react';
 import TTheme from 'src/core/types/TTheme';
 import Content from 'src/modules/Global/Content';
+import CookiesNotice from 'src/modules/Global/CookiesNotice';
 import Footer from 'src/modules/Global/Footer';
 import Header from 'src/modules/Global/Header';
 import Sidebar from 'src/modules/Global/Sidebar';
@@ -45,17 +46,21 @@ const Root = styled(UGrid)`
 `;
 
 export default () => (
-  <Root px={[0, 2, 2]}>
-    <UHelmet />
-    <Header />
+  <>
+    <Root px={[0, 2, 2]}>
+      <UHelmet />
+      <Header />
 
-    <Subheader />
+      <Subheader />
 
-    <Sidebar />
+      <Sidebar />
 
-    <Content>{router}</Content>
+      <Content>{router}</Content>
 
-    <Footer />
-    <GlobalStyle />
-  </Root>
+      <Footer />
+
+      <GlobalStyle />
+    </Root>
+    <CookiesNotice />
+  </>
 );

@@ -29,6 +29,8 @@ import {
   MinHeightProps,
   overflow,
   OverflowProps,
+  position,
+  PositionProps,
   space,
   SpaceProps,
   textAlign,
@@ -52,6 +54,7 @@ export interface IUBlockProps
     MaxWidthProps,
     BackgroundColorProps,
     MinHeightProps,
+    PositionProps,
     VisibleProps {
   ref?: React.RefObject<HTMLDivElement>;
 }
@@ -72,6 +75,7 @@ const Root = styled.div<any>`
   ${maxWidth};
   ${minHeight};
   ${backgroundColor};
+  ${position};
   ${props => props.css}
 `;
 

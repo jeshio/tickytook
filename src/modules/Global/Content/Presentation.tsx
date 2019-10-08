@@ -5,11 +5,11 @@ import styled from 'styled-components';
 interface IPresentationProps extends React.PropsWithChildren<{}> {}
 
 const Root = styled(UBlock)`
-  background-color: #fff;
+  min-height: 14rem;
 `;
 
 const Presentation: React.FunctionComponent<IPresentationProps> = props => {
-  return <div>{props.children}</div>;
+  return <Root>{props.children}</Root>;
 };
 
 export default Presentation;
