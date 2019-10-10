@@ -4,6 +4,7 @@ import BaseStore from 'src/core/store/BaseStore';
 import { getApiReducer } from 'src/core/store/helpers/getApiReducer';
 import { MODULE_NAME } from '../constants';
 import { AUTO_HASHTAGS_COUNT } from '../constants';
+import cutEndSpacesFromText from '../utils/cutEndSpacesFromText';
 import cutHashtagsFromText from '../utils/cutHashtagsFromText';
 import getHashtagsFromText from '../utils/getHashtagsFromText';
 import getHashtagsFromWords from '../utils/getHashtagsFromWords';
@@ -61,7 +62,7 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
           $set: [...state.extraHashtags, ...getHashtagsFromText(action.payload[0])],
         },
         sourceText: { $set: action.payload[0] },
-        resultText: { $set: cutHashtagsFromText(action.payload[0]) },
+        resultText: { $set: cutEndSpacesFromText(cutHashtagsFromText(action.payload[0])) },
       }),
     setMinimumHashtagLength: (state, action) =>
       update(state, {
