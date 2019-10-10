@@ -28,10 +28,10 @@ class Container extends Component<PropsType> {
 
   private handleCopyPost = () => {
     const {
-      selectors: { activeHashtags, text },
+      selectors: { activeHashtags, resultText },
     } = this.props;
     const hashtagsToCopy = activeHashtags.join(' ');
-    const postToCopy = `${text}\n\n${hashtagsToCopy}`;
+    const postToCopy = `${resultText}\n\n${hashtagsToCopy}`;
     copyTextToClipboard(postToCopy);
   };
 }

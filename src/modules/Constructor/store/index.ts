@@ -4,6 +4,8 @@ import BaseStore from 'src/core/store/BaseStore';
 import { getApiReducer } from 'src/core/store/helpers/getApiReducer';
 import { MODULE_NAME } from '../constants';
 import { AUTO_HASHTAGS_COUNT } from '../constants';
+import cutHashtagsFromText from '../utils/cutHashtagsFromText';
+import getHashtagsFromText from '../utils/getHashtagsFromText';
 import getHashtagsFromWords from '../utils/getHashtagsFromWords';
 import Api from './api';
 import { IActions, ISelectors, IStore } from './interfaces';
@@ -53,11 +55,14 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
         inactiveHashtags: { $set: inactiveHashtags },
       });
     },
-
-    changeText: (state, action) => ({
-      ...state,
-      text: action.payload[0],
-    }),
+    changeText: (state, action) =>
+      update(state, {
+        extraHashtags: {
+          $set: [...state.extraHashtags, ...getHashtagsFromText(action.payload[0])],
+        },
+        sourceText: { $set: action.payload[0] },
+        resultText: { $set: cutHashtagsFromText(action.payload[0]) },
+      }),
     setMinimumHashtagLength: (state, action) =>
       update(state, {
         params: {
@@ -75,7 +80,8 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
     reset: state => state,
   },
   {
-    text: '', // 'Привет, тут у нас небольшое предложение с 8 членами.',
+    sourceText: '', // 'Привет, тут у нас небольшое предложение с 8 членами.',
+    resultText: '',
     extraHashtags: [],
     extraWords: {
       data: [],

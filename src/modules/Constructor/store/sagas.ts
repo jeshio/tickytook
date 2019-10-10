@@ -61,7 +61,7 @@ export default function sagas(
 
   // words updater
   sagaService.addSagaWatcher(function*() {
-    const firstVersionText = Store.selectors(((yield select()) as unknown) as IStore).text;
+    const firstVersionText = Store.selectors(((yield select()) as unknown) as IStore).sourceText;
     yield call(sagaService.sagaWorkers.updateWords, firstVersionText);
 
     if (String(firstVersionText).length > 0) {
@@ -69,10 +69,10 @@ export default function sagas(
     }
 
     while (true) {
-      const oldText = Store.selectors(((yield select()) as unknown) as IStore).text;
+      const oldText = Store.selectors(((yield select()) as unknown) as IStore).sourceText;
       yield race([take(Store.actions.changeText.type), take(Store.actions.reset.type)]);
 
-      const newText = Store.selectors(((yield select()) as unknown) as IStore).text;
+      const newText = Store.selectors(((yield select()) as unknown) as IStore).sourceText;
 
       if (oldText !== newText) {
         yield call(sagaService.sagaWorkers.updateWords, newText);
