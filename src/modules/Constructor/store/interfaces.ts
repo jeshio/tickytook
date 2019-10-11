@@ -31,6 +31,7 @@ export interface ISelectors extends IStore {
 export interface IActionsParameters {
   wiz: [];
   changeText: [string];
+  makeResultText: [string];
   changeWords: [string[]];
   switchHashtagActiveStatus: [string];
   addExtraHashtag: [string];
