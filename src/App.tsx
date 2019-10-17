@@ -3,6 +3,7 @@ import { Frontload } from 'react-frontload';
 import { Provider } from 'react-redux';
 import { Store } from 'redux';
 import { ThemeProvider } from 'styled-components';
+
 import './globalImports';
 import Main from './pages/Main';
 import currentTheme from './themes/default';

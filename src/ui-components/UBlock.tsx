@@ -2,7 +2,6 @@ import * as React from 'react';
 import displayWithVisibleChecking from 'src/core/extends/styled-system/displayWithVisibleChecking';
 import { VisibleProps } from 'src/core/extends/styled-system/interfaces';
 import styled from 'styled-components';
-import * as cssType from 'styled-components/cssprop';
 import {
   alignItems,
   AlignItemsProps,
@@ -38,7 +37,7 @@ import {
 } from 'styled-system';
 
 export interface IUBlockProps
-  extends React.ImgHTMLAttributes<HTMLDivElement>,
+  extends React.HTMLAttributes<HTMLDivElement>,
     SpaceProps,
     FlexProps,
     FlexDirectionProps,

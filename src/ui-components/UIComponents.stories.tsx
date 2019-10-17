@@ -18,7 +18,6 @@ function storiesOfComponent(Component: (...args: any[]) => any, addRsuiteStories
   return story;
 }
 
-storiesOfComponent(UInput, true).add('без параметров', () => <UInput />);
 storiesOfComponent(UTextarea, true)
   .add('без параметров', () => <UTextarea />)
   .add('количество строк', () => <UTextarea rows={7} />);

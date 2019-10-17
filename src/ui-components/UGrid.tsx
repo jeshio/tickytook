@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Col, Grid, Row } from 'rsuite';
-import { ColProps } from 'rsuite/types/Col';
-import { GridProps } from 'rsuite/types/Grid';
-import { RowProps } from 'rsuite/types/Row';
+import { ColProps } from 'rsuite/lib/Col';
+import { GridProps } from 'rsuite/lib/Grid';
+import { RowProps } from 'rsuite/lib/Row';
 
 interface IUGridProps extends GridProps {}
 

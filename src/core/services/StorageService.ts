@@ -10,7 +10,7 @@ export default class StorageService {
     return localStorage;
   }
 
-  public static getIn(path: string | string[]) {
+  public static getIn<T extends any = any>(path: string | string[]): T | string | null {
     const pathArray = Array.isArray(path) ? path : String(path).split('.');
     const rootKey = pathArray[0];
     const originalItem = StorageService.storage.getItem(rootKey);
@@ -27,7 +27,7 @@ export default class StorageService {
         return originalItem;
       }
 
-      return rootItem;
+      return rootItem as T;
     }
   }
 

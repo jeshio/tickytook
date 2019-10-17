@@ -3,6 +3,7 @@ import * as React from 'react';
 import { ReactComponent as SpellIconComponent } from 'src/images/components/icons/magic-wand.svg';
 import UBlock from 'src/ui-components/UBlock';
 import UButton from 'src/ui-components/UButton';
+import UEmojiPicker from 'src/ui-components/UEmojiPicker';
 import UFlexboxGrid from 'src/ui-components/UFlexboxGrid';
 import UForm from 'src/ui-components/UForm';
 import UIcon from 'src/ui-components/UIcon';
@@ -103,6 +104,7 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
                 paddingTop={isExtendedMode ? ['6px', '6px', 4] : undefined}
                 onPaste={onFormSubmit}
                 isExtendedMode={isExtendedMode}
+                withEmojiPicker={true}
               />
             </UFlexboxGrid.Item>
             <UFlexboxGrid.Item>
