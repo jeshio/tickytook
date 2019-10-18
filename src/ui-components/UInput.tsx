@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { BaseEmoji } from 'emoji-mart';
 import get from 'lodash/get';
 import * as React from 'react';
@@ -6,6 +7,7 @@ import { Input as RInput } from 'rsuite';
 import { InputProps } from 'rsuite/lib/Input';
 import TTheme from 'src/core/types/TTheme';
 import styled from 'styled-components';
+import { maxHeight } from 'styled-system';
 import UButton from './UButton';
 import UEmojiPicker from './UEmojiPicker';
 
@@ -55,11 +57,16 @@ const Button = styled(UButton)`
   }
 `;
 
-const EmojiPicker = styled(UEmojiPicker)`
+const EmojiPicker = styled<any>(UEmojiPicker)`
   margin-top: 5px;
+  ${maxHeight};
 `;
 
-const StyledRInput = styled(RInput)`
+const StyledRInput = styled(
+  React.forwardRef(({ withEmojiPicker, ...props }: IUInputProps, ref) => (
+    <RInput {...props} ref={ref} />
+  ))
+)`
   border: unset;
   font-size: 0.85rem;
   line-height: 1.1rem;
@@ -68,6 +75,25 @@ const StyledRInput = styled(RInput)`
 
   &::placeholder {
     color: ${props => (props.theme as TTheme).colors.grey};
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #ccc;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
   }
 
   &.rs-input,
@@ -82,7 +108,7 @@ class UInput extends React.PureComponent<IUInputProps, IUInputState> {
   };
 
   public state = {
-    emojiPickerIsVisible: true,
+    emojiPickerIsVisible: false,
   };
 
   public inputRef: React.RefObject<any>;
@@ -93,56 +119,91 @@ class UInput extends React.PureComponent<IUInputProps, IUInputState> {
     this.inputRef = React.createRef();
   }
 
-  public handleSwitchEmojiPickerVisibleClick = () => {
-    this.setState(({ emojiPickerIsVisible }) => ({ emojiPickerIsVisible: !emojiPickerIsVisible }));
-  };
+  get lastEmojiSymbolRegExp() {
+    return /[\uDC00-\uDFFF]/;
+  }
 
-  public handleEmojiPickerSelect = (e: BaseEmoji) => {
-    // TODO скорее всего работает только в textarea
-    const { value = '' } = this.props;
-    const smile = e.native;
-    const lastEmojiSymbolRegExp = /[\uDC00-\uDFFF]/;
-    const input = get(this.inputRef, 'current.props.inputRef.current._ref') as
+  get input() {
+    return get(this.inputRef, 'current.props.inputRef.current._ref') as
       | undefined
       | HTMLInputElement;
-    let selectionStart = get(
+  }
+
+  get selectionStart() {
+    const { value = '' } = this.props;
+    const selectionStart = get(
       this.inputRef.current,
       'props.inputRef.current._ref.selectionStart',
       value.length
     );
-    let selectionEnd = get(
+    // фикс для добавления нескольких emoji подряд
+    if (this.lastEmojiSymbolRegExp.test(value[selectionStart])) {
+      return selectionStart + 1;
+    }
+
+    return selectionStart;
+  }
+
+  get selectionEnd() {
+    const { value = '' } = this.props;
+    const selectionEnd = get(
       this.inputRef.current,
       'props.inputRef.current._ref.selectionEnd',
       value.length
     );
-
     // фикс для добавления нескольких emoji подряд
-    if (lastEmojiSymbolRegExp.test(value[selectionStart])) {
-      selectionStart += 1;
+    if (this.lastEmojiSymbolRegExp.test(value[selectionEnd])) {
+      return selectionEnd + 1;
     }
-    if (lastEmojiSymbolRegExp.test(value[selectionEnd])) {
-      selectionEnd += 1;
-    }
+
+    return selectionEnd;
+  }
+
+  public handleSwitchEmojiPickerVisibleClick = () => {
+    this.setState(({ emojiPickerIsVisible }) => {
+      const { input, selectionStart, selectionEnd } = this;
+
+      // при переключениях не теряем фокус
+      if (input) {
+        const oldScrollPosition = input.scrollTop;
+        input.focus();
+        input.scrollTop = oldScrollPosition;
+        input.selectionStart = selectionStart;
+        input.selectionEnd = selectionEnd;
+      }
+      return { emojiPickerIsVisible: !emojiPickerIsVisible };
+    });
+  };
+
+  public handleEmojiPickerSelect = (e: BaseEmoji) => {
+    // TODO скорее всего работает только в textarea
+    const { input } = this;
+    const smile = e.native;
 
     if (input) {
-      const oldScrollPosition = input.scrollTop;
-      const newValue = `${value.substring(0, selectionStart)}${smile}${value.substring(
-        selectionEnd
-      )}`;
-      const newCursorPosition = selectionEnd + 1 - (selectionEnd - selectionStart);
-      const nativeInputValueSetter = (Object.getOwnPropertyDescriptor(
-        window.HTMLTextAreaElement.prototype,
-        'value'
-      ) as PropertyDescriptor).set as (v: any) => void;
-      const event = new Event('input', { bubbles: true });
+      document.execCommand('insertText', false, smile);
+      /**
+       * пока оставлю более низкоуровневый способ,
+       * но с не работающим Ctrl+Z
+       */
+      // const oldScrollPosition = input.scrollTop;
+      // const newValue = `${value.substring(0, selectionStart)}${smile}${value.substring(
+      //   selectionEnd
+      // )}`;
+      // const newCursorPosition = selectionEnd + 1 - (selectionEnd - selectionStart);
+      // const nativeInputValueSetter = (Object.getOwnPropertyDescriptor(
+      //   window.HTMLTextAreaElement.prototype,
+      //   'value'
+      // ) as PropertyDescriptor).set as (v: any) => void;
+      // const event = new Event('input', { bubbles: true });
 
-      nativeInputValueSetter.call(input, newValue);
-      input.dispatchEvent(event);
-      input.focus();
+      // nativeInputValueSetter.call(input, newValue);
+      // input.dispatchEvent(event);
+      // input.focus();
 
-      input.scrollTop = oldScrollPosition;
-      input.selectionStart = newCursorPosition;
-      input.selectionEnd = newCursorPosition;
+      // input.scrollTop = oldScrollPosition;
+      // input.selectionStart = newCursorPosition;
+      // input.selectionEnd = newCursorPosition;
     }
   };
 
@@ -159,6 +220,7 @@ class UInput extends React.PureComponent<IUInputProps, IUInputState> {
             label={label}
             withEmojiPicker={withEmojiPicker}
             {...props}
+            className={cn('u-override', props.className)}
             ref={this.inputRef}
           />
           <Label>{label}</Label>
@@ -174,6 +236,7 @@ class UInput extends React.PureComponent<IUInputProps, IUInputState> {
           <EmojiPicker
             isVisible={state.emojiPickerIsVisible}
             onSelect={this.handleEmojiPickerSelect}
+            maxHeight={['45vh', '45vh', '300px']}
           />
         )}
       </>

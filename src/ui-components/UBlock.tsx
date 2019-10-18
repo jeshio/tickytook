@@ -22,10 +22,14 @@ import {
   JustifyContentProps,
   justifyItems,
   JustifyItemsProps,
+  maxHeight,
+  MaxHeightProps,
   maxWidth,
   MaxWidthProps,
   minHeight,
   MinHeightProps,
+  minWidth,
+  MinWidthProps,
   overflow,
   OverflowProps,
   position,
@@ -51,6 +55,8 @@ export interface IUBlockProps
     BorderRadiusProps,
     OverflowProps,
     MaxWidthProps,
+    MinWidthProps,
+    MaxHeightProps,
     BackgroundColorProps,
     MinHeightProps,
     PositionProps,
@@ -72,6 +78,8 @@ const Root = styled.div<any>`
   ${borderRadius};
   ${overflow};
   ${maxWidth};
+  ${minWidth};
+  ${maxHeight};
   ${minHeight};
   ${backgroundColor};
   ${position};

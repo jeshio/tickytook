@@ -43,7 +43,7 @@ class Container extends Component<IContainerProps> {
     this.updateSideBar();
 
     const savedText = StorageService.getIn<string>(STORAGE_ITEMS_NAME.SOURCE_TEXT) || '';
-    if (savedText.length > 0) {
+    if (savedText.length > 0 && this.props.selectors.hashtags.length === 0) {
       this.props.actions.changeText(savedText);
       this.props.actions.fetchExtraWords.request();
     }

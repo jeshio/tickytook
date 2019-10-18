@@ -47,6 +47,9 @@ const Root = styled.div<IUBlockLimitedHeightState>`
   }
 `;
 
+/**
+ * Компонент отображает градиент при скролле вниз/вверх
+ */
 class UBlockLimitedHeight extends React.PureComponent<
   IUBlockLimitedHeightProps,
   IUBlockLimitedHeightState

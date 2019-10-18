@@ -3,7 +3,6 @@ import * as React from 'react';
 import { ReactComponent as SpellIconComponent } from 'src/images/components/icons/magic-wand.svg';
 import UBlock from 'src/ui-components/UBlock';
 import UButton from 'src/ui-components/UButton';
-import UEmojiPicker from 'src/ui-components/UEmojiPicker';
 import UFlexboxGrid from 'src/ui-components/UFlexboxGrid';
 import UForm from 'src/ui-components/UForm';
 import UIcon from 'src/ui-components/UIcon';
@@ -11,7 +10,7 @@ import UIconButton from 'src/ui-components/UIconButton';
 import UInline from 'src/ui-components/UInline';
 import UStep from 'src/ui-components/UStep';
 import styled from 'styled-components';
-import { space } from 'styled-system';
+import { maxHeight, MaxHeightProps, space } from 'styled-system';
 
 export interface TextReceiverProps {
   value: string;
@@ -25,12 +24,16 @@ const Root = styled.div<React.ImgHTMLAttributes<HTMLDivElement> & { isExtendedMo
   padding-left: ${({ isExtendedMode }: any) => (isExtendedMode ? '48px' : 0)};
 `;
 
-const Textarea = styled(({ paddingTop, isExtendedMode, ...props }) => (
-  <UForm.Textarea {...props} />
-))`
+const Textarea = styled<typeof UForm.Textarea & MaxHeightProps>(
+  ({ paddingTop, isExtendedMode, maxHeight: _, ...props }) => <UForm.Textarea {...props} />
+)`
   ${({ isExtendedMode }: any) => (isExtendedMode ? 'border-radius: 0;' : '')}
   min-height: ${({ isExtendedMode }: any) => (isExtendedMode ? '48px' : '60px')} !important;
   ${space};
+
+  &.u-override {
+    ${maxHeight};
+  }
 `;
 
 const Step = styled(UStep)`
@@ -105,6 +108,7 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
                 onPaste={onFormSubmit}
                 isExtendedMode={isExtendedMode}
                 withEmojiPicker={true}
+                maxHeight={['33vh', '33vh', '20vh', '33vh', '400px']}
               />
             </UFlexboxGrid.Item>
             <UFlexboxGrid.Item>
