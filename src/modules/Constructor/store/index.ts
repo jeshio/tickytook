@@ -1,9 +1,11 @@
 import update from 'immutability-helper';
 import uniq from 'lodash/uniq';
+import { compose } from 'redux';
 import BaseStore from 'src/core/store/BaseStore';
 import { getApiReducer } from 'src/core/store/helpers/getApiReducer';
 import { AUTO_HASHTAGS_COUNT } from '../constants';
 import { MODULE_NAME } from '../constants';
+import addInvisibleSpacesToLineBreaks from '../utils/addInvisibleSpacesToLineBreaks';
 import cutEndSpacesFromText from '../utils/cutEndSpacesFromText';
 import cutHashtagsFromText from '../utils/cutHashtagsFromText';
 import getHashtagsFromText from '../utils/getHashtagsFromText';
@@ -65,7 +67,13 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
         extraHashtags: {
           $set: [...state.extraHashtags, ...getHashtagsFromText(action.payload[0])],
         },
-        resultText: { $set: cutEndSpacesFromText(cutHashtagsFromText(action.payload[0])) },
+        resultText: {
+          $set: compose(
+            cutEndSpacesFromText,
+            cutHashtagsFromText,
+            addInvisibleSpacesToLineBreaks
+          )(action.payload[0]),
+        },
       }),
     setMinimumHashtagLength: (state, action) =>
       update(state, {
