@@ -1,8 +1,10 @@
 import isEqual from 'lodash/isEqual';
 import { call, cancel, cancelled, delay, fork, put, race, select, take } from 'redux-saga/effects';
 import SagaService from 'src/core/services/SagaService';
+import StorageService from 'src/core/services/StorageService';
 import BaseStore from 'src/core/store/BaseStore';
 import { Store } from '..';
+import { STORAGE_ITEMS_NAME } from '../constants';
 import splitTextOnWords from '../utils/splitTextOnWords';
 import Api from './api';
 import { IActions, IEndPoints, ISagaWorkers, ISelectors, IStore } from './interfaces';
@@ -61,21 +63,24 @@ export default function sagas(
 
   // words updater
   sagaService.addSagaWatcher(function*() {
-    const firstVersionText = Store.selectors(((yield select()) as unknown) as IStore).text;
+    const firstVersionText = Store.selectors(((yield select()) as unknown) as IStore).sourceText;
     yield call(sagaService.sagaWorkers.updateWords, firstVersionText);
 
     if (String(firstVersionText).length > 0) {
+      yield put(store.actions.makeResultText(firstVersionText));
       yield put(store.actions.fetchExtraWords.request());
     }
 
     while (true) {
-      const oldText = Store.selectors(((yield select()) as unknown) as IStore).text;
+      const oldText = Store.selectors(((yield select()) as unknown) as IStore).sourceText;
       yield race([take(Store.actions.changeText.type), take(Store.actions.reset.type)]);
 
-      const newText = Store.selectors(((yield select()) as unknown) as IStore).text;
+      const newText = Store.selectors(((yield select()) as unknown) as IStore).sourceText;
 
       if (oldText !== newText) {
         yield call(sagaService.sagaWorkers.updateWords, newText);
+        yield put(store.actions.makeResultText(newText));
+        StorageService.setIn(STORAGE_ITEMS_NAME.SOURCE_TEXT, newText);
       }
     }
   });

@@ -1,12 +1,12 @@
 import ICEndPoint from 'src/core/interfaces/ICEndPoint';
 import ICEndPoints from 'src/core/interfaces/ICEndPoints';
-import ICActionPromise from 'src/core/store/interfaces/ICActionPromise';
 import ICApiAction from 'src/core/store/interfaces/ICApiAction';
 import { ICSagas } from 'src/core/store/interfaces/ICSagas';
 import { ActionsFromActionsParameters } from 'src/core/store/types/ActionFromActionParameters';
 
 export interface IStore {
-  text: string;
+  sourceText: string;
+  resultText: string;
   words: string[];
   inactiveHashtags: string[];
   extraWords: {
@@ -31,6 +31,7 @@ export interface ISelectors extends IStore {
 export interface IActionsParameters {
   wiz: [];
   changeText: [string];
+  makeResultText: [string];
   changeWords: [string[]];
   switchHashtagActiveStatus: [string];
   addExtraHashtag: [string];

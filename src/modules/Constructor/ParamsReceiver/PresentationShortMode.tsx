@@ -16,7 +16,7 @@ export default class PresentationShortMode extends Component<IPresentationShortM
           <UGrid.Col md={24}>
             <UBlock>
               <TextReceiver
-                value={selectors.text}
+                value={selectors.sourceText}
                 onChange={actions.changeText}
                 onFormSubmit={actions.wiz}
                 isExtendedMode={selectors.isExtendedMode}

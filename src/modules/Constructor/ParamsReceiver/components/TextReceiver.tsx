@@ -10,7 +10,7 @@ import UIconButton from 'src/ui-components/UIconButton';
 import UInline from 'src/ui-components/UInline';
 import UStep from 'src/ui-components/UStep';
 import styled from 'styled-components';
-import { space } from 'styled-system';
+import { maxHeight, MaxHeightProps, space } from 'styled-system';
 
 export interface TextReceiverProps {
   value: string;
@@ -24,12 +24,16 @@ const Root = styled.div<React.ImgHTMLAttributes<HTMLDivElement> & { isExtendedMo
   padding-left: ${({ isExtendedMode }: any) => (isExtendedMode ? '48px' : 0)};
 `;
 
-const Textarea = styled(({ paddingTop, isExtendedMode, ...props }) => (
-  <UForm.Textarea {...props} />
-))`
+const Textarea = styled<typeof UForm.Textarea & MaxHeightProps>(
+  ({ paddingTop, isExtendedMode, maxHeight: _, ...props }) => <UForm.Textarea {...props} />
+)`
   ${({ isExtendedMode }: any) => (isExtendedMode ? 'border-radius: 0;' : '')}
   min-height: ${({ isExtendedMode }: any) => (isExtendedMode ? '48px' : '60px')} !important;
   ${space};
+
+  &.u-override {
+    ${maxHeight};
+  }
 `;
 
 const Step = styled(UStep)`
@@ -89,7 +93,7 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
     const { handleTextChange, onFormSubmit } = this;
     return (
       <Root isExtendedMode={isExtendedMode}>
-        <UForm formValue={{ text: cachedValue }} onSubmit={onFormSubmit}>
+        <UForm formValue={{ text: cachedValue }}>
           <UFlexboxGrid flexWrap="nowrap" justify="space-between">
             {isExtendedMode && <Step>1</Step>}
             <UFlexboxGrid.Item flex={3}>
@@ -103,6 +107,8 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
                 paddingTop={isExtendedMode ? ['6px', '6px', 4] : undefined}
                 onPaste={onFormSubmit}
                 isExtendedMode={isExtendedMode}
+                withEmojiPicker={true}
+                maxHeight={['33vh', '33vh', '250px', '350px', '500px']}
               />
             </UFlexboxGrid.Item>
             <UFlexboxGrid.Item>
@@ -113,7 +119,6 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
                   visible={[false, true]}
                   icon={<UIcon svg={SpellIconComponent} size="small" />}
                   color="blue"
-                  type="submit"
                   onClick={onFormSubmit}
                 >
                   Наколдовать!
@@ -125,7 +130,6 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
                   svg={SpellIconComponent}
                   style={{ padding: '12px' }}
                   color="blue"
-                  type="submit"
                   onClick={onFormSubmit}
                 />
               </UInline>
@@ -137,7 +141,6 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
               appearance="primary"
               icon={<UIcon svg={SpellIconComponent} size="small" />}
               color="blue"
-              type="submit"
               onClick={onFormSubmit}
             >
               Наколдовать!
@@ -159,8 +162,4 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
     this.props.onChange(this.state.cachedValue);
     this.props.onFormSubmit();
   };
-}
-
-export interface $TextReceiver {
-  textReceiver: typeof TextReceiver;
 }

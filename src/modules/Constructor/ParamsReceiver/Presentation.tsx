@@ -16,7 +16,7 @@ export default class Presentation extends Component<IPresentationProps, any> {
           <UGrid.Col md={24}>
             <UBlock>
               <TextReceiver
-                value={selectors.text}
+                value={selectors.sourceText}
                 onChange={actions.changeText}
                 onFormSubmit={actions.wiz}
                 isExtendedMode={selectors.isExtendedMode}

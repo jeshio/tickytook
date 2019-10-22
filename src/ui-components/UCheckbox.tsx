@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Checkbox } from 'rsuite';
-import { CheckboxProps } from 'rsuite/types/Checkbox';
+import { CheckboxProps } from 'rsuite/lib/Checkbox';
 import TTheme from 'src/core/types/TTheme';
 import styled from 'styled-components';
 

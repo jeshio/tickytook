@@ -36,7 +36,7 @@ const UShareButtons: React.FunctionComponent<IUShareButtonsProps> = props => {
   return (
     <UBlock display="flex" justifyContent={props.align} alignItems="center">
       {buttons.map((item, index) => (
-        <UBlock key={index} px={1} title={item[2]}>
+        <UBlock key={index} px={1} title={item[2] as string}>
           {React.createElement(
             item[0] as React.ElementType,
             { url },
