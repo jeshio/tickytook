@@ -2,7 +2,6 @@ import * as React from 'react';
 import displayWithVisibleChecking from 'src/core/extends/styled-system/displayWithVisibleChecking';
 import { VisibleProps } from 'src/core/extends/styled-system/interfaces';
 import styled from 'styled-components';
-import * as cssType from 'styled-components/cssprop';
 import {
   alignItems,
   AlignItemsProps,
@@ -23,12 +22,18 @@ import {
   JustifyContentProps,
   justifyItems,
   JustifyItemsProps,
+  maxHeight,
+  MaxHeightProps,
   maxWidth,
   MaxWidthProps,
   minHeight,
   MinHeightProps,
+  minWidth,
+  MinWidthProps,
   overflow,
   OverflowProps,
+  position,
+  PositionProps,
   space,
   SpaceProps,
   textAlign,
@@ -36,7 +41,7 @@ import {
 } from 'styled-system';
 
 export interface IUBlockProps
-  extends React.ImgHTMLAttributes<HTMLDivElement>,
+  extends React.HTMLAttributes<HTMLDivElement>,
     SpaceProps,
     FlexProps,
     FlexDirectionProps,
@@ -50,8 +55,11 @@ export interface IUBlockProps
     BorderRadiusProps,
     OverflowProps,
     MaxWidthProps,
+    MinWidthProps,
+    MaxHeightProps,
     BackgroundColorProps,
     MinHeightProps,
+    PositionProps,
     VisibleProps {
   ref?: React.RefObject<HTMLDivElement>;
 }
@@ -70,8 +78,11 @@ const Root = styled.div<any>`
   ${borderRadius};
   ${overflow};
   ${maxWidth};
+  ${minWidth};
+  ${maxHeight};
   ${minHeight};
   ${backgroundColor};
+  ${position};
   ${props => props.css}
 `;
 

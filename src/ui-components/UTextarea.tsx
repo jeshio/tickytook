@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Textarea from 'react-textarea-autosize';
-import { InputProps } from 'rsuite/types/Input';
+import { InputProps } from 'rsuite/lib/Input';
 import UInput, { IUInputProps } from './UInput';
 
 export interface IUTextareaProps extends IUInputProps {
@@ -9,7 +9,7 @@ export interface IUTextareaProps extends IUInputProps {
 
 const componentClass = React.forwardRef((props: React.HTMLProps<HTMLTextAreaElement>, ref) => (
   <Textarea
-    {...props as any}
+    {...(props as any)}
     style={{ ...(props.style || {}), minHeight: 'unset', minWidth: 'unset' }}
     ref={ref}
   />

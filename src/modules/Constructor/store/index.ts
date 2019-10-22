@@ -1,9 +1,14 @@
 import update from 'immutability-helper';
 import uniq from 'lodash/uniq';
+import { compose } from 'redux';
 import BaseStore from 'src/core/store/BaseStore';
 import { getApiReducer } from 'src/core/store/helpers/getApiReducer';
-import { MODULE_NAME } from '../constants';
 import { AUTO_HASHTAGS_COUNT } from '../constants';
+import { MODULE_NAME } from '../constants';
+import addInvisibleSpacesToLineBreaks from '../utils/addInvisibleSpacesToLineBreaks';
+import cutEndSpacesFromText from '../utils/cutEndSpacesFromText';
+import cutHashtagsFromText from '../utils/cutHashtagsFromText';
+import getHashtagsFromText from '../utils/getHashtagsFromText';
 import getHashtagsFromWords from '../utils/getHashtagsFromWords';
 import Api from './api';
 import { IActions, ISelectors, IStore } from './interfaces';
@@ -31,11 +36,13 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
             loading: { $set: false },
             data: { $set: extraWords },
           },
-          // если ни одного хэштега не установлено, то добавляем автоматом
+          // если установлено мало хэштегов, то дополняем автоматом
           extraHashtags: {
             $set:
-              state.extraHashtags.length === 0
-                ? extraWords.slice(0, AUTO_HASHTAGS_COUNT)
+              state.extraHashtags.length < AUTO_HASHTAGS_COUNT
+                ? state.extraHashtags.concat(
+                    extraWords.slice(0, AUTO_HASHTAGS_COUNT - state.extraHashtags.length)
+                  )
                 : state.extraHashtags,
           },
         });
@@ -53,11 +60,20 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
         inactiveHashtags: { $set: inactiveHashtags },
       });
     },
-
-    changeText: (state, action) => ({
-      ...state,
-      text: action.payload[0],
-    }),
+    changeText: (state, action) =>
+      update(state, {
+        sourceText: { $set: action.payload[0] },
+      }),
+    makeResultText: (state, action) =>
+      update(state, {
+        resultText: {
+          $set: compose(
+            cutEndSpacesFromText,
+            cutHashtagsFromText,
+            addInvisibleSpacesToLineBreaks
+          )(action.payload[0]),
+        },
+      }),
     setMinimumHashtagLength: (state, action) =>
       update(state, {
         params: {
@@ -70,12 +86,18 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
           [action.payload[0]]: { $set: !state.params[action.payload[0]] },
         },
       }),
-    wiz: state => state,
+    wiz: state =>
+      update(state, {
+        extraHashtags: {
+          $set: uniq([...state.extraHashtags, ...getHashtagsFromText(state.sourceText)]),
+        },
+      }),
     switchMode: state => ({ ...state, isExtendedMode: !state.isExtendedMode }),
     reset: state => state,
   },
   {
-    text: '', // 'Привет, тут у нас небольшое предложение с 8 членами.',
+    sourceText: '',
+    resultText: '',
     extraHashtags: [],
     extraWords: {
       data: [],

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { ControlLabel, Form, FormControl, FormGroup, HelpBlock } from 'rsuite';
-import { ControlLabelProps } from 'rsuite/types/ControlLabel';
-import { FormProps } from 'rsuite/types/Form';
-import { FormControlProps } from 'rsuite/types/FormControl';
-import { FormGroupProps } from 'rsuite/types/FormGroup';
-import { HelpBlockProps } from 'rsuite/types/HelpBlock';
+import { ControlLabelProps } from 'rsuite/lib/ControlLabel';
+import { FormProps } from 'rsuite/lib/Form';
+import { FormControlProps } from 'rsuite/lib/FormControl';
+import { FormGroupProps } from 'rsuite/lib/FormGroup';
+import { HelpBlockProps } from 'rsuite/lib/HelpBlock';
 import styled from 'styled-components';
 import UCheckbox, { IUCheckboxProps } from './UCheckbox';
 import UInput, { IUInputProps } from './UInput';

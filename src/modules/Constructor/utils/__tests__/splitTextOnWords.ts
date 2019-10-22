@@ -1,4 +1,4 @@
-import splitTextOnWords from './splitTextOnWords';
+import splitTextOnWords from '../splitTextOnWords';
 
 describe('splitTextOnWords', () => {
   describe('empty text', () => {

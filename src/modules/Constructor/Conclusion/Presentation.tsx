@@ -35,17 +35,17 @@ export default class Presentation extends Component<IPresentationProps, any> {
           {shortModeLeftColumn}
         </UBlock>
         <UBlock flex={1}>
-          <UBlock visible={selectors.text.length > 0}>
+          <UBlock visible={selectors.sourceText.length > 0}>
             <SimplePost
               activeHashtags={selectors.activeHashtags}
-              text={selectors.text}
+              text={selectors.resultText}
               onCopyPost={onCopyPost}
               onCopyHashtags={onCopyHashtags}
               loading={selectors.extraWords.loading}
               switchMode={actions.switchMode}
             />
           </UBlock>
-          <UBlock visible={selectors.text.length === 0} textAlign="center">
+          <UBlock visible={selectors.sourceText.length === 0} textAlign="center">
             <Block>
               <UBlock p={6} paddingTop={7}>
                 Для начала введите текст поста.
@@ -82,10 +82,10 @@ export default class Presentation extends Component<IPresentationProps, any> {
             onCopyHashtags={onCopyHashtags}
             switchHashtagActiveStatus={actions.switchHashtagActiveStatus}
           />
-          <UBlock visible={selectors.text.length > 0}>
+          <UBlock visible={selectors.sourceText.length > 0}>
             <Post
               activeHashtags={selectors.activeHashtags}
-              text={selectors.text}
+              text={selectors.resultText}
               onCopyPost={onCopyPost}
               switchMode={actions.switchMode}
             />

@@ -15,6 +15,10 @@ const Presentation: React.FunctionComponent<IPresentationProps> = props => {
       <a href="https://www.instagram.com/jeshio.ru/" target="_blank">
         @jeshio
       </a>
+      ,{' '}
+      <a href="/policy" target="_blank">
+        пользовательское соглашение
+      </a>
     </Root>
   );
 };

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FlexboxGrid } from 'rsuite';
-import { FlexboxGridProps } from 'rsuite/types/FlexboxGrid';
-import { FlexboxGridItemProps } from 'rsuite/types/FlexboxGridItem';
+import { FlexboxGridProps } from 'rsuite/lib/FlexboxGrid';
+import { FlexboxGridItemProps } from 'rsuite/lib/FlexboxGridItem';
 import styled from 'styled-components';
 import {
   flex,

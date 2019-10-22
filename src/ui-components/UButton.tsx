@@ -1,8 +1,8 @@
 import cn from 'classnames';
-import { darken, lighten } from 'polished';
+import { darken } from 'polished';
 import * as React from 'react';
 import { Button, PropTypes } from 'rsuite';
-import { ButtonProps } from 'rsuite/types/Button';
+import { ButtonProps } from 'rsuite/lib/Button';
 import displayWithVisibleChecking from 'src/core/extends/styled-system/displayWithVisibleChecking';
 import { VisibleProps } from 'src/core/extends/styled-system/interfaces';
 import TTheme from 'src/core/types/TTheme';
