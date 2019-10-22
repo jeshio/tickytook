@@ -36,11 +36,13 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
             loading: { $set: false },
             data: { $set: extraWords },
           },
-          // если ни одного хэштега не установлено, то добавляем автоматом
+          // если установлено мало хэштегов, то дополняем автоматом
           extraHashtags: {
             $set:
-              state.extraHashtags.length === 0
-                ? extraWords.slice(0, AUTO_HASHTAGS_COUNT)
+              state.extraHashtags.length < AUTO_HASHTAGS_COUNT
+                ? state.extraHashtags.concat(
+                    extraWords.slice(0, AUTO_HASHTAGS_COUNT - state.extraHashtags.length)
+                  )
                 : state.extraHashtags,
           },
         });
@@ -64,9 +66,6 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
       }),
     makeResultText: (state, action) =>
       update(state, {
-        extraHashtags: {
-          $set: [...state.extraHashtags, ...getHashtagsFromText(action.payload[0])],
-        },
         resultText: {
           $set: compose(
             cutEndSpacesFromText,
@@ -87,7 +86,12 @@ const store = new BaseStore<IStore, IActions, ISelectors, typeof Api.endPoints>(
           [action.payload[0]]: { $set: !state.params[action.payload[0]] },
         },
       }),
-    wiz: state => state,
+    wiz: state =>
+      update(state, {
+        extraHashtags: {
+          $set: uniq([...state.extraHashtags, ...getHashtagsFromText(state.sourceText)]),
+        },
+      }),
     switchMode: state => ({ ...state, isExtendedMode: !state.isExtendedMode }),
     reset: state => state,
   },

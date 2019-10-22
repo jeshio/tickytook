@@ -7,7 +7,6 @@ import { Input as RInput } from 'rsuite';
 import { InputProps } from 'rsuite/lib/Input';
 import TTheme from 'src/core/types/TTheme';
 import styled from 'styled-components';
-import { maxHeight } from 'styled-system';
 import UButton from './UButton';
 import UEmojiPicker from './UEmojiPicker';
 
@@ -59,7 +58,11 @@ const Button = styled(UButton)`
 
 const EmojiPicker = styled<any>(UEmojiPicker)`
   margin-top: 5px;
-  ${maxHeight};
+  max-height: 300px;
+
+  .emoji-mart-scroll {
+    height: 211px;
+  }
 `;
 
 const StyledRInput = styled(
@@ -182,28 +185,6 @@ class UInput extends React.PureComponent<IUInputProps, IUInputState> {
 
     if (input) {
       document.execCommand('insertText', false, smile);
-      /**
-       * пока оставлю более низкоуровневый способ,
-       * но с не работающим Ctrl+Z
-       */
-      // const oldScrollPosition = input.scrollTop;
-      // const newValue = `${value.substring(0, selectionStart)}${smile}${value.substring(
-      //   selectionEnd
-      // )}`;
-      // const newCursorPosition = selectionEnd + 1 - (selectionEnd - selectionStart);
-      // const nativeInputValueSetter = (Object.getOwnPropertyDescriptor(
-      //   window.HTMLTextAreaElement.prototype,
-      //   'value'
-      // ) as PropertyDescriptor).set as (v: any) => void;
-      // const event = new Event('input', { bubbles: true });
-
-      // nativeInputValueSetter.call(input, newValue);
-      // input.dispatchEvent(event);
-      // input.focus();
-
-      // input.scrollTop = oldScrollPosition;
-      // input.selectionStart = newCursorPosition;
-      // input.selectionEnd = newCursorPosition;
     }
   };
 
@@ -236,7 +217,6 @@ class UInput extends React.PureComponent<IUInputProps, IUInputState> {
           <EmojiPicker
             isVisible={state.emojiPickerIsVisible}
             onSelect={this.handleEmojiPickerSelect}
-            maxHeight={['45vh', '45vh', '300px']}
           />
         )}
       </>

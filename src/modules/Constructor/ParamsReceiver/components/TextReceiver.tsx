@@ -93,7 +93,7 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
     const { handleTextChange, onFormSubmit } = this;
     return (
       <Root isExtendedMode={isExtendedMode}>
-        <UForm formValue={{ text: cachedValue }} onSubmit={onFormSubmit}>
+        <UForm formValue={{ text: cachedValue }}>
           <UFlexboxGrid flexWrap="nowrap" justify="space-between">
             {isExtendedMode && <Step>1</Step>}
             <UFlexboxGrid.Item flex={3}>
@@ -108,7 +108,7 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
                 onPaste={onFormSubmit}
                 isExtendedMode={isExtendedMode}
                 withEmojiPicker={true}
-                maxHeight={['33vh', '33vh', '20vh', '33vh', '400px']}
+                maxHeight={['33vh', '33vh', '250px', '350px', '500px']}
               />
             </UFlexboxGrid.Item>
             <UFlexboxGrid.Item>
@@ -119,7 +119,6 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
                   visible={[false, true]}
                   icon={<UIcon svg={SpellIconComponent} size="small" />}
                   color="blue"
-                  type="submit"
                   onClick={onFormSubmit}
                 >
                   Наколдовать!
@@ -131,7 +130,6 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
                   svg={SpellIconComponent}
                   style={{ padding: '12px' }}
                   color="blue"
-                  type="submit"
                   onClick={onFormSubmit}
                 />
               </UInline>
@@ -143,7 +141,6 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
               appearance="primary"
               icon={<UIcon svg={SpellIconComponent} size="small" />}
               color="blue"
-              type="submit"
               onClick={onFormSubmit}
             >
               Наколдовать!
@@ -165,8 +162,4 @@ export default class TextReceiver extends React.PureComponent<TextReceiverProps,
     this.props.onChange(this.state.cachedValue);
     this.props.onFormSubmit();
   };
-}
-
-export interface $TextReceiver {
-  textReceiver: typeof TextReceiver;
 }

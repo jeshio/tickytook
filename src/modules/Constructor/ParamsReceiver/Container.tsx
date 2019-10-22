@@ -45,7 +45,7 @@ class Container extends Component<IContainerProps> {
     const savedText = StorageService.getIn<string>(STORAGE_ITEMS_NAME.SOURCE_TEXT) || '';
     if (savedText.length > 0 && this.props.selectors.hashtags.length === 0) {
       this.props.actions.changeText(savedText);
-      this.props.actions.fetchExtraWords.request();
+      this.props.actions.wiz();
     }
   }
 
