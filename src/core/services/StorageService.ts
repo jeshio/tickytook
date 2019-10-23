@@ -7,7 +7,7 @@ import unset from 'lodash/unset';
 
 export default class StorageService {
   static get storage() {
-    return localStorage;
+    return window.localStorage;
   }
 
   public static getIn<T extends any = any>(path: string | string[]): T | string | null {

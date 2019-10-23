@@ -31,6 +31,11 @@ const router = express.Router();
   location: {
     href: '',
   },
+  localStorage: {
+    getItem: () => {},
+    setItem: () => {},
+    removeItem: () => {},
+  },
 };
 
 const serverRenderer = async (req, res, next) => {
