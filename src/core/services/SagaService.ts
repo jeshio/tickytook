@@ -1,5 +1,6 @@
 import { Saga } from '@redux-saga/core';
 import get from 'lodash/get';
+import last from 'lodash/last';
 import { all, call, cancelled, fork, put, select } from 'redux-saga/effects';
 import BaseStore from '../store/BaseStore';
 import ICActionPromise from '../store/interfaces/ICActionPromise';
@@ -47,7 +48,7 @@ export default class SagaService<SagaWorkers extends ICSagas<{}>, TStore extends
   ) {
     const _this = this;
     const sagaWorker: unknown = function*(action: ReturnType<(typeof actionGenerator)['request']>) {
-      const promise = get(action, 'payload.-1') as ICActionPromise;
+      const promise = last(get(action, 'payload')) as ICActionPromise | undefined;
       try {
         const currentStoreSelectors = _this._baseStore.selectors(
           ((yield select()) as unknown) as TStore

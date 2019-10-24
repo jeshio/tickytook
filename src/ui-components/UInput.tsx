@@ -56,9 +56,13 @@ const Button = styled(UButton)`
   }
 `;
 
-const EmojiPicker = styled<any>(UEmojiPicker)`
+const EmojiPicker = styled<any>(({ isVisible, ...props }: any) => <UEmojiPicker {...props} />)`
   margin-top: 5px;
   max-height: 300px;
+  // так работает быстрее, чем display: none;
+  ${({ isVisible }) => !isVisible && 'position: absolute;'}
+  ${({ isVisible }) => !isVisible && 'visibility: hidden;'}
+  ${({ isVisible }) => !isVisible && 'pointer-events: none;'}
 
   .emoji-mart-scroll {
     height: 211px;

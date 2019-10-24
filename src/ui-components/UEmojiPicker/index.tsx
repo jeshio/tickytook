@@ -9,7 +9,6 @@ export interface IUEmojiPickerProps {
   type?: PickerProps['set'];
   size?: PickerProps['emojiSize'];
   sheetSize?: PickerProps['sheetSize'];
-  isVisible?: boolean;
   className?: string;
 }
 
@@ -26,7 +25,7 @@ const Root = styled.div`
 
 const UEmojiPicker = (props: IUEmojiPickerProps) => {
   return (
-    <Root style={{ display: props.isVisible ? 'block' : 'none' }} className={props.className}>
+    <Root className={props.className}>
       <Picker
         onSelect={props.onSelect}
         set={props.type}
@@ -44,7 +43,6 @@ const UEmojiPicker = (props: IUEmojiPickerProps) => {
 UEmojiPicker.defaultProps = {
   size: 24,
   sheetSize: 32,
-  visible: true,
 };
 
 export default UEmojiPicker;
